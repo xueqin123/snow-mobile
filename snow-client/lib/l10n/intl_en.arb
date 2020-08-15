@@ -1,0 +1,19 @@
+{
+  "_locale": "en",
+  "appName": "SnowMsg",
+  "pageHomeTabMessage": "Message",
+  "pageHomeTabContact": "Contacts",
+  "pageHomeTabDiscover": "Discover",
+  "pageHomeTabMine": "Mine",
+  "pageMessagePopStartChat": "start group chat",
+  "pageMessagePopAddFriend": "add friend",
+  "loginPhoneNumber": "phone number",
+  "loginPassword": "password",
+  "loginButton": "login",
+  "loginError": "Phone/password input error",
+  "loginHttpError": "login network failed",
+  "loginSuccess": "login success",
+  "contactProfile": "contact profile",
+  "contactProfileSendMessage": "send message"
+
+}

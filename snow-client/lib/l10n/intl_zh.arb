@@ -1,0 +1,18 @@
+{
+  "_locale": "zh",
+  "appName": "雪信",
+  "pageHomeTabMessage": "信息",
+  "pageHomeTabContact": "联系人",
+  "pageHomeTabDiscover": "发现",
+  "pageHomeTabMine": "我",
+  "pageMessagePopStartChat": "发起群聊",
+  "pageMessagePopAddFriend": "添加好友",
+  "loginPhoneNumber": "手机号",
+  "loginPassword": "密码",
+  "loginButton": "登录",
+  "loginError": "手机号，或者密码填写错误",
+  "loginHttpError": "网络原因登录失败",
+  "loginSuccess": "登录成功",
+  "contactProfile": "联系人详情",
+  "contactProfileSendMessage": "发消息"
+}
