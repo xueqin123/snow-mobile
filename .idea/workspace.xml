@@ -1,7 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="585fec4f-1b97-44b1-a6bf-d1c155f854d2" name="Default Changelist" comment="" />
+    <list default="true" id="585fec4f-1b97-44b1-a6bf-d1c155f854d2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/snow-imlib/lib/rest/rest.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snow-client/lib/data/model/login_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/snow-client/lib/data/model/login_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snow-client/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/snow-client/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snow-imlib/lib/snow_im_client.dart" beforeDir="false" afterPath="$PROJECT_DIR$/snow-imlib/lib/snow_im_client.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snow-imlib/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/snow-imlib/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snow-imlib/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/snow-imlib/pubspec.yaml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -9,6 +36,13 @@
   </component>
   <component name="ComposerSettings">
     <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dart File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -25,9 +59,14 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/snow-imlib/lib/proto" />
     <property name="settings.editor.selected.configurable" value="http.proxy" />
     <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/snow-imlib/lib/proto" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter" temporary="true" nameIsGenerated="true">
@@ -51,28 +90,50 @@
       <option name="presentableId" value="Default" />
       <updated>1597502760209</updated>
       <workItem from="1597502761740" duration="290000" />
+      <workItem from="1597503067839" duration="1419000" />
+      <workItem from="1597547464832" duration="10455000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
   <component name="WindowStateProjectService">
-    <state width="1878" height="253" key="GridCell.Tab.0.bottom" timestamp="1597503051575">
+    <state x="773" y="235" key="#com.intellij.ide.util.MemberChooser" timestamp="1597558295052">
       <screen x="0" y="23" width="1920" height="979" />
     </state>
-    <state width="1878" height="253" key="GridCell.Tab.0.bottom/-1680.91.1680.1027/0.23.1920.979@0.23.1920.979" timestamp="1597503051575" />
-    <state width="1878" height="253" key="GridCell.Tab.0.center" timestamp="1597503051574">
+    <state x="773" y="235" key="#com.intellij.ide.util.MemberChooser/-1680.91.1680.1027/0.23.1920.979@0.23.1920.979" timestamp="1597558295052" />
+    <state width="1878" height="188" key="GridCell.Tab.0.bottom" timestamp="1597559417969">
       <screen x="0" y="23" width="1920" height="979" />
     </state>
-    <state width="1878" height="253" key="GridCell.Tab.0.center/-1680.91.1680.1027/0.23.1920.979@0.23.1920.979" timestamp="1597503051574" />
-    <state width="1878" height="253" key="GridCell.Tab.0.left" timestamp="1597503051574">
+    <state width="1878" height="188" key="GridCell.Tab.0.bottom/-1680.91.1680.1027/0.23.1920.979@0.23.1920.979" timestamp="1597559417969" />
+    <state width="1878" height="188" key="GridCell.Tab.0.center" timestamp="1597559417968">
       <screen x="0" y="23" width="1920" height="979" />
     </state>
-    <state width="1878" height="253" key="GridCell.Tab.0.left/-1680.91.1680.1027/0.23.1920.979@0.23.1920.979" timestamp="1597503051574" />
-    <state width="1878" height="253" key="GridCell.Tab.0.right" timestamp="1597503051575">
+    <state width="1878" height="188" key="GridCell.Tab.0.center/-1680.91.1680.1027/0.23.1920.979@0.23.1920.979" timestamp="1597559417968" />
+    <state width="1878" height="188" key="GridCell.Tab.0.left" timestamp="1597559417968">
       <screen x="0" y="23" width="1920" height="979" />
     </state>
-    <state width="1878" height="253" key="GridCell.Tab.0.right/-1680.91.1680.1027/0.23.1920.979@0.23.1920.979" timestamp="1597503051575" />
+    <state width="1878" height="188" key="GridCell.Tab.0.left/-1680.91.1680.1027/0.23.1920.979@0.23.1920.979" timestamp="1597559417968" />
+    <state width="1878" height="188" key="GridCell.Tab.0.right" timestamp="1597559417968">
+      <screen x="0" y="23" width="1920" height="979" />
+    </state>
+    <state width="1878" height="188" key="GridCell.Tab.0.right/-1680.91.1680.1027/0.23.1920.979@0.23.1920.979" timestamp="1597559417968" />
+    <state x="625" y="238" width="670" height="676" key="search.everywhere.popup" timestamp="1597556725819">
+      <screen x="0" y="23" width="1920" height="979" />
+    </state>
+    <state x="625" y="238" width="670" height="676" key="search.everywhere.popup/-1680.91.1680.1027/0.23.1920.979@0.23.1920.979" timestamp="1597556725819" />
   </component>
 </project>
