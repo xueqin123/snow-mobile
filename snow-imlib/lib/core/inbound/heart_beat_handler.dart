@@ -16,11 +16,12 @@ class HeardBeatHandler extends InboundHandler {
   }
 
   SnowMessage _buildPong(SnowMessage message) {
-    SnowMessage snowMessage = SnowMessage();
-    snowMessage.type = SnowMessage_Type.HeartBeat;
     HeartBeat heartBeat = HeartBeat();
     heartBeat.id = message.heartBeat.id;
     heartBeat.heartBeatType = HeartBeatType.PONG;
+
+    SnowMessage snowMessage = SnowMessage();
+    snowMessage.type = SnowMessage_Type.HeartBeat;
     snowMessage.heartBeat = heartBeat;
     return snowMessage;
   }

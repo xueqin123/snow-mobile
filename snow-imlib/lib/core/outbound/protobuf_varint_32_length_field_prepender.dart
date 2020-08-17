@@ -2,14 +2,16 @@ import 'dart:typed_data';
 
 class ProtobufVarint32LengthFieldPrepender {
   Uint8List encode(Uint8List messageData) {
+    print("write start !");
     int messageLength = messageData.length;
-    int headLength = _computerRawVarint32Size(messageLength); //为缓存池做准备
+    int headLength = _computerRawVarint32Size(messageLength);
     Uint8List head = Uint8List(headLength);
     _writeRawVarint32(head, messageLength);
     Uint8List total = Uint8List(head.length + messageLength);
     List.copyRange(total, 0, head);
     List.copyRange(total, head.length, messageData);
-    print("ProtobufVarint32LengthFieldPrepender encode headLength:$headLength messageLength:$messageLength  totallength:${total.length}");
+    print("write data headLength: ${head.length} bodyLength:$messageLength totalLength:${total.length} ");
+    print("write end !");
     return total;
   }
 

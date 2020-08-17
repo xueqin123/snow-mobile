@@ -8,6 +8,11 @@ class AuthHandler extends InboundHandler {
     if (message.type == SnowMessage_Type.LoginAck) {
       LoginAck loginAck = message.loginAck;
       print(" loginAck id:${loginAck.id} code:${loginAck.code} msg:${loginAck.msg} time:${loginAck.time}");
+      if (loginAck.code == Code.SUCCESS) {
+        context.loginSuccess();
+      } else {
+        context.loginFailed(loginAck.code, loginAck.msg);
+      }
       return true;
     }
     return false;

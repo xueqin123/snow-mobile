@@ -60,10 +60,17 @@ class SnowIMContext {
   _connect(String host, int port) async {
     _socket = await Socket.connect(host, port);
     _connectStreamController.sink.add(ConnectStatus.CONNECTED);
-    _socket.map<Uint8List>((event) => protobufVarint32FrameDecoder.decode(event))
-        .map<SnowMessage>((event) => snowMessageDecoder.decode(event))
-        .listen(_onReceiveData, onDone: _onDone, onError: _onError);
+    _socket.listen((event) {
+      List<Uint8List> packages = protobufVarint32FrameDecoder.decode(event);
+      packages.forEach((element) {
+        _onReceiveData(snowMessageDecoder.decode(element));
+      });
+    }, onDone: _onDone, onError: _onError);
   }
+
+  loginSuccess() {}
+
+  loginFailed(Code code, String msg) {}
 
   disConnect() {
     _socket.close();

@@ -1,14 +1,32 @@
 import 'dart:typed_data';
 
 class ProtobufVarint32FrameDecoder {
-  Uint8List decode(Uint8List data) {
-    print("read data:$data");
-    MessageDataInfo messageInfo = _getMessageLength(data);
-    int headLength = messageInfo.headLength;
-    int bodyLength = messageInfo.messageLength;
-    int end = headLength + bodyLength;
-    Uint8List messageData = data.sublist(messageInfo.headLength, end);
-    return messageData;
+  List<Uint8List> decode(Uint8List data) {
+    print("read start !");
+    print("read data length:${data.length}");
+    List<Uint8List> packages = List<Uint8List>();
+    Uint8List restData = data;
+    while (restData != null) {
+      //拆包
+      MessageDataInfo messageInfo = _getMessageLength(restData);
+      print("read MessageDataInfo: $messageInfo");
+      int subStart = messageInfo.headLength;
+      int subEnd = messageInfo.messageLength + messageInfo.headLength;
+      if (subEnd == restData.length) {
+        Uint8List pack = data.sublist(subStart, subEnd);
+        packages.add(pack);
+        restData = null;
+      } else if (subEnd < restData.length) {
+        Uint8List pack = data.sublist(subStart, subEnd);
+        restData = restData.sublist(subEnd);
+        packages.add(pack);
+      } else {
+        restData = null;
+      }
+    }
+    print("read packages length: ${packages.length}");
+    print("read end !");
+    return packages;
   }
 
   //获取 head 占位数，和 message 占位数
@@ -46,7 +64,6 @@ class ProtobufVarint32FrameDecoder {
       }
     }
     int headLength = index + 1;
-    print("_getMessageLength head length:$headLength");
     return MessageDataInfo(headLength, result);
   }
 }
@@ -56,4 +73,9 @@ class MessageDataInfo {
   int messageLength;
 
   MessageDataInfo(this.headLength, this.messageLength);
+
+  @override
+  String toString() {
+    return 'MessageDataInfo{headLength: $headLength, messageLength: $messageLength}';
+  }
 }
