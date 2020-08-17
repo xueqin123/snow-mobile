@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:imlib/imlib.dart';
 import 'package:snowclient/data/model/contact_model.dart';
 import 'package:snowclient/data/model/login_model.dart';
 import 'package:snowclient/data/model/snow_model.dart';
@@ -21,7 +22,7 @@ class ModelManager {
   void init() {
     ContactModel contactModel = ContactModel();
     register(contactModel.runtimeType.toString(), ContactModel());
-    print("ModelManager init success");
+    SLog.i("ModelManager init success");
   }
 
   void register(String type, SnowModel model) {

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:imlib/imlib.dart';
 import 'package:snowclient/data/entity/login_user_info.dart';
 import 'package:snowclient/data/model/login_model.dart';
 import 'package:snowclient/data/model/model_manager.dart';
@@ -34,11 +35,11 @@ class LoginViewModel extends BaseViewModel with ChangeNotifier {
 
   //账号密码登录
   void loginByPassWord() async {
-    print("login()");
+    SLog.i("login()");
     _updateLoginStatus(LoginStatus.LOGGING);
     String phoneNumber = _phoneController.text;
     String password = _passwordController.text;
-    print("phoneNumber: $phoneNumber password: $password");
+    SLog.i("phoneNumber: $phoneNumber password: $password");
     if (!CommonUtils.isChinaPhoneLegal(phoneNumber) || password == null || password.isEmpty) {
       _updateLoginStatus(LoginStatus.LOGIN_FAILED);
       _toastController.sink.add(S.current.loginError);
@@ -62,7 +63,7 @@ class LoginViewModel extends BaseViewModel with ChangeNotifier {
 
   void _updateLoginStatus(LoginStatus state) {
     _loginStatus = state;
-    print("_updateLoginStatus() _loginStatus: $_loginStatus");
+    SLog.i("_updateLoginStatus() _loginStatus: $_loginStatus");
     notifyListeners();
   }
 

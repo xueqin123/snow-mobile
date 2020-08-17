@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
+import 'package:imlib/utils/s_log.dart';
 
 class HostHelper {
   static const String _SOCKET_REQUEST = "http://172.24.63.4:8010/snow/admin/server/socket";
@@ -24,7 +23,7 @@ class HostHelper {
         }
       }
     }catch(e){
-      print("getHost e:$e");
+      SLog.i("getHost e:$e");
     }
 
     return null;

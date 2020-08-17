@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:imlib/imlib.dart';
 import 'package:snowclient/data/db/dao/dao_manager.dart';
 import 'package:snowclient/data/db/dao/user_dao.dart';
 import 'package:snowclient/data/entity/user_entity.dart';
@@ -52,7 +53,7 @@ class ContactModel extends SnowModel {
 
   _postStreamData() {
     _notifierList.removeWhere((element) => element.streamController.isClosed);
-    print("ContactModel _notifyChange() rest of controller size: ${_notifierList.length}");
+    SLog.i("ContactModel _notifyChange() rest of controller size: ${_notifierList.length}");
     _notifierList.forEach((element) {
       element.post();
     });

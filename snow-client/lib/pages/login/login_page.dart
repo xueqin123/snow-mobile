@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:imlib/imlib.dart';
 import 'package:provider/provider.dart';
 import 'package:snowclient/generated/l10n.dart';
 import 'package:snowclient/pages/home/home_page.dart';
@@ -9,7 +10,7 @@ import 'package:snowclient/pages/login/login_view_model.dart';
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("LoginPage build()");
+    SLog.i("LoginPage build()");
     LoginViewModel _loginViewModel = LoginViewModel();
     _loginViewModel.getLoginUserInfoStream().listen((event) {
       _toHomePage(context);
@@ -42,25 +43,25 @@ class LoginState extends State<LoginStatefulPage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    print("initState");
+    SLog.i("initState");
     WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    print("didChangeDependencies");
+    SLog.i("didChangeDependencies");
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    print("didChangeAppLifecycleState state");
+    SLog.i("didChangeAppLifecycleState state");
   }
 
   @override
   void dispose() {
-    print("dispose");
+    SLog.i("dispose");
     _loginViewModel.close();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
@@ -68,7 +69,7 @@ class LoginState extends State<LoginStatefulPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    print("LoginState build()");
+    SLog.i("LoginState build()");
     _loginViewModel = Provider.of<LoginViewModel>(context);
     return Scaffold(
       body: Container(

@@ -1,3 +1,4 @@
+import 'package:imlib/imlib.dart';
 import 'package:snowclient/data/db/dao/user_dao.dart';
 import 'package:snowclient/data/db/db_helper.dart';
 import 'package:sqflite/sqflite.dart';
@@ -16,7 +17,7 @@ class DaoManager {
     _daoMaps = Map();
     Database database = await DBHelper.getInstance().openDB(uid);
     _initDao(database);
-    print("DaoManager init success");
+    SLog.i("DaoManager init success");
   }
 
   _initDao(Database database) {

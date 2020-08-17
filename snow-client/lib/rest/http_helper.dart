@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:imlib/imlib.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:snowclient/generated/json/base/json_convert_content.dart';
 
@@ -19,7 +20,7 @@ class HttpHelper {
   Future init() async {
     CookieJar cookieJar = await _getCookieJar();
     dio.interceptors.add(CookieManager(cookieJar));
-    print("HttpHelper init success");
+    SLog.i("HttpHelper init success");
   }
 
   Future<T> post<T>(String path, Map<String, dynamic> params, Map<String, dynamic> bodyJson) async {
@@ -46,13 +47,13 @@ class HttpHelper {
           T t = JsonConvert.fromJsonAsT<T>(data);
           return t;
         } else {
-          print("http request response: $response ");
+          SLog.i("http request response: $response ");
         }
       } else {
-        print("http request failed response: $response ");
+        SLog.i("http request failed response: $response ");
       }
     } catch (e) {
-      print("http request failed reason: Exception: $e");
+      SLog.i("http request failed reason: Exception: $e");
     }
     return null;
   }

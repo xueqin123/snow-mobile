@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:imlib/imlib.dart';
 import 'package:provider/provider.dart';
 import 'package:snowclient/pages/chat/chat_page.dart';
 import 'package:snowclient/pages/contacts/contact_page.dart';
@@ -14,7 +15,7 @@ import '../../generated/l10n.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("HomePage build");
+    SLog.i("HomePage build");
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -137,16 +138,16 @@ class _HomeStatefulPageState extends State<HomeStatefulPage> with SingleTickerPr
   }
 
   void _onSearchClick() {
-    print("onSearch click");
+    SLog.i("onSearch click");
   }
 
   void _onMoreSelect(int index) {
     switch (index) {
       case 0:
-        print("发起群聊 click");
+        SLog.i("发起群聊 click");
         break;
       case 1:
-        print("添加好友 click");
+        SLog.i("添加好友 click");
         break;
       default:
         break;

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:imlib/imlib.dart';
 import 'package:provider/provider.dart';
 import 'package:snowclient/data/entity/user_entity.dart';
 import 'package:snowclient/pages/contacts/profile/contact_profile_page.dart';
@@ -9,7 +10,7 @@ import 'contact_view_model.dart';
 class ContactPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("ContactPage build");
+    SLog.i("ContactPage build");
     ContactViewModel _contactViewModel = ContactViewModel();
     return MultiProvider(
       providers: [
@@ -39,7 +40,7 @@ class ContactState extends State<ContactStatefulPage> {
   @override
   Widget build(BuildContext context) {
     userList = Provider.of<List<UserEntity>>(context);
-    print("ContactState build user size: ${userList.length}");
+    SLog.i("ContactState build user size: ${userList.length}");
     return ListView.builder(
       itemBuilder: _buildItem,
       itemCount: userList.length,
@@ -81,7 +82,7 @@ class ContactState extends State<ContactStatefulPage> {
   }
 
   void _onItemClick(int index) {
-    print("onClick index = $index");
+    SLog.i("onClick index = $index");
     String uid = userList[index].uid;
     Navigator.push(context, MaterialPageRoute(builder: (context) => ContactProfilePage(uid)));
   }

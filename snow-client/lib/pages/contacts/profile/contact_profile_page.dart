@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:imlib/imlib.dart';
 import 'package:provider/provider.dart';
 import 'package:snowclient/data/entity/user_entity.dart';
 import 'package:snowclient/generated/l10n.dart';
@@ -12,7 +13,7 @@ class ContactProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("uid = $uid");
+    SLog.i("uid = $uid");
     return StreamProvider.controller(
       create: (_) => ContactProfileViewModel().getUserEntityStream(uid),
       child: ContactProfileStatefulPage(),
@@ -33,7 +34,7 @@ class ContactProfileState extends State<ContactProfileStatefulPage> {
   @override
   Widget build(BuildContext context) {
     userEntity = Provider.of<UserEntity>(context);
-    print("ContactProfileStatefulPage build userEntity = $userEntity");
+    SLog.i("ContactProfileStatefulPage build userEntity = $userEntity");
     String name = userEntity == null ? "" : userEntity.name;
     String phone = userEntity == null ? "" : userEntity.username;
     String uid = userEntity == null ? "" : userEntity.uid;
@@ -146,6 +147,6 @@ class ContactProfileState extends State<ContactProfileStatefulPage> {
   }
 
   void _onStartMessagePageClick(String uid) {
-    print("_onStartMessagePageClick() $uid");
+    SLog.i("_onStartMessagePageClick() $uid");
   }
 }

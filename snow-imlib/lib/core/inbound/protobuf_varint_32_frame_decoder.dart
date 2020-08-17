@@ -1,15 +1,17 @@
 import 'dart:typed_data';
 
+import 'package:imlib/utils/s_log.dart';
+
 class ProtobufVarint32FrameDecoder {
   List<Uint8List> decode(Uint8List data) {
-    print("read start !");
-    print("read data length:${data.length}");
+    SLog.i("read start !");
+    SLog.i("read data length:${data.length}");
     List<Uint8List> packages = List<Uint8List>();
     Uint8List restData = data;
     while (restData != null) {
       //拆包
       MessageDataInfo messageInfo = _getMessageLength(restData);
-      print("read MessageDataInfo: $messageInfo");
+      SLog.i("read MessageDataInfo: $messageInfo");
       int subStart = messageInfo.headLength;
       int subEnd = messageInfo.messageLength + messageInfo.headLength;
       if (subEnd == restData.length) {
@@ -24,8 +26,8 @@ class ProtobufVarint32FrameDecoder {
         restData = null;
       }
     }
-    print("read packages length: ${packages.length}");
-    print("read end !");
+    SLog.i("read packages length: ${packages.length}");
+    SLog.i("read end !");
     return packages;
   }
 

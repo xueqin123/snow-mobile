@@ -32,7 +32,7 @@ class LoginModel extends SnowModel {
 
   //缓存登录相关逻辑
   Future<LoginUserInfo> loginByCache() async {
-    print("SplashPage loginByCache");
+    SLog.i("SplashPage loginByCache");
     await HttpManager.getInstance().init();
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String token = preferences.get(Constants.PREFERENCE_TOKEN);
@@ -48,7 +48,7 @@ class LoginModel extends SnowModel {
 
   Future _initApp(String uid, String token) async {
     SnowIMContext.getInstance().getController().stream.listen((event) {
-      print("connect changed event:$event");
+      SLog.i("connect changed event:$event");
     });
     SnowIMContext.getInstance().connect(token,uid);
     await DaoManager.getInstance().init(uid);

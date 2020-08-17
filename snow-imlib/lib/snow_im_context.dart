@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:imlib/core/inbound/auth_handler.dart';
 import 'package:imlib/core/inbound/inbound_handler.dart';
 import 'package:imlib/proto/message.pb.dart';
 import 'package:imlib/rest/rest.dart';
+import 'package:imlib/utils/s_log.dart';
 import 'package:imlib/utils/snow_im_utils.dart';
 
 import 'core/inbound/heart_beat_handler.dart';
@@ -50,7 +50,7 @@ class SnowIMContext {
     _connectStreamController.sink.add(ConnectStatus.IDLE);
     _connectStreamController.sink.add(ConnectStatus.CONNECTING);
     HostInfo hostInfo = await HostHelper().getHost(token);
-    print("SnowIMClient token:{$token} connect host: {$hostInfo}");
+    SLog.i("SnowIMClient token:{$token} connect host: {$hostInfo}");
     if (hostInfo != null) {
       await _connect(hostInfo.host, hostInfo.port);
       _sendLogin(token, uid);
@@ -79,22 +79,22 @@ class SnowIMContext {
   }
 
   _onReceiveData(SnowMessage snowMessage) {
-    print("_onReceiveData snowMessage:${snowMessage.type.name}");
+    SLog.i("_onReceiveData snowMessage:${snowMessage.type.name}");
     head.handle(this, snowMessage);
   }
 
   _onDone() {
-    print("onDone()");
+    SLog.i("onDone()");
     _connectStreamController.sink.add(ConnectStatus.DISCONNECTED);
   }
 
   _onError(e) {
-    print("onError e:$e");
+    SLog.i("onError e:$e");
     _connectStreamController.sink.add(ConnectStatus.DISCONNECTED);
   }
 
   write(SnowMessage snowMessage) {
-    print("write message ${snowMessage.type.name}");
+    SLog.i("write message ${snowMessage.type.name}");
     Uint8List messageData = snowMessageEncoder.encode(snowMessage);
     Uint8List totalData = _protobufVarint32LengthFieldPrepender.encode(messageData);
     _socket.add(totalData);

@@ -1,3 +1,4 @@
+import 'package:imlib/imlib.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -39,20 +40,20 @@ class DBHelper {
   Future<Database> openDB(String uid) async {
     String dbPath = await getDatabasesPath();
     String path = join(dbPath, uid+".db");
-    print("open db: $path");
+    SLog.i("open db: $path");
     Database db = await openDatabase(path, version: _version, onUpgrade: _onUpgrade, onCreate: _onCreate);
     return db;
   }
 
   _onCreate(Database db, int version) async {
-    print("DBHelper _onCreat() version: $_version");
+    SLog.i("DBHelper _onCreat() version: $_version");
     await db.execute(_CREATE_USER_TABLE);
 //    await db.execute(_CREATE_GROUP_TABLE);
     db.close();
-    print("DBHelper _onCreat() success: $_version");
+    SLog.i("DBHelper _onCreat() success: $_version");
   }
 
   _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    print("DB Helper _onUpgrade() oldVersion = $oldVersion newVersion = $newVersion");
+    SLog.i("DB Helper _onUpgrade() oldVersion = $oldVersion newVersion = $newVersion");
   }
 }
