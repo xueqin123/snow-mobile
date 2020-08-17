@@ -2,6 +2,8 @@ import 'package:imlib/core/inbound/inbound_handler.dart';
 import 'package:imlib/imlib.dart';
 import 'package:imlib/proto/message.pb.dart';
 
+import '../snow_im_context.dart';
+
 class HeardBeatHandler extends InboundHandler {
   @override
   bool onRead(SnowIMContext context, SnowMessage message) {

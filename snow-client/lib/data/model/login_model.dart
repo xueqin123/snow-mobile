@@ -23,7 +23,7 @@ class LoginModel extends SnowModel {
       preferences.setString(Constants.PREFERENCE_TOKEN, token);
       preferences.setString(Constants.PREFERENCE_LOGIN_UID, currentUid);
       preferences.setString(Constants.PREFERENCE_LOGIN_TIME, CommonUtils.currentTime().toString());
-      await _initApp(currentUid,token);
+      await _initApp(currentUid, token);
       return LoginUserInfo(currentUid, token);
     } else {
       return null;
@@ -47,10 +47,10 @@ class LoginModel extends SnowModel {
   }
 
   Future _initApp(String uid, String token) async {
-    SnowIMContext.getInstance().getController().stream.listen((event) {
+    SnowIMLib.getConnectStatusStream().stream.listen((event) {
       SLog.i("connect changed event:$event");
     });
-    SnowIMContext.getInstance().connect(token,uid);
+    SnowIMLib.connect(token, uid);
     await DaoManager.getInstance().init(uid);
     ModelManager.getInstance().init();
     await ModelManager.getInstance().getModel<ContactModel>().syncUserData();

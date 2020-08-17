@@ -9,12 +9,12 @@ import 'package:imlib/rest/rest.dart';
 import 'package:imlib/utils/s_log.dart';
 import 'package:imlib/utils/snow_im_utils.dart';
 
-import 'core/inbound/heart_beat_handler.dart';
-import 'core/inbound/inbound_chain.dart';
-import 'core/inbound/protobuf_varint_32_frame_decoder.dart';
-import 'core/inbound/snow_message_decoder.dart';
-import 'core/outbound/protobuf_varint_32_length_field_prepender.dart';
-import 'core/outbound/snow_message_encoder.dart';
+import 'inbound/heart_beat_handler.dart';
+import 'inbound/inbound_chain.dart';
+import 'inbound/protobuf_varint_32_frame_decoder.dart';
+import 'inbound/snow_message_decoder.dart';
+import 'outbound/protobuf_varint_32_length_field_prepender.dart';
+import 'outbound/snow_message_encoder.dart';
 
 class SnowIMContext {
   static SnowIMContext _instance;
@@ -42,7 +42,7 @@ class SnowIMContext {
     return _instance;
   }
 
-  StreamController<ConnectStatus> getController() {
+  StreamController<ConnectStatus> getConnectStatusController() {
     return _connectStreamController;
   }
 

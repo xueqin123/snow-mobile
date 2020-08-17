@@ -6,7 +6,7 @@ class ProtobufVarint32LengthFieldPrepender {
 
 
   Uint8List encode(Uint8List messageData) {
-    SLog.i("write start !");
+    SLog.v("write start !");
     int messageLength = messageData.length;
     int headLength = _computerRawVarint32Size(messageLength);
     Uint8List head = Uint8List(headLength);
@@ -14,8 +14,8 @@ class ProtobufVarint32LengthFieldPrepender {
     Uint8List total = Uint8List(head.length + messageLength);
     List.copyRange(total, 0, head);
     List.copyRange(total, head.length, messageData);
-    SLog.i("write data headLength: ${head.length} bodyLength:$messageLength totalLength:${total.length} ");
-    SLog.i("write end !");
+    SLog.v("write data headLength: ${head.length} bodyLength:$messageLength totalLength:${total.length} ");
+    SLog.v("write end !");
     return total;
   }
 

@@ -4,14 +4,14 @@ import 'package:imlib/utils/s_log.dart';
 
 class ProtobufVarint32FrameDecoder {
   List<Uint8List> decode(Uint8List data) {
-    SLog.i("read start !");
-    SLog.i("read data length:${data.length}");
+    SLog.v("read start !");
+    SLog.v("read data length:${data.length}");
     List<Uint8List> packages = List<Uint8List>();
     Uint8List restData = data;
     while (restData != null) {
       //拆包
       MessageDataInfo messageInfo = _getMessageLength(restData);
-      SLog.i("read MessageDataInfo: $messageInfo");
+      SLog.v("read MessageDataInfo: $messageInfo");
       int subStart = messageInfo.headLength;
       int subEnd = messageInfo.messageLength + messageInfo.headLength;
       if (subEnd == restData.length) {
@@ -26,8 +26,8 @@ class ProtobufVarint32FrameDecoder {
         restData = null;
       }
     }
-    SLog.i("read packages length: ${packages.length}");
-    SLog.i("read end !");
+    SLog.v("read packages length: ${packages.length}");
+    SLog.v("read end !");
     return packages;
   }
 

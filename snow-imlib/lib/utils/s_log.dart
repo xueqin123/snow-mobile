@@ -1,8 +1,14 @@
 class SLog {
-  static bool isOpen = false;
+  static int leve = 1;
 
   static i(String msg) {
-    if (isOpen) {
+    if (leve < 2) {
+      print("SLog_$msg");
+    }
+  }
+
+  static v(String msg) {
+    if (leve < 1) {
       print("SLog_$msg");
     }
   }

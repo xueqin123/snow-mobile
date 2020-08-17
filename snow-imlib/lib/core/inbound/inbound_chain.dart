@@ -1,6 +1,7 @@
 import 'package:imlib/imlib.dart';
 import 'package:imlib/proto/message.pb.dart';
 
+import '../snow_im_context.dart';
 import 'inbound_handler.dart';
 
 class InboundChain {
