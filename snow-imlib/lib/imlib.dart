@@ -1,6 +1,6 @@
 library imlib;
 
-export 'snow_im_client.dart';
+export 'snow_im_context.dart';
 
 
 

@@ -47,10 +47,10 @@ class LoginModel extends SnowModel {
   }
 
   Future _initApp(String uid, String token) async {
-    SnowIMClient.getInstance().getController().stream.listen((event) {
+    SnowIMContext.getInstance().getController().stream.listen((event) {
       print("connect changed event:$event");
     });
-    SnowIMClient.getInstance().connect(token);
+    SnowIMContext.getInstance().connect(token,uid);
     await DaoManager.getInstance().init(uid);
     ModelManager.getInstance().init();
     await ModelManager.getInstance().getModel<ContactModel>().syncUserData();
