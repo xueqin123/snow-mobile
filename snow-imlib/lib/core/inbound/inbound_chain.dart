@@ -1,4 +1,3 @@
-import 'package:imlib/imlib.dart';
 import 'package:imlib/proto/message.pb.dart';
 
 import '../snow_im_context.dart';
@@ -9,7 +8,7 @@ class InboundChain {
   InboundHandler _inboundHandler;
 
   void handle(SnowIMContext context, SnowMessage snowMessage) {
-    if (!_inboundHandler.onRead(context, snowMessage)) {
+    if (!_inboundHandler.onRead(context, snowMessage) && next != null) {
       next.handle(context, snowMessage);
     }
   }

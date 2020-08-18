@@ -1,8 +1,8 @@
 import 'package:imlib/core/inbound/inbound_handler.dart';
-import 'package:imlib/imlib.dart';
 import 'package:imlib/proto/message.pb.dart';
 
-import '../snow_im_context.dart';
+import '../../snow_im_context.dart';
+
 
 class HeardBeatHandler extends InboundHandler {
   @override
@@ -10,7 +10,7 @@ class HeardBeatHandler extends InboundHandler {
     if (message.type == SnowMessage_Type.HeartBeat) {
       HeartBeat heartBeat = message.heartBeat;
       if (heartBeat.heartBeatType == HeartBeatType.PING) {
-        context.write(_buildPong(message));
+        context.sendSnowMessage(_buildPong(message));
       }
       return true;
     }

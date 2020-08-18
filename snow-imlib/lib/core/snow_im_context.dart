@@ -1,37 +1,49 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:imlib/core/inbound/auth_handler.dart';
+import 'package:fixnum/fixnum.dart';
 import 'package:imlib/core/inbound/inbound_handler.dart';
+import 'package:imlib/core/outbound/outbound_encoder.dart';
+import 'package:imlib/core/outbound/outbound_encoder_chain.dart';
+import 'package:imlib/imlib.dart';
+import 'package:imlib/message/message_content.dart';
 import 'package:imlib/proto/message.pb.dart';
 import 'package:imlib/rest/rest.dart';
 import 'package:imlib/utils/s_log.dart';
 import 'package:imlib/utils/snow_im_utils.dart';
 
-import 'inbound/heart_beat_handler.dart';
+import 'inbound/handler/auth_handler.dart';
+import 'inbound/handler/heart_beat_handler.dart';
+import 'inbound/handler/message_ack_handler.dart';
+import 'inbound/handler/message_handler.dart';
 import 'inbound/inbound_chain.dart';
 import 'inbound/protobuf_varint_32_frame_decoder.dart';
 import 'inbound/snow_message_decoder.dart';
-import 'outbound/protobuf_varint_32_length_field_prepender.dart';
-import 'outbound/snow_message_encoder.dart';
+import 'outbound/encoder/custom_message_encoder.dart';
+import 'outbound/encoder/protobuf_varint_32_length_field_prepender.dart';
+import 'outbound/encoder/snow_message_encoder.dart';
 
 class SnowIMContext {
   static SnowIMContext _instance;
+  String selfUid;
 
   SnowIMContext._();
 
   Socket _socket;
 
-  InboundChain head;
-  InboundChain tail;
+  InboundChain _inHead;
+  InboundChain _inTail;
+  OutboundChain _outHead;
+  OutboundChain _outTail;
+  OutboundChain _outSnowHead;
 
   // ignore: close_sinks
   StreamController<ConnectStatus> _connectStreamController = StreamController();
   ProtobufVarint32FrameDecoder protobufVarint32FrameDecoder = ProtobufVarint32FrameDecoder();
-  ProtobufVarint32LengthFieldPrepender _protobufVarint32LengthFieldPrepender = ProtobufVarint32LengthFieldPrepender();
-  SnowMessageDecoder snowMessageDecoder = new SnowMessageDecoder();
-  SnowMessageEncoder snowMessageEncoder = new SnowMessageEncoder();
+  SnowMessageDecoder _snowMessageDecoder = new SnowMessageDecoder();
+  Map<Int64, SendBlock> _waitAckMap = LinkedHashMap();
 
   static SnowIMContext getInstance() {
     if (_instance == null) {
@@ -39,6 +51,12 @@ class SnowIMContext {
     }
     _instance.addInBoundHandler(AuthHandler());
     _instance.addInBoundHandler(HeardBeatHandler());
+    _instance.addInBoundHandler(MessageHandler());
+    _instance.addInBoundHandler(MessageAckHandler());
+
+    _instance.addOutBoundEncoder(CustomMessageEncoder());
+    _instance.addOutBoundEncoder(SnowMessageEncoder());
+    _instance.addOutBoundEncoder(ProtobufVarint32LengthFieldPrepender());
     return _instance;
   }
 
@@ -47,10 +65,11 @@ class SnowIMContext {
   }
 
   connect(String token, String uid) async {
+    selfUid = uid;
     _connectStreamController.sink.add(ConnectStatus.IDLE);
     _connectStreamController.sink.add(ConnectStatus.CONNECTING);
     HostInfo hostInfo = await HostHelper().getHost(token);
-    SLog.i("SnowIMClient token:{$token} connect host: {$hostInfo}");
+    SLog.i("SnowIMContext token:{$token} connect host: {$hostInfo}");
     if (hostInfo != null) {
       await _connect(hostInfo.host, hostInfo.port);
       _sendLogin(token, uid);
@@ -63,14 +82,10 @@ class SnowIMContext {
     _socket.listen((event) {
       List<Uint8List> packages = protobufVarint32FrameDecoder.decode(event);
       packages.forEach((element) {
-        _onReceiveData(snowMessageDecoder.decode(element));
+        _onReceiveData(_snowMessageDecoder.decode(element));
       });
-    }, onDone: _onDone, onError: _onError);
+    }, onDone: _onConnectDone, onError: _onConnectError);
   }
-
-  loginSuccess() {}
-
-  loginFailed(Code code, String msg) {}
 
   disConnect() {
     _socket.close();
@@ -80,44 +95,90 @@ class SnowIMContext {
 
   _onReceiveData(SnowMessage snowMessage) {
     SLog.i("_onReceiveData snowMessage:${snowMessage.type.name}");
-    head.handle(this, snowMessage);
+    _inHead.handle(this, snowMessage);
   }
 
-  _onDone() {
+  _onConnectDone() {
     SLog.i("onDone()");
     _connectStreamController.sink.add(ConnectStatus.DISCONNECTED);
   }
 
-  _onError(e) {
+  _onConnectError(e) {
     SLog.i("onError e:$e");
     _connectStreamController.sink.add(ConnectStatus.DISCONNECTED);
   }
 
-  write(SnowMessage snowMessage) {
-    SLog.i("write message ${snowMessage.type.name}");
-    Uint8List messageData = snowMessageEncoder.encode(snowMessage);
-    Uint8List totalData = _protobufVarint32LengthFieldPrepender.encode(messageData);
-    _socket.add(totalData);
+  _write(Uint8List data) {
+    _socket.add(data);
+  }
+
+  sendSnowMessage(SnowMessage snowMessage) {
+    SLog.i("sendSnowMessage: ${snowMessage.type.name}");
+    _write(_outSnowHead.encode(this, snowMessage));
+  }
+
+  sendCustomMessage(CustomMessage customMessage, SendBlock sendBlock) {
+    SLog.i("sendCustomMessage: ${customMessage.type}");
+    _write(_outHead.encode(this, customMessage));
   }
 
   addInBoundHandler(InboundHandler inboundHandler) {
     InboundChain chain = InboundChain(inboundHandler);
-    if (head == null) {
-      head = chain;
-      tail = chain;
+    if (_inHead == null) {
+      _inHead = chain;
+      _inTail = chain;
+    } else {
+      _inTail.next = chain;
+      _inTail = chain;
     }
-    tail.next = chain;
+  }
+
+  addOutBoundEncoder(OutboundEncoder outboundEncoder) {
+    OutboundChain chain = OutboundChain(outboundEncoder);
+    if (outboundEncoder is SnowMessageEncoder) {
+      _outSnowHead = chain;
+    }
+    if (_outHead == null) {
+      _outHead = chain;
+      _outTail = chain;
+    } else {
+      _outTail.next = chain;
+      _outTail = chain;
+    }
   }
 
   _sendLogin(String token, String uid) {
+    SLog.i("_sendLogin");
     Login login = Login();
     login.token = token;
-    login.id = SnowIMUtils.generateMessageId();
+    login.id = SnowIMUtils.currentTime();
     login.uid = uid;
     SnowMessage message = SnowMessage();
     message.type = SnowMessage_Type.Login;
     message.login = login;
-    write(message);
+    sendSnowMessage(message);
+  }
+
+  onLoginSuccess() {}
+
+  onLoginFailed(Code code, String msg) {}
+
+  addWaitAck(Int64 cid, SendBlock block) {
+    block(SendStatus.SENDING);
+    _waitAckMap[cid] = block;
+  }
+
+  onMessageAck(Int64 cid, Code code) {
+    SendBlock block = _waitAckMap[cid];
+    if (block == null) {
+      return;
+    }
+    if (code == Code.SUCCESS) {
+      block(SendStatus.SUCCESS);
+    } else {
+      block(SendStatus.FAILED);
+    }
+    _waitAckMap.remove(cid);
   }
 }
 
