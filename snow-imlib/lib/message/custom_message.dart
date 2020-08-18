@@ -8,6 +8,7 @@ abstract class CustomMessage {
   String groupId;
   ChatType chatType;
   int time;
+  Direction direction;
 
   Map<String, dynamic> encode();
 
@@ -18,3 +19,5 @@ enum ChatType {
   SINGLE,
   GROUP,
 }
+
+enum Direction { SEND, RECEIVE }

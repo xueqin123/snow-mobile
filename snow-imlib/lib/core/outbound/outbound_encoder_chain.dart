@@ -6,7 +6,7 @@ class OutboundChain {
   OutboundChain next;
   OutboundEncoder _outboundEncoder;
 
-  encode(SnowIMContext context, dynamic data) {
+  encode(SnowIMContext context, Object data) {
     var cur = _outboundEncoder.encode(context, data);
     if (next != null) {
       return next._outboundEncoder.encode(context, cur);

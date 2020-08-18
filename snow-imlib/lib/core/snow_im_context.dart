@@ -8,7 +8,7 @@ import 'package:imlib/core/inbound/inbound_handler.dart';
 import 'package:imlib/core/outbound/outbound_encoder.dart';
 import 'package:imlib/core/outbound/outbound_encoder_chain.dart';
 import 'package:imlib/imlib.dart';
-import 'package:imlib/message/message_content.dart';
+import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
 import 'package:imlib/rest/rest.dart';
 import 'package:imlib/utils/s_log.dart';
@@ -41,6 +41,11 @@ class SnowIMContext {
 
   // ignore: close_sinks
   StreamController<ConnectStatus> _connectStreamController = StreamController();
+
+  // ignore: close_sinks
+  StreamController<CustomMessage> _customMessageStreamController = StreamController.broadcast();
+
+
   ProtobufVarint32FrameDecoder protobufVarint32FrameDecoder = ProtobufVarint32FrameDecoder();
   SnowMessageDecoder _snowMessageDecoder = new SnowMessageDecoder();
   Map<Int64, SendBlock> _waitAckMap = LinkedHashMap();
@@ -62,6 +67,10 @@ class SnowIMContext {
 
   StreamController<ConnectStatus> getConnectStatusController() {
     return _connectStreamController;
+  }
+
+  StreamController<CustomMessage> getCustomMessageController() {
+    return _customMessageStreamController;
   }
 
   connect(String token, String uid) async {

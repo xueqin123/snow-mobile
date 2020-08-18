@@ -14,5 +14,6 @@
   "loginHttpError": "网络原因登录失败",
   "loginSuccess": "登录成功",
   "contactProfile": "联系人详情",
-  "contactProfileSendMessage": "发消息"
+  "contactProfileSendMessage": "发消息",
+  "messageSend": "发送"
 }

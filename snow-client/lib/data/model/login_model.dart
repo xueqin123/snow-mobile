@@ -1,10 +1,13 @@
 import 'package:imlib/imlib.dart';
+import 'package:imlib/message/message_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snowclient/data/db/dao/dao_manager.dart';
 import 'package:snowclient/data/entity/login_user_info.dart';
 import 'package:snowclient/data/entity/rsp_login_entity.dart';
 import 'package:snowclient/data/model/contact_model.dart';
 import 'package:snowclient/data/model/snow_model.dart';
+import 'package:snowclient/messages/text_message.dart';
+import 'package:snowclient/pages/message/message_widet_manager.dart';
 import 'package:snowclient/rest/http_manager.dart';
 import 'package:snowclient/rest/service/login_service.dart';
 import 'package:snowclient/uitls/CommonUtils.dart';
@@ -47,12 +50,21 @@ class LoginModel extends SnowModel {
   }
 
   Future _initApp(String uid, String token) async {
-    SnowIMLib.getConnectStatusStream().stream.listen((event) {
-      SLog.i("connect changed event:$event");
-    });
-    SnowIMLib.connect(token, uid);
+    _initIM(uid, token);
     await DaoManager.getInstance().init(uid);
     ModelManager.getInstance().init();
     await ModelManager.getInstance().getModel<ContactModel>().syncUserData();
+  }
+
+  _initIM(String uid, String token) {
+    SnowIMLib.registerMessage(TextMessage, buildEmptyTextMessage);
+    MessageWidgetManager.getInstance().registerMessageWidgetProvider(TextMessage, buildTextMessageWidget);
+    SnowIMLib.getConnectStatusStream().listen((event) {
+      SLog.i("connect changed event:$event");
+    });
+    SnowIMLib.getCustomMessageStream().listen((event) {
+      SLog.i("message event direction: ${event.direction} type : ${event.type}");
+    });
+    SnowIMLib.connect(token, uid);
   }
 }

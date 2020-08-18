@@ -14,6 +14,7 @@
   "loginHttpError": "login network failed",
   "loginSuccess": "login success",
   "contactProfile": "contact profile",
-  "contactProfileSendMessage": "send message"
+  "contactProfileSendMessage": "send message",
+  "messageSend": "send"
 
 }

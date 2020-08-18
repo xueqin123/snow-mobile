@@ -14,8 +14,8 @@ class MessageManager {
 
   Map<String, MessageProvider> _messageMap = Map();
 
-  registerMessageProvider(String messageType, MessageProvider messageProvider) {
-    _messageMap[messageType] = messageProvider;
+  registerMessageProvider(Type messageType, MessageProvider messageProvider) {
+    _messageMap[messageType.toString()] = messageProvider;
   }
 
   getMessageProvider(String type) {

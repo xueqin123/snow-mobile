@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginPassword" : MessageLookupByLibrary.simpleMessage("password"),
     "loginPhoneNumber" : MessageLookupByLibrary.simpleMessage("phone number"),
     "loginSuccess" : MessageLookupByLibrary.simpleMessage("login success"),
+    "messageSend" : MessageLookupByLibrary.simpleMessage("send"),
     "pageHomeTabContact" : MessageLookupByLibrary.simpleMessage("Contacts"),
     "pageHomeTabDiscover" : MessageLookupByLibrary.simpleMessage("Discover"),
     "pageHomeTabMessage" : MessageLookupByLibrary.simpleMessage("Message"),

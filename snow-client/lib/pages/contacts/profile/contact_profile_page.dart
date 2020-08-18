@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:imlib/imlib.dart';
+import 'package:imlib/message/custom_message.dart';
 import 'package:provider/provider.dart';
 import 'package:snowclient/data/entity/user_entity.dart';
 import 'package:snowclient/generated/l10n.dart';
 import 'package:snowclient/pages/contacts/profile/contact_profile_view_model.dart';
+import 'package:snowclient/pages/message/message_page.dart';
 
 class ContactProfilePage extends StatelessWidget {
   final String uid;
@@ -147,6 +149,6 @@ class ContactProfileState extends State<ContactProfileStatefulPage> {
   }
 
   void _onStartMessagePageClick(String uid) {
-    SLog.i("_onStartMessagePageClick() $uid");
+    Navigator.push(context, MaterialPageRoute(builder: (context) => MessagePage(uid,ChatType.SINGLE)));
   }
 }

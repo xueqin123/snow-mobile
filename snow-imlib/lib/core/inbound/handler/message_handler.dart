@@ -1,9 +1,11 @@
 import 'package:imlib/core/inbound/inbound_handler.dart';
 import 'package:imlib/core/snow_im_context.dart';
-import 'package:imlib/message/message_content.dart';
-import 'package:imlib/message/messsage_manager.dart';
+import 'package:imlib/message/custom_message.dart';
+import 'package:imlib/message/message_manager.dart';
 import 'package:imlib/proto/message.pb.dart';
 import 'dart:convert';
+
+import 'package:imlib/utils/snow_im_utils.dart';
 
 class MessageHandler extends InboundHandler {
   @override
@@ -11,15 +13,19 @@ class MessageHandler extends InboundHandler {
     if (snowMessage.type == SnowMessage_Type.UpDownMessage) {
       UpDownMessage upDownMessage = snowMessage.upDownMessage;
       MessageContent messageContent = upDownMessage.content;
-      CustomMessage emptyMessage = MessageManager.getInstance().getMessageProvider(messageContent.type)();
-      emptyMessage.id = upDownMessage.id.toInt();
-      emptyMessage.uid = messageContent.uid;
-      emptyMessage.type = messageContent.type;
-      emptyMessage.content = messageContent.content;
-      emptyMessage.conversationId = upDownMessage.conversationId;
-      emptyMessage.targetId = upDownMessage.targetUid;
-      emptyMessage.chatType = convertChatType(upDownMessage.conversationType);
-      emptyMessage.decode(jsonDecode(emptyMessage.content));
+      CustomMessage readyMessage = MessageManager.getInstance().getMessageProvider(messageContent.type)();
+      readyMessage.id = upDownMessage.id.toInt();
+      readyMessage.uid = messageContent.uid;
+      readyMessage.type = messageContent.type;
+      readyMessage.content = messageContent.content;
+      readyMessage.conversationId = upDownMessage.conversationId;
+      readyMessage.targetId = upDownMessage.targetUid;
+      readyMessage.chatType = convertChatType(upDownMessage.conversationType);
+      readyMessage.decode(jsonDecode(readyMessage.content));
+      readyMessage.direction = _getDirection(context, messageContent.uid);
+      context.getCustomMessageController().sink.add(readyMessage);
+      context.sendSnowMessage(_buildMessageAck(upDownMessage));
+      return true;
     }
     return false;
   }
@@ -35,5 +41,26 @@ class MessageHandler extends InboundHandler {
         break;
     }
     return chatType;
+  }
+
+  Direction _getDirection(SnowIMContext context, String sendId) {
+    if (sendId == context.selfUid) {
+      return Direction.SEND;
+    } else {
+      return Direction.RECEIVE;
+    }
+  }
+
+  SnowMessage _buildMessageAck(UpDownMessage upDownMessage) {
+    MessageAck messageAck = MessageAck();
+    messageAck.id = upDownMessage.id;
+    messageAck.cid = SnowIMUtils.currentTime();
+    messageAck.conversationId = upDownMessage.conversationId;
+    messageAck.code = Code.SUCCESS;
+    messageAck.time = SnowIMUtils.currentTime();
+    SnowMessage snowMessage = SnowMessage();
+    snowMessage.type = SnowMessage_Type.MessageAck;
+    snowMessage.messageAck = messageAck;
+    return snowMessage;
   }
 }

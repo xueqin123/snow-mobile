@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginPassword" : MessageLookupByLibrary.simpleMessage("密码"),
     "loginPhoneNumber" : MessageLookupByLibrary.simpleMessage("手机号"),
     "loginSuccess" : MessageLookupByLibrary.simpleMessage("登录成功"),
+    "messageSend" : MessageLookupByLibrary.simpleMessage("发送"),
     "pageHomeTabContact" : MessageLookupByLibrary.simpleMessage("联系人"),
     "pageHomeTabDiscover" : MessageLookupByLibrary.simpleMessage("发现"),
     "pageHomeTabMessage" : MessageLookupByLibrary.simpleMessage("信息"),
