@@ -11,14 +11,16 @@ import '../../snow_im_context.dart';
 class CustomMessageEncoder extends OutboundEncoder<CustomMessage> {
   @override
   encodeSend(SnowIMContext context, CustomMessage customMessage) {
+    customMessage.direction = Direction.SEND;
+    customMessage.time = SnowIMUtils.currentTime();
     SLog.v("CustomMessageEncoder encode()");
     MessageContent messageContent = MessageContent();
     messageContent.uid = context.selfUid;
     messageContent.content = jsonEncode(customMessage.encode());
-    messageContent.time = SnowIMUtils.currentTime();
+    messageContent.time = SnowIMUtils.generateCidByTime(customMessage.time);
     messageContent.type = customMessage.type;
     UpDownMessage upDownMessage = UpDownMessage();
-    upDownMessage.cid = SnowIMUtils.currentTime();
+    upDownMessage.cid = SnowIMUtils.generateCid();
     upDownMessage.fromUid = context.selfUid;
     upDownMessage.targetUid = customMessage.targetId;
     if (customMessage.groupId == null) {
@@ -38,7 +40,6 @@ class CustomMessageEncoder extends OutboundEncoder<CustomMessage> {
     snowMessage.type = SnowMessage_Type.UpDownMessage;
     snowMessage.upDownMessage = upDownMessage;
     context.getCustomMessageController().sink.add(customMessage);
-    customMessage.direction = Direction.SEND;
     if (next != null) {
       next.encodeSend(context, snowMessage);
     }

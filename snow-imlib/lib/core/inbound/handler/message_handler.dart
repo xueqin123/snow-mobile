@@ -54,10 +54,10 @@ class MessageHandler extends InboundHandler {
   SnowMessage _buildMessageAck(UpDownMessage upDownMessage) {
     MessageAck messageAck = MessageAck();
     messageAck.id = upDownMessage.id;
-    messageAck.cid = SnowIMUtils.currentTime();
+    messageAck.cid = SnowIMUtils.generateCid();
     messageAck.conversationId = upDownMessage.conversationId;
     messageAck.code = Code.SUCCESS;
-    messageAck.time = SnowIMUtils.currentTime();
+    messageAck.time = SnowIMUtils.generateCid();
     SnowMessage snowMessage = SnowMessage();
     snowMessage.type = SnowMessage_Type.MessageAck;
     snowMessage.messageAck = messageAck;

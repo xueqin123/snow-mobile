@@ -5,9 +5,7 @@ import 'package:snowclient/data/model/login_model.dart';
 import 'package:snowclient/data/model/model_manager.dart';
 import 'package:snowclient/pages/login/login_view_model.dart';
 
-import '../base_view_model.dart';
-
-class SplashViewModel extends BaseViewModel {
+class SplashViewModel {
   StreamController<LoginStatus> _cacheLoginController;
   Stream<LoginStatus> getLoginUserInfoStream() {
     _cacheLoginController = StreamController<LoginStatus>();
@@ -24,7 +22,6 @@ class SplashViewModel extends BaseViewModel {
     }
   }
 
-  @override
   void close() {
     _cacheLoginController.close();
   }

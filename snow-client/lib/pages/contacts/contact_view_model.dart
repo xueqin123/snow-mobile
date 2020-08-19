@@ -4,9 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:snowclient/data/entity/user_entity.dart';
 import 'package:snowclient/data/model/contact_model.dart';
 import 'package:snowclient/data/model/model_manager.dart';
-import 'package:snowclient/pages/base_view_model.dart';
 
-class ContactViewModel extends BaseViewModel with ChangeNotifier {
+class ContactViewModel  with ChangeNotifier {
   ContactModel contactModel;
 
   ContactViewModel() {

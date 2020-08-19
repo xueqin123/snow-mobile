@@ -13,7 +13,7 @@ class TextMessage extends CustomMessage {
 
   @override
   Map<String, dynamic> encode() {
-    Map<String,dynamic> json = Map();
+    Map<String, dynamic> json = Map();
     json["content"] = content;
     return json;
   }
@@ -21,10 +21,19 @@ class TextMessage extends CustomMessage {
 
 Widget buildTextMessageWidget(CustomMessage customMessage) {
   return Container(
-    height: 60,
-    child: Text(
-      customMessage.content,
-      style: TextStyle(fontSize: 20),
+    height: 35,
+    decoration: ShapeDecoration(
+        color: Colors.blue,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+        )),
+    child: Align(
+      alignment: Alignment.center,
+      child: Text(
+        customMessage.content,
+        style: TextStyle(color: Colors.white, fontSize: 20),
+        textAlign: TextAlign.center,
+      ),
     ),
   );
 }

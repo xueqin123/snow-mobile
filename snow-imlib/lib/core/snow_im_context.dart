@@ -44,7 +44,6 @@ class SnowIMContext {
   // ignore: close_sinks
   StreamController<CustomMessage> _customMessageStreamController = StreamController.broadcast();
 
-
   ProtobufVarint32FrameDecoder protobufVarint32FrameDecoder = ProtobufVarint32FrameDecoder();
   SnowMessageDecoder _snowMessageDecoder = new SnowMessageDecoder();
   Map<Int64, SendBlock> _waitAckMap = LinkedHashMap();
@@ -159,7 +158,7 @@ class SnowIMContext {
     SLog.i("_sendLogin");
     Login login = Login();
     login.token = token;
-    login.id = SnowIMUtils.currentTime();
+    login.id = SnowIMUtils.generateCid();
     login.uid = uid;
     SnowMessage message = SnowMessage();
     message.type = SnowMessage_Type.Login;
@@ -187,6 +186,14 @@ class SnowIMContext {
       block(SendStatus.FAILED);
     }
     _waitAckMap.remove(cid);
+  }
+
+  sendReqConversation() {
+    //todo
+  }
+
+  sendReqMessage(String conversationId) {
+    //todo
   }
 }
 

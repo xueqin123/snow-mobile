@@ -40,26 +40,18 @@ class MessageState extends State<MessageStatefulWidget> {
     viewModel = Provider.of<MessageViewModel>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(""),
+        title: Text(viewModel.chatName),
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) => _buildCustomMessageItemWidget(context, index),
-        itemCount: viewModel.data.length,
-      ),
-      bottomNavigationBar: Row(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Container(
-            width: 300,
-            child: TextField(
-              controller: viewModel.sendTextController,
-            ),
+          ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemBuilder: (context, index) => _buildCustomMessageItemWidget(context, index),
+            itemCount: viewModel.data.length,
           ),
-          Expanded(
-            child: RaisedButton(
-              child: Text(S.of(context).messageSend),
-              onPressed: viewModel.sendTextMessage,
-            ),
-          ),
+          _buildInputWidget(),
         ],
       ),
     );
@@ -68,6 +60,51 @@ class MessageState extends State<MessageStatefulWidget> {
   Widget _buildCustomMessageItemWidget(BuildContext context, int index) {
     SLog.i("data size:${viewModel.data.length}");
     String type = viewModel.data[index].type;
-    return MessageWidgetManager.getInstance().getMessageWidgetProvider(type)(viewModel.data[index]);
+    CustomMessage customMessage = viewModel.data[index];
+    MainAxisAlignment alignment = MainAxisAlignment.start;
+    if (customMessage.direction == Direction.SEND) {
+      alignment = MainAxisAlignment.end;
+    }
+    return Container(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(mainAxisAlignment: alignment, children: [MessageWidgetManager.getInstance().getMessageWidgetProvider(customMessage.type)(customMessage)]),
+    );
+  }
+
+  Widget _buildInputWidget() {
+    return Row(
+      children: [
+        Container(
+          width: 300,
+          height: 35,
+          child: TextField(
+            decoration: InputDecoration(border: OutlineInputBorder()),
+            controller: viewModel.sendTextController,
+            textAlign: TextAlign.left,
+          ),
+        ),
+        Expanded(
+          child: GestureDetector(
+            onTap: () => viewModel.sendTextMessage(),
+            child: Container(
+              height: 35,
+              decoration: ShapeDecoration(
+                  color: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  )),
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  S.of(context).messageSend,
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

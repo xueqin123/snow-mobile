@@ -1,5 +1,5 @@
 class SLog {
-  static int _leve = 0;
+  static int _leve = 1;
 
   static i(String msg) {
     if (_leve < 2) {
