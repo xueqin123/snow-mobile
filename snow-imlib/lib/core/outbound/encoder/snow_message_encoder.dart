@@ -5,11 +5,14 @@ import 'package:imlib/core/snow_im_context.dart';
 import 'package:imlib/proto/message.pb.dart';
 import 'package:imlib/utils/s_log.dart';
 
-class SnowMessageEncoder extends OutboundEncoder<SnowMessage, Uint8List> {
+class SnowMessageEncoder extends OutboundEncoder<SnowMessage> {
   @override
-  Uint8List encode(SnowIMContext context, SnowMessage data) {
-    SLog.v("SnowMessageEncoder encode()");
+  encodeSend(SnowIMContext context, SnowMessage data) {
+    SLog.v("SnowMessageEncoder encode start!");
     Uint8List sendBody = data.writeToBuffer();
-    return sendBody;
+    SLog.v("SnowMessageEncoder encode end!");
+    if (next != null) {
+      next.encodeSend(context, sendBody);
+    }
   }
 }

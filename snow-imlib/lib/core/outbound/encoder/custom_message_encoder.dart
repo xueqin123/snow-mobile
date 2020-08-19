@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:imlib/core/outbound/outbound_encoder.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
@@ -8,13 +6,13 @@ import 'package:imlib/utils/snow_im_utils.dart';
 
 import '../../snow_im_context.dart';
 
-class CustomMessageEncoder extends OutboundEncoder<CustomMessage, SnowMessage> {
+class CustomMessageEncoder extends OutboundEncoder<CustomMessage> {
   @override
-  SnowMessage encode(SnowIMContext context, CustomMessage customMessage) {
+  encodeSend(SnowIMContext context, CustomMessage customMessage) {
     SLog.v("CustomMessageEncoder encode()");
     MessageContent messageContent = MessageContent();
     messageContent.uid = context.selfUid;
-    messageContent.content = jsonEncode(customMessage.encode());
+    messageContent.content = customMessage.encode().toString();
     messageContent.time = SnowIMUtils.currentTime();
     UpDownMessage upDownMessage = UpDownMessage();
     upDownMessage.cid = SnowIMUtils.currentTime();
@@ -27,7 +25,7 @@ class CustomMessageEncoder extends OutboundEncoder<CustomMessage, SnowMessage> {
     }
     if (customMessage.conversationId == null) {
       upDownMessage.conversationId = "";
-    }else{
+    } else {
       upDownMessage.conversationId = customMessage.conversationId;
     }
     upDownMessage.conversationType = _convertMessageType(customMessage.chatType);
@@ -36,9 +34,11 @@ class CustomMessageEncoder extends OutboundEncoder<CustomMessage, SnowMessage> {
     SnowMessage snowMessage = SnowMessage();
     snowMessage.type = SnowMessage_Type.UpDownMessage;
     snowMessage.upDownMessage = upDownMessage;
-    customMessage.direction = Direction.SEND;
     context.getCustomMessageController().sink.add(customMessage);
-    return snowMessage;
+    customMessage.direction = Direction.SEND;
+    if (next != null) {
+      next.encodeSend(context, snowMessage);
+    }
   }
 
   ConversationType _convertMessageType(ChatType chatType) {

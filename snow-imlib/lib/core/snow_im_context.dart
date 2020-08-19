@@ -6,7 +6,6 @@ import 'dart:typed_data';
 import 'package:fixnum/fixnum.dart';
 import 'package:imlib/core/inbound/inbound_handler.dart';
 import 'package:imlib/core/outbound/outbound_encoder.dart';
-import 'package:imlib/core/outbound/outbound_encoder_chain.dart';
 import 'package:imlib/imlib.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
@@ -35,9 +34,9 @@ class SnowIMContext {
 
   InboundChain _inHead;
   InboundChain _inTail;
-  OutboundChain _outHead;
-  OutboundChain _outTail;
-  OutboundChain _outSnowHead;
+  OutboundEncoder _outHead;
+  OutboundEncoder _outTail;
+  OutboundEncoder _outSnowHead;
 
   // ignore: close_sinks
   StreamController<ConnectStatus> _connectStreamController = StreamController();
@@ -117,18 +116,18 @@ class SnowIMContext {
     _connectStreamController.sink.add(ConnectStatus.DISCONNECTED);
   }
 
-  _write(Uint8List data) {
+  write(Uint8List data) {
     _socket.add(data);
   }
 
   sendSnowMessage(SnowMessage snowMessage) {
     SLog.i("sendSnowMessage: ${snowMessage.type.name}");
-    _write(_outSnowHead.encode(this, snowMessage));
+    _outSnowHead.encodeSend(this, snowMessage);
   }
 
   sendCustomMessage(CustomMessage customMessage, SendBlock sendBlock) {
     SLog.i("sendCustomMessage: ${customMessage.type}");
-    _write(_outHead.encode(this, customMessage));
+    _outHead.encodeSend(this, customMessage);
   }
 
   addInBoundHandler(InboundHandler inboundHandler) {
@@ -143,16 +142,15 @@ class SnowIMContext {
   }
 
   addOutBoundEncoder(OutboundEncoder outboundEncoder) {
-    OutboundChain chain = OutboundChain(outboundEncoder);
     if (outboundEncoder is SnowMessageEncoder) {
-      _outSnowHead = chain;
+      _outSnowHead = outboundEncoder;
     }
     if (_outHead == null) {
-      _outHead = chain;
-      _outTail = chain;
+      _outHead = outboundEncoder;
+      _outTail = outboundEncoder;
     } else {
-      _outTail.next = chain;
-      _outTail = chain;
+      _outTail.next = outboundEncoder;
+      _outTail = outboundEncoder;
     }
   }
 
