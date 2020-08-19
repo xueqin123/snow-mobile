@@ -23,15 +23,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="585fec4f-1b97-44b1-a6bf-d1c155f854d2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/snow-client/lib/pages/chat/chat_view_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snow-imlib/lib/core/inbound/handler/conversation_ack_handler.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snow-imlib/lib/core/inbound/handler/history_message_handler.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snow-imlib/lib/data/db/dao/snow_im_conversation_dao.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snow-imlib/lib/data/db/dao/snow_im_dao.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snow-imlib/lib/data/db/dao/snow_im_dao_manager.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snow-imlib/lib/data/db/dao/snow_im_message_dao.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snow-imlib/lib/data/db/entity/conversation_entity.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snow-imlib/lib/data/db/model/conversation_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snow-imlib/lib/data/db/model/model_manager.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snow-imlib/lib/data/db/model/snow_im_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snow-imlib/lib/data/db/snow_im_db_helper.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/snow-mobile.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/snow-mobile.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snow-client/lib/rest/http_helper.dart" beforeDir="false" afterPath="$PROJECT_DIR$/snow-client/lib/rest/http_helper.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snow-imlib/lib/core/outbound/encoder/custom_message_encoder.dart" beforeDir="false" afterPath="$PROJECT_DIR$/snow-imlib/lib/core/outbound/encoder/custom_message_encoder.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snow-imlib/lib/core/outbound/encoder/protobuf_varint_32_length_field_prepender.dart" beforeDir="false" afterPath="$PROJECT_DIR$/snow-imlib/lib/core/outbound/encoder/protobuf_varint_32_length_field_prepender.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snow-imlib/lib/core/outbound/encoder/snow_message_encoder.dart" beforeDir="false" afterPath="$PROJECT_DIR$/snow-imlib/lib/core/outbound/encoder/snow_message_encoder.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snow-imlib/lib/core/outbound/outbound_encoder.dart" beforeDir="false" afterPath="$PROJECT_DIR$/snow-imlib/lib/core/outbound/outbound_encoder.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snow-imlib/lib/core/outbound/outbound_encoder_chain.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/snow-client/lib/data/db/dao/user_dao.dart" beforeDir="false" afterPath="$PROJECT_DIR$/snow-client/lib/data/db/dao/user_dao.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snow-client/lib/data/model/contact_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/snow-client/lib/data/model/contact_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snow-client/lib/data/model/login_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/snow-client/lib/data/model/login_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snow-client/lib/data/model/model_manager.dart" beforeDir="false" afterPath="$PROJECT_DIR$/snow-client/lib/data/model/model_manager.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snow-client/lib/data/model/snow_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/snow-client/lib/data/model/base_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snow-client/lib/pages/chat/chat_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/snow-client/lib/pages/chat/chat_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snow-imlib/lib/core/inbound/handler/message_handler.dart" beforeDir="false" afterPath="$PROJECT_DIR$/snow-imlib/lib/core/inbound/handler/message_handler.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snow-imlib/lib/core/inbound/inbound_handler.dart" beforeDir="false" afterPath="$PROJECT_DIR$/snow-imlib/lib/core/inbound/inbound_handler.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/snow-imlib/lib/core/snow_im_context.dart" beforeDir="false" afterPath="$PROJECT_DIR$/snow-imlib/lib/core/snow_im_context.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snow-imlib/lib/rest/rest.dart" beforeDir="false" afterPath="$PROJECT_DIR$/snow-imlib/lib/rest/rest.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snow-imlib/lib/imlib.dart" beforeDir="false" afterPath="$PROJECT_DIR$/snow-imlib/lib/imlib.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snow-imlib/lib/utils/s_log.dart" beforeDir="false" afterPath="$PROJECT_DIR$/snow-imlib/lib/utils/s_log.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snow-imlib/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/snow-imlib/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snow-imlib/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/snow-imlib/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +82,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/snow-imlib/lib/proto" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/snow-imlib/lib/data/db/model" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -72,15 +91,17 @@
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/snow-imlib/lib/data/db/model" />
+      <recent name="$PROJECT_DIR$/snow-imlib/lib/data/db" />
+      <recent name="$PROJECT_DIR$/snow-imlib/lib/proto" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/snow-imlib/lib/message/widget" />
       <recent name="$PROJECT_DIR$/snow-imlib/lib/core/outbound/encoder" />
       <recent name="$PROJECT_DIR$/snow-imlib/lib/core/inbound/handler" />
       <recent name="$PROJECT_DIR$/snow-imlib/lib/core" />
       <recent name="$PROJECT_DIR$/snow-imlib/lib/core/inbound" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/snow-imlib/lib/proto" />
     </key>
   </component>
   <component name="RunManager">
@@ -121,6 +142,7 @@
       <workItem from="1597754185580" duration="120000" />
       <workItem from="1597754317496" duration="2256000" />
       <workItem from="1597801589104" duration="4576000" />
+      <workItem from="1597838051754" duration="659000" />
     </task>
     <servers />
   </component>
@@ -163,64 +185,64 @@
     <state x="-1219" y="287" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/-1920.23.1920.1057/0.23.1680.954@-1920.23.1920.1057" timestamp="1597752290266" />
     <state x="-1219" y="287" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/-1920.23.1920.1057/0.23.1680.956@-1920.23.1920.1057" timestamp="1597642588104" />
     <state x="-1219" y="268" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/-1920.23.1920.980/0.23.1680.1027@-1920.23.1920.980" timestamp="1597650081117" />
-    <state width="1878" height="373" key="GridCell.Tab.0.bottom" timestamp="1597806171807">
+    <state width="1878" height="452" key="GridCell.Tab.0.bottom" timestamp="1597838590759">
       <screen x="-1920" y="23" width="1920" height="1057" />
     </state>
     <state width="1878" height="456" key="GridCell.Tab.0.bottom/-1680.91.1680.1027/0.23.1920.979@0.23.1920.979" timestamp="1597588663191" />
     <state width="1878" height="510" key="GridCell.Tab.0.bottom/-1920.23.1920.1057/0.23.1680.944@-1920.23.1920.1057" timestamp="1597802609535" />
     <state width="1878" height="528" key="GridCell.Tab.0.bottom/-1920.23.1920.1057/0.23.1680.947@-1920.23.1920.1057" timestamp="1597804695705" />
     <state width="1878" height="373" key="GridCell.Tab.0.bottom/-1920.23.1920.1057/0.23.1680.949@-1920.23.1920.1057" timestamp="1597806171807" />
-    <state width="1878" height="318" key="GridCell.Tab.0.bottom/-1920.23.1920.1057/0.23.1680.952@-1920.23.1920.1057" timestamp="1597756585160" />
-    <state width="1878" height="596" key="GridCell.Tab.0.bottom/-1920.23.1920.1057/0.23.1680.954@-1920.23.1920.1057" timestamp="1597753038109" />
-    <state width="1878" height="408" key="GridCell.Tab.0.bottom/-1920.23.1920.1057/0.23.1680.956@-1920.23.1920.1057" timestamp="1597647272165" />
+    <state width="1878" height="452" key="GridCell.Tab.0.bottom/-1920.23.1920.1057/0.23.1680.952@-1920.23.1920.1057" timestamp="1597838590759" />
+    <state width="1878" height="379" key="GridCell.Tab.0.bottom/-1920.23.1920.1057/0.23.1680.954@-1920.23.1920.1057" timestamp="1597830150950" />
+    <state width="1878" height="487" key="GridCell.Tab.0.bottom/-1920.23.1920.1057/0.23.1680.956@-1920.23.1920.1057" timestamp="1597838024223" />
     <state width="1878" height="496" key="GridCell.Tab.0.bottom/-1920.23.1920.1057/0.23.1680.958@-1920.23.1920.1057" timestamp="1597644791242" />
     <state width="1878" height="408" key="GridCell.Tab.0.bottom/-1920.23.1920.1057/0.23.1680.960@-1920.23.1920.1057" timestamp="1597646789655" />
     <state width="1878" height="355" key="GridCell.Tab.0.bottom/-1920.23.1920.974/0.23.1680.1027@-1920.23.1920.974" timestamp="1597661064474" />
     <state width="1878" height="545" key="GridCell.Tab.0.bottom/-1920.23.1920.975/0.23.1680.1027@-1920.23.1920.975" timestamp="1597663317055" />
     <state width="1878" height="357" key="GridCell.Tab.0.bottom/-1920.23.1920.978/0.23.1680.1027@-1920.23.1920.978" timestamp="1597659170144" />
     <state width="1878" height="14" key="GridCell.Tab.0.bottom/-1920.23.1920.980/0.23.1680.1027@-1920.23.1920.980" timestamp="1597654140911" />
-    <state width="1878" height="373" key="GridCell.Tab.0.center" timestamp="1597806171806">
+    <state width="1878" height="452" key="GridCell.Tab.0.center" timestamp="1597838590758">
       <screen x="-1920" y="23" width="1920" height="1057" />
     </state>
     <state width="1878" height="456" key="GridCell.Tab.0.center/-1680.91.1680.1027/0.23.1920.979@0.23.1920.979" timestamp="1597588663190" />
     <state width="1878" height="510" key="GridCell.Tab.0.center/-1920.23.1920.1057/0.23.1680.944@-1920.23.1920.1057" timestamp="1597802609534" />
     <state width="1878" height="528" key="GridCell.Tab.0.center/-1920.23.1920.1057/0.23.1680.947@-1920.23.1920.1057" timestamp="1597804695703" />
     <state width="1878" height="373" key="GridCell.Tab.0.center/-1920.23.1920.1057/0.23.1680.949@-1920.23.1920.1057" timestamp="1597806171806" />
-    <state width="1878" height="318" key="GridCell.Tab.0.center/-1920.23.1920.1057/0.23.1680.952@-1920.23.1920.1057" timestamp="1597756585159" />
-    <state width="1878" height="596" key="GridCell.Tab.0.center/-1920.23.1920.1057/0.23.1680.954@-1920.23.1920.1057" timestamp="1597753038108" />
-    <state width="1878" height="408" key="GridCell.Tab.0.center/-1920.23.1920.1057/0.23.1680.956@-1920.23.1920.1057" timestamp="1597647272164" />
+    <state width="1878" height="452" key="GridCell.Tab.0.center/-1920.23.1920.1057/0.23.1680.952@-1920.23.1920.1057" timestamp="1597838590758" />
+    <state width="1878" height="379" key="GridCell.Tab.0.center/-1920.23.1920.1057/0.23.1680.954@-1920.23.1920.1057" timestamp="1597830150950" />
+    <state width="1878" height="487" key="GridCell.Tab.0.center/-1920.23.1920.1057/0.23.1680.956@-1920.23.1920.1057" timestamp="1597838024223" />
     <state width="1878" height="496" key="GridCell.Tab.0.center/-1920.23.1920.1057/0.23.1680.958@-1920.23.1920.1057" timestamp="1597644791242" />
     <state width="1878" height="408" key="GridCell.Tab.0.center/-1920.23.1920.1057/0.23.1680.960@-1920.23.1920.1057" timestamp="1597646789655" />
     <state width="1878" height="355" key="GridCell.Tab.0.center/-1920.23.1920.974/0.23.1680.1027@-1920.23.1920.974" timestamp="1597661064473" />
     <state width="1878" height="545" key="GridCell.Tab.0.center/-1920.23.1920.975/0.23.1680.1027@-1920.23.1920.975" timestamp="1597663317055" />
     <state width="1878" height="357" key="GridCell.Tab.0.center/-1920.23.1920.978/0.23.1680.1027@-1920.23.1920.978" timestamp="1597659170144" />
     <state width="1878" height="14" key="GridCell.Tab.0.center/-1920.23.1920.980/0.23.1680.1027@-1920.23.1920.980" timestamp="1597654140910" />
-    <state width="1878" height="373" key="GridCell.Tab.0.left" timestamp="1597806171806">
+    <state width="1878" height="452" key="GridCell.Tab.0.left" timestamp="1597838590758">
       <screen x="-1920" y="23" width="1920" height="1057" />
     </state>
     <state width="1878" height="456" key="GridCell.Tab.0.left/-1680.91.1680.1027/0.23.1920.979@0.23.1920.979" timestamp="1597588663189" />
     <state width="1878" height="510" key="GridCell.Tab.0.left/-1920.23.1920.1057/0.23.1680.944@-1920.23.1920.1057" timestamp="1597802609534" />
     <state width="1878" height="528" key="GridCell.Tab.0.left/-1920.23.1920.1057/0.23.1680.947@-1920.23.1920.1057" timestamp="1597804695702" />
     <state width="1878" height="373" key="GridCell.Tab.0.left/-1920.23.1920.1057/0.23.1680.949@-1920.23.1920.1057" timestamp="1597806171806" />
-    <state width="1878" height="318" key="GridCell.Tab.0.left/-1920.23.1920.1057/0.23.1680.952@-1920.23.1920.1057" timestamp="1597756585159" />
-    <state width="1878" height="596" key="GridCell.Tab.0.left/-1920.23.1920.1057/0.23.1680.954@-1920.23.1920.1057" timestamp="1597753038108" />
-    <state width="1878" height="408" key="GridCell.Tab.0.left/-1920.23.1920.1057/0.23.1680.956@-1920.23.1920.1057" timestamp="1597647272163" />
+    <state width="1878" height="452" key="GridCell.Tab.0.left/-1920.23.1920.1057/0.23.1680.952@-1920.23.1920.1057" timestamp="1597838590758" />
+    <state width="1878" height="379" key="GridCell.Tab.0.left/-1920.23.1920.1057/0.23.1680.954@-1920.23.1920.1057" timestamp="1597830150949" />
+    <state width="1878" height="487" key="GridCell.Tab.0.left/-1920.23.1920.1057/0.23.1680.956@-1920.23.1920.1057" timestamp="1597838024223" />
     <state width="1878" height="496" key="GridCell.Tab.0.left/-1920.23.1920.1057/0.23.1680.958@-1920.23.1920.1057" timestamp="1597644791241" />
     <state width="1878" height="408" key="GridCell.Tab.0.left/-1920.23.1920.1057/0.23.1680.960@-1920.23.1920.1057" timestamp="1597646789654" />
     <state width="1878" height="355" key="GridCell.Tab.0.left/-1920.23.1920.974/0.23.1680.1027@-1920.23.1920.974" timestamp="1597661064472" />
     <state width="1878" height="545" key="GridCell.Tab.0.left/-1920.23.1920.975/0.23.1680.1027@-1920.23.1920.975" timestamp="1597663317054" />
     <state width="1878" height="357" key="GridCell.Tab.0.left/-1920.23.1920.978/0.23.1680.1027@-1920.23.1920.978" timestamp="1597659170143" />
     <state width="1878" height="14" key="GridCell.Tab.0.left/-1920.23.1920.980/0.23.1680.1027@-1920.23.1920.980" timestamp="1597654140910" />
-    <state width="1878" height="373" key="GridCell.Tab.0.right" timestamp="1597806171807">
+    <state width="1878" height="452" key="GridCell.Tab.0.right" timestamp="1597838590759">
       <screen x="-1920" y="23" width="1920" height="1057" />
     </state>
     <state width="1878" height="456" key="GridCell.Tab.0.right/-1680.91.1680.1027/0.23.1920.979@0.23.1920.979" timestamp="1597588663190" />
     <state width="1878" height="510" key="GridCell.Tab.0.right/-1920.23.1920.1057/0.23.1680.944@-1920.23.1920.1057" timestamp="1597802609535" />
     <state width="1878" height="528" key="GridCell.Tab.0.right/-1920.23.1920.1057/0.23.1680.947@-1920.23.1920.1057" timestamp="1597804695704" />
     <state width="1878" height="373" key="GridCell.Tab.0.right/-1920.23.1920.1057/0.23.1680.949@-1920.23.1920.1057" timestamp="1597806171807" />
-    <state width="1878" height="318" key="GridCell.Tab.0.right/-1920.23.1920.1057/0.23.1680.952@-1920.23.1920.1057" timestamp="1597756585160" />
-    <state width="1878" height="596" key="GridCell.Tab.0.right/-1920.23.1920.1057/0.23.1680.954@-1920.23.1920.1057" timestamp="1597753038108" />
-    <state width="1878" height="408" key="GridCell.Tab.0.right/-1920.23.1920.1057/0.23.1680.956@-1920.23.1920.1057" timestamp="1597647272165" />
+    <state width="1878" height="452" key="GridCell.Tab.0.right/-1920.23.1920.1057/0.23.1680.952@-1920.23.1920.1057" timestamp="1597838590759" />
+    <state width="1878" height="379" key="GridCell.Tab.0.right/-1920.23.1920.1057/0.23.1680.954@-1920.23.1920.1057" timestamp="1597830150950" />
+    <state width="1878" height="487" key="GridCell.Tab.0.right/-1920.23.1920.1057/0.23.1680.956@-1920.23.1920.1057" timestamp="1597838024223" />
     <state width="1878" height="496" key="GridCell.Tab.0.right/-1920.23.1920.1057/0.23.1680.958@-1920.23.1920.1057" timestamp="1597644791242" />
     <state width="1878" height="408" key="GridCell.Tab.0.right/-1920.23.1920.1057/0.23.1680.960@-1920.23.1920.1057" timestamp="1597646789655" />
     <state width="1878" height="355" key="GridCell.Tab.0.right/-1920.23.1920.974/0.23.1680.1027@-1920.23.1920.974" timestamp="1597661064473" />
@@ -231,7 +253,7 @@
       <screen x="-1920" y="23" width="1920" height="1057" />
     </state>
     <state x="-1451" y="189" key="SettingsEditor/-1920.23.1920.1057/0.23.1680.947@-1920.23.1920.1057" timestamp="1597754304030" />
-    <state x="-1227" y="270" width="540" height="568" key="StructurePopup" timestamp="1597805132185">
+    <state x="-1227" y="270" width="540" height="568" key="StructurePopup" timestamp="1597829820306">
       <screen x="-1920" y="23" width="1920" height="1057" />
     </state>
     <state x="693" y="252" width="540" height="524" key="StructurePopup/-1680.91.1680.1027/0.23.1920.979@0.23.1920.979" timestamp="1597581673421" />
@@ -239,36 +261,44 @@
     <state x="-1227" y="270" width="540" height="568" key="StructurePopup/-1920.23.1920.1057/0.23.1680.947@-1920.23.1920.1057" timestamp="1597804549486" />
     <state x="-1227" y="270" width="540" height="568" key="StructurePopup/-1920.23.1920.1057/0.23.1680.949@-1920.23.1920.1057" timestamp="1597805132185" />
     <state x="-1227" y="270" width="540" height="568" key="StructurePopup/-1920.23.1920.1057/0.23.1680.952@-1920.23.1920.1057" timestamp="1597742624540" />
-    <state x="-1227" y="270" width="540" height="568" key="StructurePopup/-1920.23.1920.1057/0.23.1680.954@-1920.23.1920.1057" timestamp="1597743759259" />
+    <state x="-1227" y="270" width="540" height="568" key="StructurePopup/-1920.23.1920.1057/0.23.1680.954@-1920.23.1920.1057" timestamp="1597829820306" />
     <state x="-1227" y="270" width="540" height="566" key="StructurePopup/-1920.23.1920.1057/0.23.1680.960@-1920.23.1920.1057" timestamp="1597646356566" />
     <state x="-1227" y="251" width="540" height="523" key="StructurePopup/-1920.23.1920.974/0.23.1680.1027@-1920.23.1920.974" timestamp="1597662799735" />
     <state x="-1227" y="251" width="540" height="523" key="StructurePopup/-1920.23.1920.975/0.23.1680.1027@-1920.23.1920.975" timestamp="1597662090762" />
     <state x="-1227" y="252" width="540" height="525" key="StructurePopup/-1920.23.1920.980/0.23.1680.1027@-1920.23.1920.980" timestamp="1597650482720" />
-    <state x="-1253" y="286" width="586" height="595" key="find.popup" timestamp="1597806128436">
+    <state x="-1625" y="42" width="1414" height="956" key="dock-window-1" timestamp="1597829605487">
+      <screen x="-1920" y="23" width="1920" height="1057" />
+    </state>
+    <state x="-1625" y="42" width="1414" height="956" key="dock-window-1/-1920.23.1920.1057/0.23.1680.954@-1920.23.1920.1057" timestamp="1597829605487" />
+    <state x="0" y="23" width="1414" height="956" key="dock-window-1/-1920.23.1920.1057/0.23.1680.956@-1920.23.1920.1057" timestamp="1597828852528" />
+    <state x="-1253" y="286" width="586" height="595" key="find.popup" timestamp="1597838662326">
       <screen x="-1920" y="23" width="1920" height="1057" />
     </state>
     <state x="667" y="267" width="586" height="490" key="find.popup/-1680.91.1680.1027/0.23.1920.979@0.23.1920.979" timestamp="1597588247127" />
     <state x="-1253" y="286" width="586" height="595" key="find.popup/-1920.23.1920.1057/0.23.1680.944@-1920.23.1920.1057" timestamp="1597802993358" />
     <state x="-1253" y="286" width="586" height="595" key="find.popup/-1920.23.1920.1057/0.23.1680.947@-1920.23.1920.1057" timestamp="1597753568573" />
     <state x="-1253" y="286" width="586" height="595" key="find.popup/-1920.23.1920.1057/0.23.1680.949@-1920.23.1920.1057" timestamp="1597806128436" />
+    <state x="-1253" y="286" width="586" height="595" key="find.popup/-1920.23.1920.1057/0.23.1680.952@-1920.23.1920.1057" timestamp="1597838662326" />
     <state x="-1253" y="286" width="586" height="595" key="find.popup/-1920.23.1920.1057/0.23.1680.954@-1920.23.1920.1057" timestamp="1597742329238" />
+    <state x="-1253" y="286" width="586" height="595" key="find.popup/-1920.23.1920.1057/0.23.1680.956@-1920.23.1920.1057" timestamp="1597837532029" />
     <state x="-1253" y="266" width="586" height="548" key="find.popup/-1920.23.1920.975/0.23.1680.1027@-1920.23.1920.975" timestamp="1597660509398" />
     <state x="-1253" y="267" width="586" height="548" key="find.popup/-1920.23.1920.978/0.23.1680.1027@-1920.23.1920.978" timestamp="1597658847147" />
     <state x="-1253" y="267" width="586" height="491" key="find.popup/-1920.23.1920.980/0.23.1680.1027@-1920.23.1920.980" timestamp="1597651593272" />
-    <state x="-1326" y="256" width="670" height="675" key="run.anything.popup" timestamp="1597635959441">
+    <state x="-1326" y="256" width="670" height="675" key="run.anything.popup" timestamp="1597826560684">
       <screen x="-1920" y="23" width="1920" height="1057" />
     </state>
+    <state x="-1326" y="256" width="670" height="675" key="run.anything.popup/-1920.23.1920.1057/0.23.1680.954@-1920.23.1920.1057" timestamp="1597826560684" />
     <state x="-1326" y="256" width="670" height="675" key="run.anything.popup/-1920.23.1920.1057/0.23.1680.956@-1920.23.1920.1057" timestamp="1597635959441" />
-    <state x="-1295" y="255" width="670" height="732" key="search.everywhere.popup" timestamp="1597806047393">
+    <state x="-1295" y="255" width="670" height="732" key="search.everywhere.popup" timestamp="1597838581748">
       <screen x="-1920" y="23" width="1920" height="1057" />
     </state>
     <state x="625" y="238" width="670" height="676" key="search.everywhere.popup/-1680.91.1680.1027/0.23.1920.979@0.23.1920.979" timestamp="1597588240166" />
     <state x="-1295" y="255" width="670" height="732" key="search.everywhere.popup/-1920.23.1920.1057/0.23.1680.944@-1920.23.1920.1057" timestamp="1597803279932" />
     <state x="-1295" y="255" width="670" height="732" key="search.everywhere.popup/-1920.23.1920.1057/0.23.1680.947@-1920.23.1920.1057" timestamp="1597753616124" />
     <state x="-1295" y="255" width="670" height="732" key="search.everywhere.popup/-1920.23.1920.1057/0.23.1680.949@-1920.23.1920.1057" timestamp="1597806047393" />
-    <state x="-1295" y="255" width="670" height="732" key="search.everywhere.popup/-1920.23.1920.1057/0.23.1680.952@-1920.23.1920.1057" timestamp="1597756435156" />
-    <state x="-1295" y="255" width="670" height="732" key="search.everywhere.popup/-1920.23.1920.1057/0.23.1680.954@-1920.23.1920.1057" timestamp="1597752930277" />
-    <state x="-1295" y="255" width="670" height="732" key="search.everywhere.popup/-1920.23.1920.1057/0.23.1680.956@-1920.23.1920.1057" timestamp="1597752028442" />
+    <state x="-1295" y="255" width="670" height="732" key="search.everywhere.popup/-1920.23.1920.1057/0.23.1680.952@-1920.23.1920.1057" timestamp="1597838581748" />
+    <state x="-1295" y="255" width="670" height="732" key="search.everywhere.popup/-1920.23.1920.1057/0.23.1680.954@-1920.23.1920.1057" timestamp="1597829788858" />
+    <state x="-1295" y="255" width="670" height="732" key="search.everywhere.popup/-1920.23.1920.1057/0.23.1680.956@-1920.23.1920.1057" timestamp="1597837774606" />
     <state x="-1295" y="255" width="670" height="730" key="search.everywhere.popup/-1920.23.1920.1057/0.23.1680.958@-1920.23.1920.1057" timestamp="1597647202214" />
     <state x="-1295" y="255" width="670" height="730" key="search.everywhere.popup/-1920.23.1920.1057/0.23.1680.960@-1920.23.1920.1057" timestamp="1597646339620" />
     <state x="-1295" y="237" width="670" height="674" key="search.everywhere.popup/-1920.23.1920.974/0.23.1680.1027@-1920.23.1920.974" timestamp="1597662743391" />

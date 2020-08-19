@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:imlib/imlib.dart';
 import 'package:snowclient/data/model/contact_model.dart';
 import 'package:snowclient/data/model/login_model.dart';
-import 'package:snowclient/data/model/snow_model.dart';
+import 'package:snowclient/data/model/base_model.dart';
 
 class ModelManager {
   static ModelManager _instance;
-  Map<String, SnowModel> _models = Map<String, SnowModel>();
+  Map<String, BaseModel> _models = Map<String, BaseModel>();
 
   ModelManager._();
 
@@ -25,7 +25,7 @@ class ModelManager {
     SLog.i("ModelManager init success");
   }
 
-  void register(String type, SnowModel model) {
+  void register(String type, BaseModel model) {
     _models[type] = model;
   }
 

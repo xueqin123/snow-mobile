@@ -25,21 +25,22 @@ class UserDao extends Dao {
   }
 
   Future saveUserList(List<UserEntity> userList) async {
-    await database.transaction((txn) async {
-      userList.forEach((it) {
-        database.rawInsert(
-            "INSERT OR REPLACE INTO ${DBHelper.TABLE_USER}"
-            " (${DBHelper.TABLE_USER_COLUMN_UID},"
-            " ${DBHelper.TABLE_USER_COLUMN_USER_NAME},"
-            " ${DBHelper.TABLE_USER_COLUMN_CREATE_DATA},"
-            " ${DBHelper.TABLE_USER_COLUMN_UPDATE_DATA},"
-            " ${DBHelper.TABLE_USER_COLUMN_NAME},"
-            " ${DBHelper.TABLE_USER_COLUMN_STATE},"
-            " ${DBHelper.TABLE_USER_COLUMN_PORTRAIT},"
-            " ${DBHelper.TABLE_USER_COLUMN_TYPE})"
-            " VALUES(?,?,?,?,?,?,?,?)",
-            [it.uid, it.username, it.createDt, it.updateDt, it.name, it.state, it.portrait, it.type]);
-      });
+    if (userList == null) return;
+    Batch batch = database.batch();
+    userList.forEach((it) {
+      batch.rawInsert(
+          "INSERT OR REPLACE INTO ${DBHelper.TABLE_USER}"
+          " (${DBHelper.TABLE_USER_COLUMN_UID},"
+          " ${DBHelper.TABLE_USER_COLUMN_USER_NAME},"
+          " ${DBHelper.TABLE_USER_COLUMN_CREATE_DATA},"
+          " ${DBHelper.TABLE_USER_COLUMN_UPDATE_DATA},"
+          " ${DBHelper.TABLE_USER_COLUMN_NAME},"
+          " ${DBHelper.TABLE_USER_COLUMN_STATE},"
+          " ${DBHelper.TABLE_USER_COLUMN_PORTRAIT},"
+          " ${DBHelper.TABLE_USER_COLUMN_TYPE})"
+          " VALUES(?,?,?,?,?,?,?,?)",
+          [it.uid, it.username, it.createDt, it.updateDt, it.name, it.state, it.portrait, it.type]);
     });
+    await batch.commit();
   }
 }

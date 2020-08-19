@@ -5,7 +5,7 @@ import 'package:snowclient/data/db/dao/dao_manager.dart';
 import 'package:snowclient/data/entity/login_user_info.dart';
 import 'package:snowclient/data/entity/rsp_login_entity.dart';
 import 'package:snowclient/data/model/contact_model.dart';
-import 'package:snowclient/data/model/snow_model.dart';
+import 'package:snowclient/data/model/base_model.dart';
 import 'package:snowclient/messages/text_message.dart';
 import 'package:snowclient/pages/message/message_widet_manager.dart';
 import 'package:snowclient/rest/http_manager.dart';
@@ -15,7 +15,7 @@ import 'package:snowclient/uitls/Constans.dart';
 
 import 'model_manager.dart';
 
-class LoginModel extends SnowModel {
+class LoginModel extends BaseModel {
   //账号密码登录
   Future<LoginUserInfo> loginByPassWord(String userName, String password) async {
     RspLoginEntity rspLoginEntity = await HttpManager.getInstance().getService<LoginService>().login(userName, password);

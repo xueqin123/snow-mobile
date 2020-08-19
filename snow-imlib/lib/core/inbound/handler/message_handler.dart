@@ -23,6 +23,7 @@ class MessageHandler extends InboundHandler {
       readyMessage.chatType = convertChatType(upDownMessage.conversationType);
       readyMessage.decode(jsonDecode(readyMessage.content));
       readyMessage.direction = _getDirection(context, messageContent.uid);
+      readyMessage.time = messageContent.time.toInt();
       context.getCustomMessageController().sink.add(readyMessage);
       context.sendSnowMessage(_buildMessageAck(upDownMessage));
       return true;

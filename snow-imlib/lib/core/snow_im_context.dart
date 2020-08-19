@@ -4,8 +4,14 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:fixnum/fixnum.dart';
+import 'package:imlib/core/inbound/handler/conversation_ack_handler.dart';
+import 'package:imlib/core/inbound/handler/history_message_handler.dart';
 import 'package:imlib/core/inbound/inbound_handler.dart';
 import 'package:imlib/core/outbound/outbound_encoder.dart';
+import 'package:imlib/data/db/dao/snow_im_dao_manager.dart';
+import 'package:imlib/data/db/model/conversation_model.dart';
+import 'package:imlib/data/db/model/model_manager.dart';
+import 'package:imlib/data/db/snow_im_db_helper.dart';
 import 'package:imlib/imlib.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
@@ -42,7 +48,7 @@ class SnowIMContext {
   StreamController<ConnectStatus> _connectStreamController = StreamController();
 
   // ignore: close_sinks
-  StreamController<CustomMessage> _customMessageStreamController = StreamController.broadcast();
+  StreamController<CustomMessage> _customMessageStreamController = StreamController();
 
   ProtobufVarint32FrameDecoder protobufVarint32FrameDecoder = ProtobufVarint32FrameDecoder();
   SnowMessageDecoder _snowMessageDecoder = new SnowMessageDecoder();
@@ -54,8 +60,10 @@ class SnowIMContext {
     }
     _instance.addInBoundHandler(AuthHandler());
     _instance.addInBoundHandler(HeardBeatHandler());
-    _instance.addInBoundHandler(MessageHandler());
+    _instance.addInBoundHandler(ConversationAckHandler());
+    _instance.addInBoundHandler(HistoryMessageHandler());
     _instance.addInBoundHandler(MessageAckHandler());
+    _instance.addInBoundHandler(MessageHandler());
 
     _instance.addOutBoundEncoder(CustomMessageEncoder());
     _instance.addOutBoundEncoder(SnowMessageEncoder());
@@ -71,8 +79,13 @@ class SnowIMContext {
     return _customMessageStreamController;
   }
 
+  StreamController<List<ConversationEntity>> getConversationListController() {
+    return SnowIMModelManager.getInstance().getModel<ConversationModel>().getConversationController();
+  }
+
   connect(String token, String uid) async {
     selfUid = uid;
+    await _initDB();
     _connectStreamController.sink.add(ConnectStatus.IDLE);
     _connectStreamController.sink.add(ConnectStatus.CONNECTING);
     HostInfo hostInfo = await HostHelper().getHost(token);
@@ -81,6 +94,11 @@ class SnowIMContext {
       await _connect(hostInfo.host, hostInfo.port);
       _sendLogin(token, uid);
     }
+  }
+
+  _initDB() async {
+    await SnowIMDBHelper.getInstance().openDB(selfUid);
+    await SnowIMDaoManager.getInstance().init(selfUid);
   }
 
   _connect(String host, int port) async {
@@ -166,7 +184,9 @@ class SnowIMContext {
     sendSnowMessage(message);
   }
 
-  onLoginSuccess() {}
+  onLoginSuccess() {
+    _sendReqConversationList();
+  }
 
   onLoginFailed(Code code, String msg) {}
 
@@ -188,13 +208,17 @@ class SnowIMContext {
     _waitAckMap.remove(cid);
   }
 
-  sendReqConversation() {
-    //todo
+  _sendReqConversationList() {
+    ConversationReq conversationReq = ConversationReq();
+    conversationReq.type = OperationType.ALL;
+    conversationReq.id = SnowIMUtils.generateCid();
+    SnowMessage snowMessage = SnowMessage();
+    snowMessage.type = SnowMessage_Type.ConversationReq;
+    snowMessage.conversationReq = conversationReq;
+    sendSnowMessage(snowMessage);
   }
 
-  sendReqMessage(String conversationId) {
-    //todo
-  }
+  _sendReqMessage(String conversationId) {}
 }
 
 enum ConnectStatus { IDLE, CONNECTING, CONNECTED, DISCONNECTING, DISCONNECTED }

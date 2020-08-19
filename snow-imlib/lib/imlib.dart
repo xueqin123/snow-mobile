@@ -2,7 +2,11 @@ library imlib;
 
 export 'package:imlib/imlib.dart';
 export 'package:imlib/utils/s_log.dart';
+export 'package:imlib/data/db/entity/conversation_entity.dart';
+import 'dart:async';
+
 import 'package:imlib/core/snow_im_context.dart';
+import 'package:imlib/data/db/entity/conversation_entity.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/message/message_manager.dart';
 
@@ -24,6 +28,10 @@ class SnowIMLib {
 
   static Stream<CustomMessage> getCustomMessageStream() {
     return SnowIMContext.getInstance().getCustomMessageController().stream;
+  }
+
+  static StreamController<List<ConversationEntity>> getConversationController() {
+    return SnowIMContext.getInstance().getConversationListController();
   }
 
   static sendMessage(CustomMessage customMessage, {SendBlock block}) {

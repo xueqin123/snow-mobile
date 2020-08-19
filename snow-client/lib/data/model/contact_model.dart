@@ -5,11 +5,11 @@ import 'package:snowclient/data/db/dao/dao_manager.dart';
 import 'package:snowclient/data/db/dao/user_dao.dart';
 import 'package:snowclient/data/entity/user_entity.dart';
 import 'package:snowclient/data/model/notifier.dart';
-import 'package:snowclient/data/model/snow_model.dart';
+import 'package:snowclient/data/model/base_model.dart';
 import 'package:snowclient/rest/http_manager.dart';
 import 'package:snowclient/rest/service/user_service.dart';
 
-class ContactModel extends SnowModel {
+class ContactModel extends BaseModel {
   UserDao _userDao;
   UserService _userService;
   List<Notifier> _notifierList = List();
