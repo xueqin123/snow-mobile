@@ -88,6 +88,7 @@ class SnowIMContext {
     _socket = await Socket.connect(host, port);
     _connectStreamController.sink.add(ConnectStatus.CONNECTED);
     _socket.listen((event) {
+      SLog.v("socket listen event:${event.length}");
       List<Uint8List> packages = protobufVarint32FrameDecoder.decode(event);
       packages.forEach((element) {
         _onReceiveData(_snowMessageDecoder.decode(element));

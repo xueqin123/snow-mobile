@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:imlib/core/outbound/outbound_encoder.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
@@ -12,8 +14,9 @@ class CustomMessageEncoder extends OutboundEncoder<CustomMessage> {
     SLog.v("CustomMessageEncoder encode()");
     MessageContent messageContent = MessageContent();
     messageContent.uid = context.selfUid;
-    messageContent.content = customMessage.encode().toString();
+    messageContent.content = jsonEncode(customMessage.encode());
     messageContent.time = SnowIMUtils.currentTime();
+    messageContent.type = customMessage.type;
     UpDownMessage upDownMessage = UpDownMessage();
     upDownMessage.cid = SnowIMUtils.currentTime();
     upDownMessage.fromUid = context.selfUid;

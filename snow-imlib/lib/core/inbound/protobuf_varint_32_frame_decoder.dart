@@ -4,14 +4,14 @@ import 'package:imlib/utils/s_log.dart';
 
 class ProtobufVarint32FrameDecoder {
   List<Uint8List> decode(Uint8List data) {
-    SLog.v("read start !");
-    SLog.v("read data length:${data.length}");
+    SLog.v("ProtobufVarint32FrameDecoder start !");
+    SLog.v("ProtobufVarint32FrameDecoder decode data length:${data.length}");
     List<Uint8List> packages = List<Uint8List>();
     Uint8List restData = data;
     while (restData != null) {
       //拆包
       MessageDataInfo messageInfo = _getMessageLength(restData);
-      SLog.v("read MessageDataInfo: $messageInfo");
+      SLog.v("ProtobufVarint32FrameDecoder decode MessageDataInfo: $messageInfo");
       int subStart = messageInfo.headLength;
       int subEnd = messageInfo.messageLength + messageInfo.headLength;
       if (subEnd == restData.length) {
@@ -26,8 +26,8 @@ class ProtobufVarint32FrameDecoder {
         restData = null;
       }
     }
-    SLog.v("read packages length: ${packages.length}");
-    SLog.v("read end !");
+    SLog.v("ProtobufVarint32FrameDecoder decode packages length: ${packages.length}");
+    SLog.v("ProtobufVarint32FrameDecoder decode end !");
     return packages;
   }
 
@@ -35,28 +35,28 @@ class ProtobufVarint32FrameDecoder {
   MessageDataInfo _getMessageLength(Uint8List data) {
     ByteData byteData = data.buffer.asByteData();
     int index = 0;
-    int tmp = byteData.getUint8(index);
+    int tmp = byteData.getInt8(index);
     int result = 0;
     if (tmp >= 0) {
       result = tmp;
     } else {
       result = tmp & 127;
-      tmp = byteData.getUint8(++index);
+      tmp = byteData.getInt8(++index);
       if (tmp >= 0) {
         result |= tmp << 7;
       } else {
         result |= (tmp & 127) << 7;
-        tmp = byteData.getUint8(++index);
+        tmp = byteData.getInt8(++index);
         if (tmp >= 0) {
           result |= tmp << 14;
         } else {
           result |= (tmp & 127) << 14;
-          tmp = byteData.getUint8(++index);
+          tmp = byteData.getInt8(++index);
           if (tmp > 0) {
             result |= tmp << 21;
           } else {
             result |= (tmp & 127) << 21;
-            tmp = byteData.getUint8(++index);
+            tmp = byteData.getInt8(++index);
             result |= tmp << 28;
             if (tmp < 0) {
               throw Exception("malformed varint.");
