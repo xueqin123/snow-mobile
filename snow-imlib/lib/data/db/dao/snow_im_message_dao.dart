@@ -65,7 +65,7 @@ class SnowIMMessageDao extends SnowIMDao {
 
   Future<List<CustomMessage>> getCustomMessageList(String conversationId, int beginId) async {
     List<Map<String, dynamic>> mapList;
-    if (beginId >= 0) {
+    if (beginId > 0) {
       mapList = await database.rawQuery(
           "SELECT * FROM ${SnowIMDBHelper.TABLE_MESSAGE} "
           "WHERE "
