@@ -1,4 +1,6 @@
-import 'package:imlib/data/db/model/conversation_model.dart';
+import 'package:flutter/material.dart';
+import 'package:imlib/data/db/model/snow_message_model.dart';
+import 'package:imlib/data/db/model/snow_conversation_model.dart';
 import 'package:imlib/data/db/model/snow_im_model.dart';
 
 class SnowIMModelManager {
@@ -10,14 +12,16 @@ class SnowIMModelManager {
   static SnowIMModelManager getInstance() {
     if (_instance == null) {
       _instance = SnowIMModelManager._();
-      ConversationModel conversationModel = ConversationModel();
-      _instance.register(conversationModel.runtimeType.toString(), conversationModel);
+      SnowConversationModel conversationModel = SnowConversationModel();
+      SnowMessageModel messageModel = SnowMessageModel();
+      _instance.register(conversationModel);
+      _instance.register(messageModel);
     }
     return _instance;
   }
 
-  void register(String type, SnowIMModel model) {
-    _models[type] = model;
+  void register(SnowIMModel model) {
+    _models[model.runtimeType.toString()] = model;
   }
 
   T getModel<T>() {

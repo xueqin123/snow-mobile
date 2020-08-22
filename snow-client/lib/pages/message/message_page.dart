@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:imlib/message/custom_message.dart';
+import 'package:imlib/proto/message.pb.dart';
 import 'package:imlib/utils/s_log.dart';
 import 'package:provider/provider.dart';
 import 'package:snowclient/generated/l10n.dart';
@@ -10,19 +11,26 @@ import 'message_widet_manager.dart';
 
 class MessagePage extends StatelessWidget {
   String targetId;
-  ChatType chatType;
+  ConversationType conversationType;
+  MessageViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
+    SLog.i("MessagePage build");
+    viewModel = MessageViewModel(targetId, conversationType);
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => MessageViewModel(targetId, chatType)),
+        StreamProvider.controller(
+          create: (_) => viewModel.getMessageController(targetId, conversationType),
+          initialData: <CustomMessage>[],
+        ),
+        ChangeNotifierProvider(create: (_) => viewModel),
       ],
       child: MessageStatefulWidget(),
     );
   }
 
-  MessagePage(this.targetId, this.chatType);
+  MessagePage(this.targetId, this.conversationType);
 }
 
 class MessageStatefulWidget extends StatefulWidget {
@@ -33,14 +41,16 @@ class MessageStatefulWidget extends StatefulWidget {
 }
 
 class MessageState extends State<MessageStatefulWidget> {
+  List<CustomMessage> data;
   MessageViewModel viewModel;
-
   @override
   Widget build(BuildContext context) {
     viewModel = Provider.of<MessageViewModel>(context);
+    data = Provider.of<List<CustomMessage>>(context);
+    SLog.i("MessageState data.length: ${data.length}");
     return Scaffold(
       appBar: AppBar(
-        title: Text(viewModel.chatName),
+        title: Text("todo name"),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -49,7 +59,7 @@ class MessageState extends State<MessageStatefulWidget> {
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             itemBuilder: (context, index) => _buildCustomMessageItemWidget(context, index),
-            itemCount: viewModel.data.length,
+            itemCount: data.length,
           ),
           _buildInputWidget(),
         ],
@@ -58,9 +68,9 @@ class MessageState extends State<MessageStatefulWidget> {
   }
 
   Widget _buildCustomMessageItemWidget(BuildContext context, int index) {
-    SLog.i("data size:${viewModel.data.length}");
-    String type = viewModel.data[index].type;
-    CustomMessage customMessage = viewModel.data[index];
+    SLog.i("data size:${data.length}");
+    String type = data[index].type;
+    CustomMessage customMessage = data[index];
     MainAxisAlignment alignment = MainAxisAlignment.start;
     if (customMessage.direction == Direction.SEND) {
       alignment = MainAxisAlignment.end;

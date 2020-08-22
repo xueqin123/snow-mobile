@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:imlib/imlib.dart';
 import 'package:provider/provider.dart';
+import 'package:snowclient/pages/message/message_page.dart';
+import 'chat_item_entity.dart';
 import 'chat_view_model.dart';
 
 class ChatPage extends StatelessWidget {
@@ -11,12 +13,9 @@ class ChatPage extends StatelessWidget {
     ChatViewModel _chatViewModel = ChatViewModel();
     return MultiProvider(
       providers: [
-        StreamProvider<List<ConversationEntity>>.controller(
-          create: (_) => _chatViewModel.getAllConversationStream(),
-          initialData: <ConversationEntity>[],
-        ),
-        ChangeNotifierProvider(
-          create: (_) => _chatViewModel,
+        StreamProvider<List<ChatItemEntity>>.controller(
+          create: (_) => _chatViewModel.getChatListController(),
+          initialData: [],
         )
       ],
       child: ChatStatefulPage(),
@@ -32,15 +31,15 @@ class ChatStatefulPage extends StatefulWidget {
 }
 
 class ChatState extends State<ChatStatefulPage> {
-  List<ConversationEntity> conversationList;
+  List<ChatItemEntity> data;
 
   @override
   Widget build(BuildContext context) {
-    conversationList = Provider.of<List<ConversationEntity>>(context);
-    SLog.i("ChatState build chat size: ${conversationList.length}");
+    data = Provider.of<List<ChatItemEntity>>(context);
+    SLog.i("ChatState build chat data: $data");
     return ListView.builder(
       itemBuilder: _buildItem,
-      itemCount: conversationList.length,
+      itemCount: data.length,
     );
   }
 
@@ -55,13 +54,13 @@ class ChatState extends State<ChatStatefulPage> {
           children: [
             Padding(
               padding: EdgeInsets.all(16),
-              child: Icon(Icons.account_box),
+              child: Icon(Icons.chat),
             ),
             Expanded(
               child: Stack(children: [
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(conversationList[index].conversationId),
+                  child: Text(data[index].chatName),
                 ),
                 Align(
                   alignment: Alignment.bottomRight,
@@ -80,6 +79,7 @@ class ChatState extends State<ChatStatefulPage> {
 
   void _onItemClick(int index) {
     SLog.i("onClick index = $index");
-    String conversationId = conversationList[index].conversationId;
+    ChatItemEntity itemEntity = data[index];
+    Navigator.push(context, MaterialPageRoute(builder: (context) => MessagePage(itemEntity.targetId,itemEntity.chatType)));
   }
 }

@@ -7,23 +7,25 @@ import 'package:imlib/proto/message.pb.dart';
 
 import '../../../imlib.dart';
 
-class ConversationModel extends SnowIMModel {
+class SnowConversationModel extends SnowIMModel {
   // ignore: close_sinks
-  StreamController<List<ConversationEntity>> _conversationListController = StreamController();
+  StreamController<List<Conversation>> _conversationListController = StreamController();
 
-  StreamController<List<ConversationEntity>> getConversationController() {
+  StreamController<List<Conversation>> getConversationController() {
     return _conversationListController;
   }
 
   saveConversationList(List<ConversationInfo> conversationInfList) async {
     SnowIMConversationDao dao = SnowIMDaoManager.getInstance().getDao<SnowIMConversationDao>();
     await dao.saveConversationList(conversationInfList);
-    List<ConversationEntity> result = await dao.getConversationAllList();
-    SLog.i("add conversationList length:${result.length}");
+    List<Conversation> result = await dao.getConversationAllList();
     _conversationListController.sink.add(result);
   }
 
-  saveConversation(ConversationInfo conversationInfo) {
-    //todo
+  saveConversation(ConversationInfo conversationInfo) async {
+    SnowIMConversationDao dao = SnowIMDaoManager.getInstance().getDao<SnowIMConversationDao>();
+    await dao.saveConversationList(<ConversationInfo>[conversationInfo]);
+    List<Conversation> result = await dao.getConversationAllList();
+    _conversationListController.sink.add(result);
   }
 }

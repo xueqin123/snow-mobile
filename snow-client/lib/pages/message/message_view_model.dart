@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:imlib/imlib.dart';
 import 'package:imlib/message/custom_message.dart';
+import 'package:imlib/proto/message.pb.dart';
+import 'package:snowclient/data/entity/user_entity.dart';
 import 'package:snowclient/data/model/contact_model.dart';
+import 'package:snowclient/data/model/message_model.dart';
 import 'package:snowclient/data/model/model_manager.dart';
-import 'package:snowclient/messages/text_message.dart';
 
 class MessageViewModel with ChangeNotifier {
   TextEditingController _sendTextController = TextEditingController();
@@ -11,55 +15,26 @@ class MessageViewModel with ChangeNotifier {
   get sendTextController => _sendTextController;
   List<CustomMessage> data;
   String targetId;
-  ChatType chatType;
+  ConversationType chatType;
   String chatName = "";
+  ContactModel contactModel;
+  MessageModel messageModel;
 
   MessageViewModel(this.targetId, this.chatType) {
-    initChatName();
-    data = List<CustomMessage>();
-    data.sort((a, b) => a.time.compareTo(b.time));
-    SnowIMLib.getCustomMessageStream().listen((event) => _onMessageReceive(event));
+    contactModel = ModelManager.getInstance().getModel<ContactModel>();
+    messageModel = ModelManager.getInstance().getModel<MessageModel>();
   }
 
-  initChatName() {
-    if (chatType == ChatType.SINGLE) {
-      return ModelManager.getInstance().getModel<ContactModel>().getUserController(targetId).stream.listen((event) {
-        chatName = event.name;
-        notifyListeners();
-      });
-    } else if(chatType == ChatType.GROUP){
-      //todo group
-    }
+  StreamController<UserEntity> getUserController() {
+    return contactModel.getUserController(targetId);
   }
 
-  _onMessageReceive(CustomMessage msg) {
-    if (data.length == 0) {
-      data.add(msg);
-    } else {
-      int index = data.length - 1;
-      while (index >= 0) {
-        if (data[index].time < msg.time) {
-          if (index < data.length - 1) {
-            data.insert(index + 1, msg);
-          } else {
-            data.add(msg);
-          }
-          break;
-        }
-        index--;
-      }
-    }
-    SLog.i("MessageViewModel _onMessageReceive data.length = ${data.length}");
-    notifyListeners();
+  StreamController<List<CustomMessage>> getMessageController(String targetId, ConversationType conversationType) {
+    StreamController controller = messageModel.getMessageController(targetId, conversationType);
+    return controller;
   }
 
   sendTextMessage() {
-    TextMessage textMessage = TextMessage(content: _sendTextController.text);
-    textMessage.targetId = targetId;
-    textMessage.chatType = chatType;
-    textMessage.type = textMessage.runtimeType.toString();
-    textMessage.targetId = SnowIMLib.sendMessage(textMessage, block: (statue) {
-      SLog.i("send status:$statue");
-    });
+    messageModel.sendTextMessage(targetId, _sendTextController.text);
   }
 }

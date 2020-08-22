@@ -7,15 +7,22 @@ import 'dart:async';
 
 import 'package:imlib/core/snow_im_context.dart';
 import 'package:imlib/data/db/entity/conversation_entity.dart';
+import 'package:imlib/data/db/model/model_manager.dart';
+import 'package:imlib/data/db/model/snow_message_model.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/message/message_manager.dart';
+import 'package:imlib/proto/message.pb.dart';
 
-typedef SendBlock = Function(SendStatus status);
+typedef SendBlock = Function(SendStatus status, CustomMessage customMessage);
 typedef MessageProvider = CustomMessage Function();
 
 class SnowIMLib {
-  static connect(String token, uid) async {
-    return SnowIMContext.getInstance().connect(token, uid);
+  static init(String uid) async{
+    await SnowIMContext.getInstance().init(uid);
+  }
+
+  static connect(String token) async {
+    return SnowIMContext.getInstance().connect(token);
   }
 
   static disConnect() {
@@ -30,12 +37,25 @@ class SnowIMLib {
     return SnowIMContext.getInstance().getCustomMessageController().stream;
   }
 
-  static StreamController<List<ConversationEntity>> getConversationController() {
-    return SnowIMContext.getInstance().getConversationListController();
+  static Future<List<CustomMessage>> getHistoryMessage(String targetId, ConversationType conversationType, int beginId, int count) {
+    return SnowIMModelManager.getInstance().getModel<SnowMessageModel>().getSnowMessageList(targetId, conversationType, beginId, count);
   }
 
-  static sendMessage(CustomMessage customMessage, {SendBlock block}) {
+  static Stream<List<Conversation>> getConversationStream() {
+    return SnowIMContext.getInstance().getConversationListController().stream;
+  }
+
+  static sendSingleMessage(String targetId, CustomMessage customMessage, {SendBlock block}) {
+    customMessage.conversationType = ConversationType.SINGLE;
+    customMessage.type = customMessage.runtimeType.toString();
+    customMessage.targetId = targetId;
     return SnowIMContext.getInstance().sendCustomMessage(customMessage, block);
+  }
+
+  static sendGroupMessage(String conversationId, CustomMessage customMessage, {SendBlock block}) {
+    customMessage.conversationType = ConversationType.GROUP;
+    customMessage.type = customMessage.runtimeType.toString();
+    customMessage.targetId = conversationId;
   }
 
   static registerMessage(Type messageType, MessageProvider emptyProvider) {
@@ -47,4 +67,4 @@ class SnowIMLib {
   }
 }
 
-enum SendStatus { SENDING, SUCCESS, FAILED }
+enum SendStatus { SENDING, PERSIST, SUCCESS, FAILED }

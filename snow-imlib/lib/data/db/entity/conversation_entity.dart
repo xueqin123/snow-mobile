@@ -1,8 +1,8 @@
-import 'dart:convert';
+import 'package:imlib/proto/message.pb.dart';
 
-class ConversationEntity {
+class Conversation {
   String conversationId;
-  int type;
+  ConversationType type;
   List<String> uidList;
   String groupId;
   String readMsgId;
@@ -13,7 +13,7 @@ class ConversationEntity {
   String lastTime;
   String time;
 
-  String getUidList() {
+  String getUidListString() {
     String uids = "";
     uidList.forEach((element) {
       uids += "$element,";
@@ -21,7 +21,7 @@ class ConversationEntity {
     return uids.substring(0, uids.length - 1);
   }
 
-  setUidList(String uids) {
+  setUidListString(String uids) {
     uidList = uids.split(",");
   }
 }

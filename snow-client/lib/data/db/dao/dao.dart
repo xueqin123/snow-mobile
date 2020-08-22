@@ -2,6 +2,7 @@ import 'package:sqflite/sqflite.dart';
 
 abstract class Dao{
   Database database;
-  Dao(this.database);
+  String currentUid;
+  Dao(this.database,this.currentUid);
 
 }

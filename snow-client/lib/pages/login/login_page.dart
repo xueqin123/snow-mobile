@@ -73,7 +73,9 @@ class LoginState extends State<LoginStatefulPage> with WidgetsBindingObserver {
     _loginViewModel = Provider.of<LoginViewModel>(context);
     return Scaffold(
       body: Container(
-        color: Colors.green,
+        decoration: BoxDecoration(
+          image: DecorationImage(image: AssetImage("images/launch_image.jpeg"), fit: BoxFit.cover),
+        ),
         child: Center(
           child: Container(
             padding: EdgeInsets.all(20.0),

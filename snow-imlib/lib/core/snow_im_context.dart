@@ -4,18 +4,19 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:fixnum/fixnum.dart';
-import 'package:imlib/core/inbound/handler/conversation_ack_handler.dart';
+import 'package:imlib/core/inbound/handler/conversation_handler.dart';
 import 'package:imlib/core/inbound/handler/history_message_handler.dart';
 import 'package:imlib/core/inbound/inbound_handler.dart';
 import 'package:imlib/core/outbound/outbound_encoder.dart';
 import 'package:imlib/data/db/dao/snow_im_dao_manager.dart';
-import 'package:imlib/data/db/model/conversation_model.dart';
+import 'package:imlib/data/db/model/snow_conversation_model.dart';
 import 'package:imlib/data/db/model/model_manager.dart';
 import 'package:imlib/data/db/snow_im_db_helper.dart';
 import 'package:imlib/imlib.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
 import 'package:imlib/rest/rest.dart';
+import 'package:imlib/rest/snow_fetch_helper.dart';
 import 'package:imlib/utils/s_log.dart';
 import 'package:imlib/utils/snow_im_utils.dart';
 
@@ -60,7 +61,7 @@ class SnowIMContext {
     }
     _instance.addInBoundHandler(AuthHandler());
     _instance.addInBoundHandler(HeardBeatHandler());
-    _instance.addInBoundHandler(ConversationAckHandler());
+    _instance.addInBoundHandler(ConversationHandler());
     _instance.addInBoundHandler(HistoryMessageHandler());
     _instance.addInBoundHandler(MessageAckHandler());
     _instance.addInBoundHandler(MessageHandler());
@@ -79,25 +80,27 @@ class SnowIMContext {
     return _customMessageStreamController;
   }
 
-  StreamController<List<ConversationEntity>> getConversationListController() {
-    return SnowIMModelManager.getInstance().getModel<ConversationModel>().getConversationController();
+  StreamController<List<Conversation>> getConversationListController() {
+    return SnowIMModelManager.getInstance().getModel<SnowConversationModel>().getConversationController();
   }
 
-  connect(String token, String uid) async {
-    selfUid = uid;
-    await _initDB();
+  connect(String token) async {
     _connectStreamController.sink.add(ConnectStatus.IDLE);
     _connectStreamController.sink.add(ConnectStatus.CONNECTING);
     HostInfo hostInfo = await HostHelper().getHost(token);
     SLog.i("SnowIMContext token:{$token} connect host: {$hostInfo}");
     if (hostInfo != null) {
       await _connect(hostInfo.host, hostInfo.port);
-      _sendLogin(token, uid);
+      _sendLogin(token, selfUid);
     }
   }
+  //connect 之前先init
+  init(String uid) async{
+    _initDB(uid);
+  }
 
-  _initDB() async {
-    await SnowIMDBHelper.getInstance().openDB(selfUid);
+  _initDB(String uid) async {
+    selfUid = uid;
     await SnowIMDaoManager.getInstance().init(selfUid);
   }
 
@@ -145,6 +148,11 @@ class SnowIMContext {
 
   sendCustomMessage(CustomMessage customMessage, SendBlock sendBlock) {
     SLog.i("sendCustomMessage: ${customMessage.type}");
+    Int64 cid = SnowIMUtils.generateCid();
+    customMessage.cid = cid.toInt();
+    customMessage.status = SendStatus.SENDING;
+    sendBlock(SendStatus.SENDING, customMessage);
+    addWaitAck(cid, sendBlock);
     _outHead.encodeSend(this, customMessage);
   }
 
@@ -185,13 +193,13 @@ class SnowIMContext {
   }
 
   onLoginSuccess() {
-    _sendReqConversationList();
+    SnowAckHelper.getInstance().init(this);
+    SnowAckHelper.getInstance().fetchConversationList();
   }
 
   onLoginFailed(Code code, String msg) {}
 
   addWaitAck(Int64 cid, SendBlock block) {
-    block(SendStatus.SENDING);
     _waitAckMap[cid] = block;
   }
 
@@ -200,25 +208,14 @@ class SnowIMContext {
     if (block == null) {
       return;
     }
+    //to do
     if (code == Code.SUCCESS) {
-      block(SendStatus.SUCCESS);
+//      block(SendStatus.SUCCESS,CustomMessage());
     } else {
-      block(SendStatus.FAILED);
+//      block(SendStatus.FAILED,CustomMessage);
     }
     _waitAckMap.remove(cid);
   }
-
-  _sendReqConversationList() {
-    ConversationReq conversationReq = ConversationReq();
-    conversationReq.type = OperationType.ALL;
-    conversationReq.id = SnowIMUtils.generateCid();
-    SnowMessage snowMessage = SnowMessage();
-    snowMessage.type = SnowMessage_Type.ConversationReq;
-    snowMessage.conversationReq = conversationReq;
-    sendSnowMessage(snowMessage);
-  }
-
-  _sendReqMessage(String conversationId) {}
 }
 
 enum ConnectStatus { IDLE, CONNECTING, CONNECTED, DISCONNECTING, DISCONNECTED }

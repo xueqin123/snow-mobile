@@ -5,7 +5,7 @@ import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
 import 'package:imlib/utils/s_log.dart';
 import 'package:imlib/utils/snow_im_utils.dart';
-
+import 'package:fixnum/fixnum.dart';
 import '../../snow_im_context.dart';
 
 class CustomMessageEncoder extends OutboundEncoder<CustomMessage> {
@@ -20,41 +20,22 @@ class CustomMessageEncoder extends OutboundEncoder<CustomMessage> {
     messageContent.time = SnowIMUtils.generateCidByTime(customMessage.time);
     messageContent.type = customMessage.type;
     UpDownMessage upDownMessage = UpDownMessage();
-    upDownMessage.cid = SnowIMUtils.generateCid();
+    upDownMessage.cid = Int64(customMessage.cid);
     upDownMessage.fromUid = context.selfUid;
-    upDownMessage.targetUid = customMessage.targetId;
-    if (customMessage.groupId == null) {
-      upDownMessage.groupId = "";
+    if (customMessage.conversationType == ConversationType.SINGLE) {
+      upDownMessage.targetUid = customMessage.targetId;
     } else {
-      upDownMessage.groupId = customMessage.groupId;
+      upDownMessage.conversationId = customMessage.targetId;
     }
-    if (customMessage.conversationId == null) {
-      upDownMessage.conversationId = "";
-    } else {
-      upDownMessage.conversationId = customMessage.conversationId;
-    }
-    upDownMessage.conversationType = _convertMessageType(customMessage.chatType);
+    upDownMessage.groupId = "";
+    upDownMessage.conversationType = customMessage.conversationType;
     upDownMessage.content = messageContent;
 
     SnowMessage snowMessage = SnowMessage();
     snowMessage.type = SnowMessage_Type.UpDownMessage;
     snowMessage.upDownMessage = upDownMessage;
-    context.getCustomMessageController().sink.add(customMessage);
     if (next != null) {
       next.encodeSend(context, snowMessage);
     }
-  }
-
-  ConversationType _convertMessageType(ChatType chatType) {
-    ConversationType conversationType;
-    switch (chatType) {
-      case ChatType.SINGLE:
-        conversationType = ConversationType.SINGLE;
-        break;
-      case ChatType.GROUP:
-        conversationType = ConversationType.GROUP;
-        break;
-    }
-    return conversationType;
   }
 }

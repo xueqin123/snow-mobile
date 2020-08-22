@@ -9,6 +9,8 @@ class DaoManager {
   static final DaoManager _instance = DaoManager();
   Map<String, Dao> _daoMaps;
 
+  String _currentUid;
+  get currentUid => _currentUid;
   static DaoManager getInstance() {
     return _instance;
   }
@@ -16,18 +18,15 @@ class DaoManager {
   Future init(String uid) async {
     _daoMaps = Map();
     Database database = await DBHelper.getInstance().openDB(uid);
-    _initDao(database);
+    _initDao(database,uid);
     SLog.i("DaoManager init success");
   }
 
-  _initDao(Database database) {
-    UserDao userDao = UserDao(database);
-    _putDao(userDao);
+  _initDao(Database database,String currentUid) {
+    UserDao userDao = UserDao(database,currentUid);
+    _daoMaps[userDao.runtimeType.toString()] = userDao;
   }
 
-  void _putDao(Dao dao) {
-    _daoMaps[dao.runtimeType.toString()] = dao;
-  }
 
   T getDao<T>() {
     return _daoMaps[T.toString()] as T;

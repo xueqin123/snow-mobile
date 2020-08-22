@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:imlib/imlib.dart';
+import 'package:snowclient/data/model/chat_model.dart';
 import 'package:snowclient/data/model/contact_model.dart';
 import 'package:snowclient/data/model/login_model.dart';
 import 'package:snowclient/data/model/base_model.dart';
+import 'package:snowclient/data/model/message_model.dart';
 
 class ModelManager {
   static ModelManager _instance;
@@ -14,19 +15,23 @@ class ModelManager {
     if (_instance == null) {
       _instance = ModelManager._();
       LoginModel loginModel = LoginModel();
-      _instance.register(loginModel.runtimeType.toString(), loginModel);
+      _instance.register(loginModel);
     }
     return _instance;
   }
 
   void init() {
     ContactModel contactModel = ContactModel();
-    register(contactModel.runtimeType.toString(), ContactModel());
+    ChatModel chatModel = ChatModel();
+    MessageModel messageModel = MessageModel();
+    register(contactModel);
+    register(chatModel);
+    register(messageModel);
     SLog.i("ModelManager init success");
   }
 
-  void register(String type, BaseModel model) {
-    _models[type] = model;
+  void register(BaseModel model) {
+    _models[model.runtimeType.toString()] = model;
   }
 
   T getModel<T>() {

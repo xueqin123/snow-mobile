@@ -1,3 +1,4 @@
+import 'package:imlib/utils/s_log.dart';
 import 'package:snowclient/data/db/dao/dao.dart';
 import 'package:snowclient/data/db/db_helper.dart';
 import 'package:snowclient/data/entity/user_entity.dart';
@@ -5,7 +6,11 @@ import 'package:snowclient/generated/json/base/json_convert_content.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 
 class UserDao extends Dao {
-  UserDao(Database database) : super(database);
+
+  UserEntity currentUser = UserEntity();
+
+  UserDao(Database database, String currentUid) : super(database, currentUid);
+
 
   Future<List<UserEntity>> getAllUserList() async {
     List<Map<String, dynamic>> map = await database.rawQuery("SELECT * FROM ${DBHelper.TABLE_USER}", null);
@@ -25,9 +30,13 @@ class UserDao extends Dao {
   }
 
   Future saveUserList(List<UserEntity> userList) async {
-    if (userList == null) return;
+    SLog.i("saveUserList() currentUid:$currentUid");
+    if (userList == null||userList.isEmpty) return;
     Batch batch = database.batch();
     userList.forEach((it) {
+      if(it.uid == currentUid){
+        currentUser = it;
+      }
       batch.rawInsert(
           "INSERT OR REPLACE INTO ${DBHelper.TABLE_USER}"
           " (${DBHelper.TABLE_USER_COLUMN_UID},"
@@ -43,4 +52,5 @@ class UserDao extends Dao {
     });
     await batch.commit();
   }
+
 }
