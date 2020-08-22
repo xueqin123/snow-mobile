@@ -8,7 +8,7 @@ class TextMessage extends CustomMessage {
 
   @override
   decode(Map<String, dynamic> json) {
-    content = json["content"];
+    content = json["text"];
   }
 
   @override
@@ -20,6 +20,7 @@ class TextMessage extends CustomMessage {
 }
 
 Widget buildTextMessageWidget(CustomMessage customMessage) {
+  TextMessage textMessage = customMessage;
   return Container(
     height: 35,
     decoration: ShapeDecoration(
@@ -30,7 +31,7 @@ Widget buildTextMessageWidget(CustomMessage customMessage) {
     child: Align(
       alignment: Alignment.center,
       child: Text(
-        customMessage.content,
+        textMessage.content,
         style: TextStyle(color: Colors.white, fontSize: 20),
         textAlign: TextAlign.center,
       ),

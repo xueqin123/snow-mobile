@@ -11,6 +11,8 @@ import 'package:imlib/core/outbound/outbound_encoder.dart';
 import 'package:imlib/data/db/dao/snow_im_dao_manager.dart';
 import 'package:imlib/data/db/model/snow_conversation_model.dart';
 import 'package:imlib/data/db/model/model_manager.dart';
+import 'package:imlib/data/db/model/snow_im_model.dart';
+import 'package:imlib/data/db/model/snow_message_model.dart';
 import 'package:imlib/data/db/snow_im_db_helper.dart';
 import 'package:imlib/imlib.dart';
 import 'package:imlib/message/custom_message.dart';
@@ -94,8 +96,9 @@ class SnowIMContext {
       _sendLogin(token, selfUid);
     }
   }
+
   //connect 之前先init
-  init(String uid) async{
+  init(String uid) async {
     _initDB(uid);
   }
 
@@ -150,10 +153,12 @@ class SnowIMContext {
     SLog.i("sendCustomMessage: ${customMessage.type}");
     Int64 cid = SnowIMUtils.generateCid();
     customMessage.cid = cid.toInt();
-    customMessage.status = SendStatus.SENDING;
-    sendBlock(SendStatus.SENDING, customMessage);
     addWaitAck(cid, sendBlock);
     _outHead.encodeSend(this, customMessage);
+  }
+
+  onSendStatusChanged(SendStatus status, CustomMessage customMessage) {
+    _waitAckMap[Int64(customMessage.cid)](status,customMessage);
   }
 
   addInBoundHandler(InboundHandler inboundHandler) {
@@ -204,16 +209,6 @@ class SnowIMContext {
   }
 
   onMessageAck(Int64 cid, Code code) {
-    SendBlock block = _waitAckMap[cid];
-    if (block == null) {
-      return;
-    }
-    //to do
-    if (code == Code.SUCCESS) {
-//      block(SendStatus.SUCCESS,CustomMessage());
-    } else {
-//      block(SendStatus.FAILED,CustomMessage);
-    }
     _waitAckMap.remove(cid);
   }
 }

@@ -21,6 +21,7 @@ class MessageModel extends BaseModel {
   }
 
   StreamController<List<CustomMessage>> getMessageController(String targetId, ConversationType conversationType) {
+    map.clear();
     MessageNotifier messageNotifier = MessageNotifier(targetId);
     map[targetId] = messageNotifier;
     SnowIMLib.getHistoryMessage(targetId, conversationType, 0, 20).then((value) => messageNotifier.onHistory(value));
@@ -30,7 +31,7 @@ class MessageModel extends BaseModel {
   sendTextMessage(String targetId, String text) {
     TextMessage textMessage = TextMessage(content: text);
     SnowIMLib.sendSingleMessage(targetId, textMessage, block: (status, customMessage) {
-      map[targetId].onSend(customMessage);
+      map[targetId].onSend(status, customMessage);
     });
   }
 }
@@ -39,9 +40,24 @@ class MessageNotifier extends Notifier<List<CustomMessage>> {
   String targetId;
   List<CustomMessage> data = List();
 
-  onSend(CustomMessage customMessage) {
-    SLog.i("MessageNotifier onSend() $customMessage");
-    data.add(customMessage);
+  onSend(SendStatus status, CustomMessage customMessage) {
+    SLog.i("MessageNotifier onSend() $status");
+    if (status == SendStatus.SENDING) {
+      data.add(customMessage);
+    } else {
+      for (CustomMessage element in data) {
+        element.id = customMessage.id;
+        element.uid = customMessage.uid;
+        element.cid = customMessage.cid;
+        element.type = customMessage.type;
+        element.targetId = customMessage.targetId;
+        element.conversationType = customMessage.conversationType;
+        element.time = customMessage.time;
+        element.direction = customMessage.direction;
+        element.status = customMessage.status;
+        break;
+      }
+    }
     post();
   }
 
