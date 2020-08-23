@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:imlib/imlib.dart';
 import 'package:provider/provider.dart';
 import 'package:snowclient/pages/message/message_page.dart';
+import 'package:snowclient/uitls/CommonUtils.dart';
 import 'chat_item_entity.dart';
 import 'chat_view_model.dart';
 
@@ -58,9 +59,29 @@ class ChatState extends State<ChatStatefulPage> {
             ),
             Expanded(
               child: Stack(children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(data[index].chatName),
+                Column(
+                  children: [
+                    Container(
+                      height: 30,
+                      child: Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text(data[index].chatName),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Text(CommonUtils.dateFormat(data[index].lastTime)),
+                          )
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                        child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(data[index].lastContent),
+                    ))
+                  ],
                 ),
                 Align(
                   alignment: Alignment.bottomRight,
@@ -80,6 +101,6 @@ class ChatState extends State<ChatStatefulPage> {
   void _onItemClick(int index) {
     SLog.i("onClick index = $index");
     ChatItemEntity itemEntity = data[index];
-    Navigator.push(context, MaterialPageRoute(builder: (context) => MessagePage(itemEntity.targetId,itemEntity.chatType)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => MessagePage(itemEntity.targetId, itemEntity.chatType)));
   }
 }

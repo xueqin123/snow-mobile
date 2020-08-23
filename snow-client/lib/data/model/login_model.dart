@@ -62,5 +62,6 @@ class LoginModel extends BaseModel {
   _initMessages(String uid, String token) async{
     SnowIMLib.registerMessage(TextMessage, buildEmptyTextMessage);
     MessageWidgetManager.getInstance().registerMessageWidgetProvider(TextMessage, buildTextMessageWidget);
+    MessageWidgetManager.getInstance().registerConversationContentProvider(TextMessage, buildTextLast);
   }
 }

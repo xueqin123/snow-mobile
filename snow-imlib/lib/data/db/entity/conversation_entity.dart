@@ -10,8 +10,8 @@ class Conversation {
   String lastUid;
   String lastType;
   String lastContent;
-  String lastTime;
-  String time;
+  int lastTime;
+  int time;
 
   String getUidListString() {
     String uids = "";

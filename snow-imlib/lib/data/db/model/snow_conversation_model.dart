@@ -14,10 +14,7 @@ class SnowConversationModel extends SnowIMModel {
   // ignore: close_sinks
   StreamController<List<Conversation>> _conversationListController;
   SnowConversationModel(){
-    _conversationListController = StreamController(onListen: () async {
-      SLog.i("_onStartListen()");
-      _notifyConversationChange();
-    });
+    _conversationListController = StreamController();
   }
 
   StreamController<List<Conversation>> getConversationController() {

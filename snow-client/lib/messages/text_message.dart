@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:imlib/message/custom_message.dart';
+import 'package:imlib/utils/s_log.dart';
 
 class TextMessage extends CustomMessage {
   String text;
@@ -37,6 +40,11 @@ Widget buildTextMessageWidget(CustomMessage customMessage) {
       ),
     ),
   );
+}
+
+String buildTextLast(String lastContent){
+  SLog.i("buildTextLast lastContent: $lastContent");
+  return jsonDecode(lastContent)["text"];
 }
 
 TextMessage buildEmptyTextMessage() {

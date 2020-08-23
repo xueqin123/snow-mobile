@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:imlib/data/db/dao/snow_im_dao.dart';
 import 'package:imlib/data/db/entity/conversation_entity.dart';
 import 'package:imlib/data/db/snow_im_db_helper.dart';
@@ -75,8 +77,8 @@ class SnowIMConversationDao extends SnowIMDao {
     temp.lastUid = conversationInfo.lastContent.uid;
     temp.lastType = conversationInfo.lastContent.type;
     temp.lastContent = conversationInfo.lastContent.content;
-    temp.lastTime = conversationInfo.lastContent.time.toString();
-    temp.time = conversationInfo.time.toString();
+    temp.lastTime = conversationInfo.lastContent.time.toInt();
+    temp.time = conversationInfo.time.toInt();
     return temp;
   }
 

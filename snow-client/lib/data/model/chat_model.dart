@@ -7,6 +7,7 @@ import 'package:snowclient/data/db/dao/user_dao.dart';
 import 'package:snowclient/data/entity/user_entity.dart';
 import 'package:snowclient/data/model/base_model.dart';
 import 'package:snowclient/pages/chat/chat_item_entity.dart';
+import 'package:snowclient/pages/message/message_widet_manager.dart';
 
 class ChatModel extends BaseModel {
   UserDao userDao;
@@ -26,9 +27,8 @@ class ChatModel extends BaseModel {
 
   getChatController() {
     SLog.i("getChatController()");
-    chatListController = StreamController<List<ChatItemEntity>>(onListen: () {
-      chatListController.sink.add(data);
-    });
+    chatListController = StreamController<List<ChatItemEntity>>();
+    chatListController.add(data);
     return chatListController;
   }
 
@@ -38,7 +38,7 @@ class ChatModel extends BaseModel {
       ChatItemEntity chatItemEntity = ChatItemEntity();
       chatItemEntity.conversationId = chatEntity.conversationId;
       chatItemEntity.chatType = chatEntity.type;
-      chatItemEntity.lastContent = chatEntity.lastContent;
+      chatItemEntity.lastContent = MessageWidgetManager.getInstance().getConversationContentProvider(chatEntity.lastType)(chatEntity.lastContent);
       chatItemEntity.lastTime = chatEntity.lastTime;
       if (chatEntity.type == ConversationType.SINGLE) {
         String uid = chatEntity.uidList.firstWhere((element) => element != userDao.currentUser.uid);
