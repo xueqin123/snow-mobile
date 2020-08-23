@@ -8,24 +8,24 @@ import 'package:imlib/proto/message.pb.dart';
 
 class MessageAckHandler extends InboundHandler {
   @override
-  bool onRead(SnowIMContext context, SnowMessage snowMessage){
+  bool onRead(SnowIMContext context, SnowMessage snowMessage) {
     if (snowMessage.type == SnowMessage_Type.MessageAck) {
       MessageAck messageAck = snowMessage.messageAck;
-      _handleSendStatus(context,messageAck);
+      _handleSendStatus(context, messageAck);
       return true;
     }
     return false;
   }
 
-  _handleSendStatus(SnowIMContext context,MessageAck messageAck) async{
+  _handleSendStatus(SnowIMContext context, MessageAck messageAck) async {
     SnowMessageModel model = SnowIMModelManager.getInstance().getModel<SnowMessageModel>();
-    if(messageAck.code == Code.SUCCESS){
-      await model.updateSendMessage(messageAck.id.toInt(), SendStatus.SUCCESS, messageAck.cid.toInt());
+    if (messageAck.code == Code.SUCCESS) {
+      await model.updateSendMessage(messageAck.id.toInt(), messageAck.conversationId, SendStatus.SUCCESS, messageAck.cid.toInt());
       CustomMessage customMessage = await model.getCustomMessageById(messageAck.id.toInt());
       customMessage.cid = messageAck.cid.toInt();
       context.onSendStatusChanged(SendStatus.SUCCESS, customMessage);
-    }else{
-      await model.updateSendMessage(messageAck.id.toInt(), SendStatus.FAILED, messageAck.cid.toInt());
+    } else {
+      await model.updateSendMessage(messageAck.id.toInt(), messageAck.conversationId, SendStatus.FAILED, messageAck.cid.toInt());
       CustomMessage customMessage = await model.getCustomMessageById(messageAck.id.toInt());
       customMessage.cid = messageAck.cid.toInt();
       context.onSendStatusChanged(SendStatus.FAILED, customMessage);

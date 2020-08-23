@@ -53,8 +53,8 @@ class SnowMessageModel extends SnowIMModel {
     await messageDao.insertSendMessage(conversationId, customMessage);
   }
 
-  updateSendMessage(int messageId, SendStatus status, int cid) {
-    messageDao.updateSendMessage(messageId, status, cid);
+  updateSendMessage(int messageId,String conversationId, SendStatus status, int cid) {
+    messageDao.updateSendMessage(messageId,conversationId, status, cid);
   }
 
   Future<CustomMessage> getCustomMessageById(int messageId){

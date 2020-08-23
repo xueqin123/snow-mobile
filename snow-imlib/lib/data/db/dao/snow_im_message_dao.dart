@@ -52,18 +52,21 @@ class SnowIMMessageDao extends SnowIMDao {
         [it.cid, it.uid, conversationId, it.type, jsonEncode(it.encode()), it.time, it.status.index]);
   }
 
-  updateSendMessage(int messageId, SendStatus status, int cid) async {
+  updateSendMessage(int messageId, String conversationId, SendStatus status, int cid) async {
     await database.rawUpdate(
         "UPDATE ${SnowIMDBHelper.TABLE_MESSAGE}"
         " SET "
         " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_ID} = ?,"
+        " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_CONVERSATION_ID} = ?,"
         " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_STATUS} = ?"
         " WHERE "
         " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_ID} = ?",
-        [messageId, status.index, cid]);
+        [messageId, conversationId, status.index, cid]);
   }
 
   Future<List<CustomMessage>> getCustomMessageList(String conversationId, int beginId) async {
+    SLog.i("getCustomMessageList conversationId: $conversationId");
+
     List<Map<String, dynamic>> mapList;
     if (beginId > 0) {
       mapList = await database.rawQuery(
@@ -81,18 +84,16 @@ class SnowIMMessageDao extends SnowIMDao {
           "ORDER BY ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_ID}  DESC",
           [conversationId]);
     }
-
+    SLog.i("getCustomMessageList mapList: ${mapList.length}");
     return mapList.map((e) => _convertCustomMessage(e)).toList();
   }
 
-  Future<CustomMessage> getCustomMessageByMessageId(int messageId) async{
-    SLog.i("getCustomMessageByMessageId messageId: $messageId");
+  Future<CustomMessage> getCustomMessageByMessageId(int messageId) async {
     List<Map<String, dynamic>> maps = await database.rawQuery(
         "SELECT * FROM ${SnowIMDBHelper.TABLE_MESSAGE}"
         " WHERE ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_ID} = ?",
         [messageId]);
-    SLog.i("getCustomMessageByMessageId maps.length: ${maps.length}");
-    if(maps == null || maps.isEmpty){
+    if (maps == null || maps.isEmpty) {
       return null;
     }
     Map<String, dynamic> map = maps.first;
@@ -101,12 +102,13 @@ class SnowIMMessageDao extends SnowIMDao {
 
   CustomMessage _convertCustomMessage(Map<String, dynamic> map) {
     String type = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_TYPE];
-    CustomMessage readyMessage = MessageManager.getInstance().getMessageProvider(type)();
+    var readyMessage = MessageManager.getInstance().getMessageProvider(type)();
     readyMessage.id = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_ID];
     readyMessage.uid = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_FROM_UID];
     readyMessage.type = type;
     readyMessage.targetId = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_CONVERSATION_ID];
-    readyMessage.decode(jsonDecode(map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_CONTENT]));
+    String content = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_CONTENT];
+    readyMessage.decode(jsonDecode(content));
     readyMessage.direction = _getDirection(readyMessage.uid);
     readyMessage.time = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_TIME];
     return readyMessage;

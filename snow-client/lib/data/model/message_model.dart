@@ -46,15 +46,12 @@ class MessageNotifier extends Notifier<List<CustomMessage>> {
       data.add(customMessage);
     } else {
       for (CustomMessage element in data) {
-        element.id = customMessage.id;
-        element.uid = customMessage.uid;
-        element.cid = customMessage.cid;
-        element.type = customMessage.type;
-        element.targetId = customMessage.targetId;
-        element.conversationType = customMessage.conversationType;
-        element.time = customMessage.time;
-        element.direction = customMessage.direction;
-        element.status = customMessage.status;
+        if(customMessage.cid == element.cid){
+          element.id = customMessage.id;
+          element.status = customMessage.status;
+          element.time = customMessage.time;
+          element.targetId = customMessage.targetId;
+        }
         break;
       }
     }
@@ -68,7 +65,7 @@ class MessageNotifier extends Notifier<List<CustomMessage>> {
   }
 
   onHistory(List<CustomMessage> historyList) {
-    SLog.i("MessageNotifier onHistory() $historyList");
+    SLog.i("MessageNotifier onHistory() ${historyList.length}");
     data.addAll(historyList);
     post();
   }

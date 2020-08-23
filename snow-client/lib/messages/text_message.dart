@@ -8,7 +8,7 @@ class TextMessage extends CustomMessage {
 
   @override
   decode(Map<String, dynamic> json) {
-    content = json["text"];
+    content = json["content"];
   }
 
   @override
