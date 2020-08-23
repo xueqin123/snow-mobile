@@ -36,6 +36,7 @@ class MessageViewModel with ChangeNotifier {
 
   sendTextMessage() {
     messageModel.sendTextMessage(targetId, _sendTextController.text);
+    _sendTextController.clear();
   }
 
 }
