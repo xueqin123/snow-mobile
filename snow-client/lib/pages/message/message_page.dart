@@ -52,8 +52,7 @@ class MessageState extends State<MessageStatefulWidget> {
       appBar: AppBar(
         title: Text("todo name"),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+      body: Stack(
         children: [
           ListView.builder(
             scrollDirection: Axis.vertical,

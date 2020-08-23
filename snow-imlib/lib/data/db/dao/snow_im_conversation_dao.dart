@@ -40,13 +40,25 @@ class SnowIMConversationDao extends SnowIMDao {
     return mapList.map((e) => _convertMap(e)).toList();
   }
 
-  Future<Conversation> getConversation(String targetId) async {
+  Future<Conversation> getSingleConversationTarget(String targetId) async {
     List<Map<String, dynamic>> mapList = await database.rawQuery(
         "SELECT * FROM "
         "${SnowIMDBHelper.TABLE_CONVERSATION} "
         "WHERE ${SnowIMDBHelper.TABLE_CONVERSATION_COLUMN_TYPE} = ? "
         "AND ${SnowIMDBHelper.TABLE_CONVERSATION_COLUMN_UID_LIST} LIKE ?",
-        [ConversationType.SINGLE.value, "%"+targetId+"%"]);
+        [ConversationType.SINGLE.value, "%" + targetId + "%"]);
+    if (mapList == null || mapList.isEmpty) return null;
+    var item = mapList.first;
+    return _convertMap(item);
+  }
+
+  Future<Conversation> getConversationByConversationId(String conversationId) async {
+    List<Map<String, dynamic>> mapList = await database.rawQuery(
+        "SELECT * FROM "
+        "${SnowIMDBHelper.TABLE_CONVERSATION} "
+        "WHERE "
+        "${SnowIMDBHelper.TABLE_CONVERSATION_COLUMN_CONVERSATION_ID} = ?",
+        [conversationId]);
     if (mapList == null || mapList.isEmpty) return null;
     var item = mapList.first;
     return _convertMap(item);

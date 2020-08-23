@@ -29,7 +29,7 @@ class SnowIMMessageDao extends SnowIMDao {
           " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_TIME},"
           " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_STATUS})"
           " VALUES(?,?,?,?,?,?,?)",
-          [it.id, it.uid, conversationId, it.type, it.content, it.time, SendStatus.SUCCESS.index]);
+          [it.id.toInt(), it.uid, conversationId, it.type, it.content, it.time.toInt(), SendStatus.SUCCESS.index]);
     });
     await batch.commit();
   }
@@ -81,7 +81,7 @@ class SnowIMMessageDao extends SnowIMDao {
           "SELECT * FROM ${SnowIMDBHelper.TABLE_MESSAGE} "
           "WHERE "
           "${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_CONVERSATION_ID} = ? "
-          "ORDER BY ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_ID}  DESC",
+          "ORDER BY ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_ID}  ASC",
           [conversationId]);
     }
     SLog.i("getCustomMessageList mapList: ${mapList.length}");

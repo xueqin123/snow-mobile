@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:imlib/core/snow_im_context.dart';
 import 'package:imlib/data/db/dao/snow_im_conversation_dao.dart';
 import 'package:imlib/data/db/dao/snow_im_dao_manager.dart';
 import 'package:imlib/data/db/dao/snow_im_message_dao.dart';
@@ -22,14 +23,19 @@ class SnowMessageModel extends SnowIMModel {
     SLog.i("conversationDao :$conversationDao");
   }
 
-  saveMessageContent(String conversationId, MessageContent messageContent) {
-    messageDao.saveSnowMessage(conversationId, messageContent);
+  saveReceivedMessageContent(String conversationId, MessageContent messageContent) async {
+    await messageDao.saveSnowMessage(conversationId, messageContent);
+    CustomMessage customMessage = await messageDao.getCustomMessageByMessageId(messageContent.id.toInt());
+    Conversation conversation = await conversationDao.getConversationByConversationId(customMessage.targetId);
+    if (conversation.type == ConversationType.SINGLE) {
+      customMessage.targetId = conversation.uidList.where((element) => element!=SnowIMContext.getInstance().selfUid).first;
+    }
+    SnowIMContext.getInstance().getCustomMessageController().sink.add(customMessage);
   }
 
-  saveSnowMessageList(String conversationId, List<MessageContent> messageContentList) {
-    messageDao.saveSnowMessageList(conversationId, messageContentList);
+  saveSnowMessageList(String conversationId, List<MessageContent> messageContentList) async {
+    await messageDao.saveSnowMessageList(conversationId, messageContentList);
   }
-
 
   Future<List<CustomMessage>> getSnowMessageList(String targetId, ConversationType conversationType, int beginId, int count) async {
     String conversationId = targetId;
@@ -38,7 +44,7 @@ class SnowMessageModel extends SnowIMModel {
       if (temp != null) {
         conversationId = temp;
       } else {
-        Conversation conversation = await conversationDao.getConversation(targetId);
+        Conversation conversation = await conversationDao.getSingleConversationTarget(targetId);
         if (conversation == null) {
           return List();
         }
@@ -53,11 +59,11 @@ class SnowMessageModel extends SnowIMModel {
     await messageDao.insertSendMessage(conversationId, customMessage);
   }
 
-  updateSendMessage(int messageId,String conversationId, SendStatus status, int cid) {
-    messageDao.updateSendMessage(messageId,conversationId, status, cid);
+  updateSendMessage(int messageId, String conversationId, SendStatus status, int cid) {
+    messageDao.updateSendMessage(messageId, conversationId, status, cid);
   }
 
-  Future<CustomMessage> getCustomMessageById(int messageId){
-   return messageDao.getCustomMessageByMessageId(messageId);
+  Future<CustomMessage> getCustomMessageById(int messageId) {
+    return messageDao.getCustomMessageByMessageId(messageId);
   }
 }
