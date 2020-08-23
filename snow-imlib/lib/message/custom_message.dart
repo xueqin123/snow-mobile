@@ -11,6 +11,8 @@ abstract class CustomMessage {
   int time;
   Direction direction;
   SendStatus status = SendStatus.SENDING;
+  String content;
+
   Map<String, dynamic> encode();
 
   decode(Map<String, dynamic> json);

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:imlib/core/snow_im_context.dart';
@@ -11,6 +12,8 @@ import 'package:imlib/imlib.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
 import 'package:imlib/utils/s_log.dart';
+import 'package:imlib/utils/snow_im_utils.dart';
+import 'package:fixnum/fixnum.dart';
 
 class SnowMessageModel extends SnowIMModel {
   SnowIMMessageDao messageDao;
@@ -59,8 +62,10 @@ class SnowMessageModel extends SnowIMModel {
     await messageDao.insertSendMessage(conversationId, customMessage);
   }
 
-  updateSendMessage(int messageId, String conversationId, SendStatus status, int cid) {
-    messageDao.updateSendMessage(messageId, conversationId, status, cid);
+ Future<CustomMessage> updateSendMessage(int messageId, String conversationId, SendStatus status, int cid) async{
+    await messageDao.updateSendMessage(messageId, conversationId, status, cid);
+    CustomMessage customMessage = await getCustomMessageById(messageId);
+    return customMessage;
   }
 
   Future<CustomMessage> getCustomMessageById(int messageId) {

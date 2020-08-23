@@ -17,7 +17,6 @@ class SnowAckHelper {
   SnowIMContext context;
   SnowMessageModel snowMessageModel;
   SnowConversationModel conversationModel;
-
   SnowAckHelper._();
 
   static SnowAckHelper getInstance() {

@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:imlib/message/custom_message.dart';
 
 class TextMessage extends CustomMessage {
-  String content;
+  String text;
 
-  TextMessage({this.content});
+  TextMessage({this.text});
 
   @override
   decode(Map<String, dynamic> json) {
-    content = json["content"];
+    text = json["text"];
   }
 
   @override
   Map<String, dynamic> encode() {
     Map<String, dynamic> json = Map();
-    json["content"] = content;
+    json["text"] = text;
     return json;
   }
 }
@@ -31,7 +31,7 @@ Widget buildTextMessageWidget(CustomMessage customMessage) {
     child: Align(
       alignment: Alignment.center,
       child: Text(
-        textMessage.content,
+        textMessage.text,
         style: TextStyle(color: Colors.white, fontSize: 20),
         textAlign: TextAlign.center,
       ),

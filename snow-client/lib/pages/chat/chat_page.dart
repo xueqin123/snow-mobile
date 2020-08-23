@@ -36,7 +36,7 @@ class ChatState extends State<ChatStatefulPage> {
   @override
   Widget build(BuildContext context) {
     data = Provider.of<List<ChatItemEntity>>(context);
-    SLog.i("ChatState build chat data: $data");
+    SLog.i("ChatState build chat data: ${data.length}");
     return ListView.builder(
       itemBuilder: _buildItem,
       itemCount: data.length,

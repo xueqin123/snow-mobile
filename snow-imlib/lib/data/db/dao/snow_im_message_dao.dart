@@ -39,6 +39,7 @@ class SnowIMMessageDao extends SnowIMDao {
   }
 
   insertSendMessage(String conversationId, CustomMessage it) async {
+    it.content = jsonEncode(it.encode());
     await database.rawInsert(
         "INSERT INTO ${SnowIMDBHelper.TABLE_MESSAGE}"
         " (${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_ID},"
@@ -49,7 +50,7 @@ class SnowIMMessageDao extends SnowIMDao {
         " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_TIME},"
         " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_STATUS})"
         " VALUES(?,?,?,?,?,?,?)",
-        [it.cid, it.uid, conversationId, it.type, jsonEncode(it.encode()), it.time, it.status.index]);
+        [it.cid, it.uid, conversationId, it.type, it.content, it.time, it.status.index]);
   }
 
   updateSendMessage(int messageId, String conversationId, SendStatus status, int cid) async {
@@ -74,7 +75,7 @@ class SnowIMMessageDao extends SnowIMDao {
           "WHERE "
           "${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_CONVERSATION_ID} = ? "
           "AND ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_ID} < ? "
-          "ORDER BY ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_ID}  DESC",
+          "ORDER BY ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_ID}  ASC",
           [conversationId, beginId]);
     } else {
       mapList = await database.rawQuery(
@@ -102,12 +103,13 @@ class SnowIMMessageDao extends SnowIMDao {
 
   CustomMessage _convertCustomMessage(Map<String, dynamic> map) {
     String type = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_TYPE];
-    var readyMessage = MessageManager.getInstance().getMessageProvider(type)();
+    CustomMessage readyMessage = MessageManager.getInstance().getMessageProvider(type)();
     readyMessage.id = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_ID];
     readyMessage.uid = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_FROM_UID];
     readyMessage.type = type;
     readyMessage.targetId = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_CONVERSATION_ID];
     String content = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_CONTENT];
+    readyMessage.content = content;
     readyMessage.decode(jsonDecode(content));
     readyMessage.direction = _getDirection(readyMessage.uid);
     readyMessage.time = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_TIME];

@@ -29,7 +29,7 @@ class MessageModel extends BaseModel {
   }
 
   sendTextMessage(String targetId, String text) {
-    TextMessage textMessage = TextMessage(content: text);
+    TextMessage textMessage = TextMessage(text: text);
     SnowIMLib.sendSingleMessage(targetId, textMessage, block: (status, customMessage) {
       map[targetId].onSend(status, customMessage);
     });

@@ -99,7 +99,7 @@ class SnowIMContext {
 
   //connect 之前先init
   init(String uid) async {
-    _initDB(uid);
+    await _initDB(uid);
   }
 
   _initDB(String uid) async {

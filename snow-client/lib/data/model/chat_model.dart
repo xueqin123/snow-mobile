@@ -9,34 +9,32 @@ import 'package:snowclient/data/model/base_model.dart';
 import 'package:snowclient/pages/chat/chat_item_entity.dart';
 
 class ChatModel extends BaseModel {
-  StreamController<List<ChatItemEntity>> chatListController;
   UserDao userDao;
-  List<ChatItemEntity> currentData = List<ChatItemEntity>();
-
+  List<ChatItemEntity> data = List<ChatItemEntity>();
   ChatModel() {
     userDao = DaoManager.getInstance().getDao<UserDao>();
-    SnowIMLib.getConversationStream().listen((event) {
-      _handlerData(event);
+    SnowIMLib.getConversationStream().listen((event) async {
+      List<ChatItemEntity> itemList = await _convertChatItemEntity(event);
+      data = itemList;
+      if(chatListController != null){
+        chatListController.sink.add(data);
+      }
     });
   }
 
-  _handlerData(List<Conversation> chatList) async {
-    List<ChatItemEntity> itemList = await _convertChatItemEntity(chatList);
-    currentData = itemList;
-    if (chatListController != null) {
-      chatListController.sink.add(currentData);
-    }
-  }
+  StreamController<List<ChatItemEntity>> chatListController;
 
   getChatController() {
-    chatListController = StreamController();
-    chatListController.sink.add(currentData);
+    SLog.i("getChatController()");
+    chatListController = StreamController<List<ChatItemEntity>>(onListen: () {
+      chatListController.sink.add(data);
+    });
     return chatListController;
   }
 
   Future<List<ChatItemEntity>> _convertChatItemEntity(List<Conversation> list) async {
     List<ChatItemEntity> result = List();
-    list.forEach((chatEntity) async {
+    for(Conversation chatEntity in list){
       ChatItemEntity chatItemEntity = ChatItemEntity();
       chatItemEntity.conversationId = chatEntity.conversationId;
       chatItemEntity.chatType = chatEntity.type;
@@ -48,13 +46,17 @@ class ChatModel extends BaseModel {
         print("_convertChatItemEntity currentUid = ${userDao.currentUser.uid}");
         chatItemEntity.targetId = uid;
         UserEntity userEntity = await userDao.getUserById(uid);
+        print("_convertChatItemEntity userEntity = $userEntity");
         chatItemEntity.portrait = userEntity.portrait;
         chatItemEntity.chatName = userEntity.name;
         UserEntity temp = userDao.currentUser.uid == chatEntity.lastUid ? userDao.currentUser : userEntity;
         chatItemEntity.lastName = temp.name;
-      } else if (chatEntity.type == ConversationType.GROUP) {}
+      } else if (chatEntity.type == ConversationType.GROUP) {
+
+      }
       result.add(chatItemEntity);
-    });
+    }
+    SLog.i("_convertChatItemEntity() result.length = ${result.length}");
     return result;
   }
 }

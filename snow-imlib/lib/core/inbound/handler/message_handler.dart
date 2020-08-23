@@ -1,6 +1,7 @@
 import 'package:imlib/core/inbound/inbound_handler.dart';
 import 'package:imlib/core/snow_im_context.dart';
 import 'package:imlib/data/db/model/model_manager.dart';
+import 'package:imlib/data/db/model/snow_conversation_model.dart';
 import 'package:imlib/data/db/model/snow_message_model.dart';
 import 'package:imlib/proto/message.pb.dart';
 
@@ -13,6 +14,7 @@ class MessageHandler extends InboundHandler {
       UpDownMessage upDownMessage = snowMessage.upDownMessage;
       MessageContent messageContent = upDownMessage.content;
       SnowIMModelManager.getInstance().getModel<SnowMessageModel>().saveReceivedMessageContent(upDownMessage.conversationId, messageContent);
+      SnowIMModelManager.getInstance().getModel<SnowConversationModel>().insertOrUpdateConversation(upDownMessage);
       context.sendSnowMessage(_buildMessageAck(upDownMessage));
       return true;
     }
