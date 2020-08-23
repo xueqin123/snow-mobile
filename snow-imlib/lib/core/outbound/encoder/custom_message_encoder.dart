@@ -18,6 +18,7 @@ class CustomMessageEncoder extends OutboundEncoder<CustomMessage> {
     customMessage.direction = Direction.SEND;
     customMessage.uid = context.selfUid;
     customMessage.time = SnowIMUtils.currentTime();
+    customMessage.id = customMessage.cid;
     SLog.v("CustomMessageEncoder encode()");
     MessageContent messageContent = MessageContent();
     messageContent.uid = context.selfUid;
@@ -33,8 +34,8 @@ class CustomMessageEncoder extends OutboundEncoder<CustomMessage> {
       upDownMessage.conversationId = customMessage.targetId;
     }
     context.onSendStatusChanged(SendStatus.SENDING, customMessage);
-    customMessage.status = SendStatus.PERSIST;
     await SnowIMModelManager.getInstance().getModel<SnowMessageModel>().insertSendMessage(customMessage.targetId, customMessage);
+    customMessage.status = SendStatus.PERSIST;
     context.onSendStatusChanged(SendStatus.PERSIST, customMessage);
     upDownMessage.groupId = "";
     upDownMessage.conversationType = customMessage.conversationType;

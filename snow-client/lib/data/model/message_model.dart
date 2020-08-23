@@ -45,8 +45,9 @@ class MessageNotifier extends Notifier<List<CustomMessage>> {
     if (status == SendStatus.SENDING) {
       data.add(customMessage);
     } else {
+      SLog.i("MessageNotifier onSend()  :${customMessage.id}");
       for (CustomMessage element in data) {
-        if(customMessage.cid == element.cid){
+        if (customMessage.cid == element.cid) {
           element.id = customMessage.id;
           element.status = customMessage.status;
           element.time = customMessage.time;
@@ -77,6 +78,10 @@ class MessageNotifier extends Notifier<List<CustomMessage>> {
     SLog.i("MessageNotifier post() data.length: ${data.length}");
     List<CustomMessage> d = List();
     d.addAll(data);
+    d.sort((a, b) => b.time - a.time);
+    d.forEach((element) {
+      SLog.i("element.time:${element.time}");
+    });
     streamController.sink.add(d);
   }
 }

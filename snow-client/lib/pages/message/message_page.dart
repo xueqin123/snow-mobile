@@ -52,14 +52,15 @@ class MessageState extends State<MessageStatefulWidget> {
       appBar: AppBar(
         title: Text("todo name"),
       ),
-      body: Stack(
+      body: Column(
         children: [
-          ListView.builder(
+          Expanded(child: ListView.builder(
+            reverse: true,
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             itemBuilder: (context, index) => _buildCustomMessageItemWidget(context, index),
             itemCount: data.length,
-          ),
+          )),
           _buildInputWidget(),
         ],
       ),
