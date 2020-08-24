@@ -26,32 +26,15 @@ class MessageAckHandler extends InboundHandler {
     if (messageAck.code == Code.SUCCESS) {
       CustomMessage customMessage = await model.updateSendMessage(messageAck.id.toInt(), messageAck.conversationId, SendStatus.SUCCESS, messageAck.cid.toInt());
       customMessage.cid = messageAck.cid.toInt();
-      context.onSendStatusChanged(SendStatus.SUCCESS, customMessage);
-      _insertOrUpdateConversation(messageAck.conversationId, customMessage);
+      context.onSendStatusChanged(SendStatus.SUCCESS,customMessage);
     } else {
       CustomMessage customMessage = await model.updateSendMessage(messageAck.id.toInt(), messageAck.conversationId, SendStatus.FAILED, messageAck.cid.toInt());
       customMessage.cid = messageAck.cid.toInt();
+      customMessage.targetId = messageAck.conversationId;
       context.onSendStatusChanged(SendStatus.FAILED, customMessage);
     }
     context.onMessageAck(messageAck.cid, messageAck.code);
   }
 
-  _insertOrUpdateConversation(String conversationId,CustomMessage customMessage){
-    MessageContent messageContent = MessageContent();
-    messageContent.content = customMessage.content;
-    messageContent.uid = customMessage.uid;
-    messageContent.type = customMessage.type;
-    messageContent.time = Int64(customMessage.time);
-    messageContent.id = Int64(customMessage.id);
-    UpDownMessage upDownMessage = UpDownMessage();
-    upDownMessage.id = Int64(customMessage.id);
-    upDownMessage.content= messageContent;
-    upDownMessage.conversationId = conversationId;
-    upDownMessage.targetUid = customMessage.targetId;
-    upDownMessage.conversationType = customMessage.conversationType;
-    upDownMessage.fromUid = customMessage.uid;
-    upDownMessage.cid = Int64(customMessage.cid);
-    SnowConversationModel conversationModel = SnowIMModelManager.getInstance().getModel<SnowConversationModel>();
-    conversationModel.insertOrUpdateConversation(upDownMessage);
-  }
+
 }

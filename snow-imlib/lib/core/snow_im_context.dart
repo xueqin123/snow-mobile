@@ -153,12 +153,20 @@ class SnowIMContext {
     SLog.i("sendCustomMessage: ${customMessage.type}");
     Int64 cid = SnowIMUtils.generateCid();
     customMessage.cid = cid.toInt();
-    addWaitAck(cid, sendBlock);
+    addWaitAck(cid, (status, sendingMessage) {
+      if (status == SendStatus.SUCCESS) {
+        String conversationId = sendingMessage.conversationId;
+        sendingMessage.targetId = customMessage.targetId;
+        ConversationType conversationType = customMessage.conversationType;
+        SnowIMModelManager.getInstance().getModel<SnowConversationModel>().insertOrUpdateConversationBySend(conversationId, conversationType, sendingMessage);
+      }
+      sendBlock(status, sendingMessage);
+    });
     _outHead.encodeSend(this, customMessage);
   }
 
-  onSendStatusChanged(SendStatus status, CustomMessage customMessage) {
-    _waitAckMap[Int64(customMessage.cid)](status, customMessage);
+  onSendStatusChanged(SendStatus status, CustomMessage sendingMessage) {
+    _waitAckMap[Int64(sendingMessage.cid)](status, sendingMessage);
   }
 
   addInBoundHandler(InboundHandler inboundHandler) {
@@ -199,11 +207,7 @@ class SnowIMContext {
 
   onLoginSuccess() async {
     SnowDataAckHelper.getInstance().init(this);
-    List<ConversationInfo> conversationInfoList = await SnowDataAckHelper.getInstance().fetchConversationList();
-    for (ConversationInfo conversationInfo in conversationInfoList) {
-      List<MessageContent> messageContentList = await SnowDataAckHelper.getInstance().fetchHistoryMessageList(conversationInfo.conversationId, 0);
-      SnowIMModelManager.getInstance().getModel<SnowMessageModel>().saveSnowMessageList(conversationInfo.conversationId, messageContentList);
-    }
+    SnowDataAckHelper.getInstance().fetchConversationList();
   }
 
   onLoginFailed(Code code, String msg) {}

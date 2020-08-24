@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:imlib/core/snow_im_context.dart';
+import 'package:imlib/data/db/dao/snow_im_conversation_dao.dart';
 import 'package:imlib/data/db/dao/snow_im_dao.dart';
+import 'package:imlib/data/db/dao/snow_im_dao_manager.dart';
 import 'package:imlib/data/db/model/model_manager.dart';
 import 'package:imlib/data/db/model/snow_conversation_model.dart';
 import 'package:imlib/imlib.dart';
@@ -30,7 +32,7 @@ class SnowIMMessageDao extends SnowIMDao {
           " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_STATUS},"
           " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_READ_STATUS})"
           " VALUES(?,?,?,?,?,?,?,?)",
-          [it.id.toInt(), it.uid, conversationId, it.type, it.content, it.time.toInt(), SendStatus.SUCCESS.index,ReadStatus.UNREAD.index]);
+          [it.id.toInt(), it.uid, conversationId, it.type, it.content, it.time.toInt(), SendStatus.SUCCESS.index, ReadStatus.UNREAD.index]);
     });
     await batch.commit();
   }
@@ -39,24 +41,24 @@ class SnowIMMessageDao extends SnowIMDao {
     await saveSnowMessageList(conversationId, <MessageContent>[messageContent]);
   }
 
-  updateMessageReadStatus(List<int> messageIdList) async{
-    if(messageIdList == null || messageIdList.isEmpty){
+  updateMessageReadStatus(List<int> messageIdList) async {
+    if (messageIdList == null || messageIdList.isEmpty) {
       return;
     }
-    String placeHolder = "'"+messageIdList.join("','")+"'";
+    String placeHolder = "'" + messageIdList.join("','") + "'";
     SLog.i("updateMessageReadStatus placeHolder:$placeHolder");
-    if(placeHolder.isEmpty) return;
+    if (placeHolder.isEmpty) return;
     await database.rawUpdate(
         "UPDATE ${SnowIMDBHelper.TABLE_MESSAGE}"
-            " SET "
-            " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_READ_STATUS} = ?"
-            " WHERE "
-            " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_ID} IN ($placeHolder)",
+        " SET "
+        " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_READ_STATUS} = ?"
+        " WHERE "
+        " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_ID} IN ($placeHolder)",
         [ReadStatus.READ.index]);
     SnowIMModelManager.getInstance().getModel<SnowConversationModel>().onUnReadCountChanged();
   }
 
-  insertSendMessage(String conversationId, CustomMessage it) async {
+  insertSendMessage(String toUserId, CustomMessage it) async {
     it.content = jsonEncode(it.encode());
     await database.rawInsert(
         "INSERT INTO ${SnowIMDBHelper.TABLE_MESSAGE}"
@@ -68,8 +70,8 @@ class SnowIMMessageDao extends SnowIMDao {
         " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_TIME},"
         " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_STATUS},"
         " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_READ_STATUS})"
-         " VALUES(?,?,?,?,?,?,?,?)",
-        [it.cid, it.uid, conversationId, it.type, it.content, it.time, it.status.index,ReadStatus.READ.index]);
+        " VALUES(?,?,?,?,?,?,?,?)",
+        [it.cid, it.uid, toUserId, it.type, it.content, it.time, it.status.index, ReadStatus.READ.index]);
   }
 
   updateSendMessage(int messageId, String conversationId, SendStatus status, int cid) async {
@@ -84,13 +86,15 @@ class SnowIMMessageDao extends SnowIMDao {
         [messageId, conversationId, status.index, cid]);
   }
 
-  Future<int> getUnReadMessageCount(String conversationId) async{
-    List<Map<String, dynamic>> list = await database.rawQuery("SELECT * FROM ${SnowIMDBHelper.TABLE_MESSAGE} "
+  Future<int> getUnReadMessageCount(String conversationId) async {
+    List<Map<String, dynamic>> list = await database.rawQuery(
+        "SELECT * FROM ${SnowIMDBHelper.TABLE_MESSAGE} "
         "WHERE "
         "${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_CONVERSATION_ID} = ? "
         "AND "
-        "${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_READ_STATUS} = ? ",[conversationId, ReadStatus.UNREAD.index]);
-    return list == null? 0:list.length;
+        "${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_READ_STATUS} = ? ",
+        [conversationId, ReadStatus.UNREAD.index]);
+    return list == null ? 0 : list.length;
   }
 
   Future<List<CustomMessage>> getCustomMessageList(String conversationId, int beginId) async {
@@ -134,7 +138,7 @@ class SnowIMMessageDao extends SnowIMDao {
     readyMessage.id = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_ID];
     readyMessage.uid = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_FROM_UID];
     readyMessage.type = type;
-    readyMessage.targetId = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_CONVERSATION_ID];
+    readyMessage.conversationId = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_CONVERSATION_ID];
     String content = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_CONTENT];
     readyMessage.content = content;
     readyMessage.decode(jsonDecode(content));

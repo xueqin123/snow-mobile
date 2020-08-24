@@ -14,7 +14,7 @@ class MessageHandler extends InboundHandler {
       UpDownMessage upDownMessage = snowMessage.upDownMessage;
       MessageContent messageContent = upDownMessage.content;
       SnowIMModelManager.getInstance().getModel<SnowMessageModel>().saveReceivedMessageContent(upDownMessage.conversationId, messageContent);
-      SnowIMModelManager.getInstance().getModel<SnowConversationModel>().insertOrUpdateConversation(upDownMessage);
+      SnowIMModelManager.getInstance().getModel<SnowConversationModel>().insertOrUpdateConversationByUpDown(upDownMessage);
       context.sendSnowMessage(_buildMessageAck(upDownMessage));
       return true;
     }

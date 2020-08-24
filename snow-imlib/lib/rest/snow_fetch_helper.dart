@@ -17,6 +17,7 @@ class SnowDataAckHelper {
   SnowIMContext context;
   SnowMessageModel snowMessageModel;
   SnowConversationModel conversationModel;
+
   SnowDataAckHelper._();
 
   static SnowDataAckHelper getInstance() {
@@ -46,7 +47,7 @@ class SnowDataAckHelper {
     return completer.future;
   }
 
-  Future<List<MessageContent>> fetchHistoryMessageList(String conversationId, int beginId) {
+  Future<List<MessageContent>> _fetchHistoryMessageList(String conversationId, int beginId) {
     Completer completer = Completer<List<MessageContent>>();
     Int64 cid = SnowIMUtils.generateCid();
     HisMessagesReq hisMessagesReq = HisMessagesReq();
@@ -65,7 +66,14 @@ class SnowDataAckHelper {
     waitAckHisConvMap[cid].complete(conversationList);
     waitAckHisConvMap.remove(cid);
     conversationModel.saveConversationList(conversationList);
+    _fetchAllMessage(conversationList);
     SLog.i("SnowSocketDataHelper onConversationListAck() rest length: ${waitAckHisConvMap.length}");
+  }
+
+  _fetchAllMessage(List<ConversationInfo> conversationList) async {
+    for (ConversationInfo conversationInfo in conversationList) {
+      _fetchHistoryMessageList(conversationInfo.conversationId, 0);
+    }
   }
 
   onHistoryMessageAck(Int64 cid, String conversationId, List<MessageContent> messageContentList) {

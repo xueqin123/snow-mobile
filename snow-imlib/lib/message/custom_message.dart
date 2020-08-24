@@ -7,6 +7,7 @@ abstract class CustomMessage {
   int cid;
   String type;
   String targetId;
+  String conversationId;
   ConversationType conversationType;
   int time;
   Direction direction;

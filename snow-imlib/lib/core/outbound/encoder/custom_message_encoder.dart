@@ -14,11 +14,11 @@ import '../../snow_im_context.dart';
 class CustomMessageEncoder extends OutboundEncoder<CustomMessage> {
   @override
   encodeSend(SnowIMContext context, CustomMessage customMessage) async{
+    customMessage.id = customMessage.cid;
+    customMessage.uid = context.selfUid;
     customMessage.status = SendStatus.SENDING;
     customMessage.direction = Direction.SEND;
-    customMessage.uid = context.selfUid;
     customMessage.time = SnowIMUtils.currentTime();
-    customMessage.id = customMessage.cid;
     SLog.v("CustomMessageEncoder encode()");
     MessageContent messageContent = MessageContent();
     messageContent.uid = context.selfUid;
@@ -34,8 +34,8 @@ class CustomMessageEncoder extends OutboundEncoder<CustomMessage> {
       upDownMessage.conversationId = customMessage.targetId;
     }
     context.onSendStatusChanged(SendStatus.SENDING, customMessage);
-    await SnowIMModelManager.getInstance().getModel<SnowMessageModel>().insertSendMessage(customMessage.targetId, customMessage);
     customMessage.status = SendStatus.PERSIST;
+    await SnowIMModelManager.getInstance().getModel<SnowMessageModel>().insertSendMessage(customMessage.targetId, customMessage);
     context.onSendStatusChanged(SendStatus.PERSIST, customMessage);
     upDownMessage.groupId = "";
     upDownMessage.conversationType = customMessage.conversationType;

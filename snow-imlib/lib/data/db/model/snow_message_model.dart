@@ -30,6 +30,7 @@ class SnowMessageModel extends SnowIMModel {
     Conversation conversation = await conversationDao.getConversationByConversationId(customMessage.targetId);
     if (conversation.type == ConversationType.SINGLE) {
       customMessage.targetId = conversation.uidList.where((element) => element != SnowIMContext.getInstance().selfUid).first;
+      customMessage.conversationId = conversation.conversationId;
     }
     SnowIMContext.getInstance().getCustomMessageController().sink.add(customMessage);
   }
@@ -60,8 +61,8 @@ class SnowMessageModel extends SnowIMModel {
     return await messageDao.getCustomMessageList(conversationId, beginId);
   }
 
-  Future insertSendMessage(String conversationId, CustomMessage customMessage) async {
-    await messageDao.insertSendMessage(conversationId, customMessage);
+  Future insertSendMessage(String toUserId, CustomMessage customMessage) async {
+    await messageDao.insertSendMessage(toUserId, customMessage);
   }
 
   Future<CustomMessage> updateSendMessage(int messageId, String conversationId, SendStatus status, int cid) async {

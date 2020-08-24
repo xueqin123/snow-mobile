@@ -6,6 +6,7 @@ import 'package:imlib/data/db/dao/snow_im_dao_manager.dart';
 import 'package:imlib/data/db/dao/snow_im_message_dao.dart';
 import 'package:imlib/data/db/model/snow_im_model.dart';
 import 'package:imlib/data/db/model/snow_message_model.dart';
+import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
 import 'package:imlib/utils/snow_im_utils.dart';
 import 'package:fixnum/fixnum.dart';
@@ -36,7 +37,27 @@ class SnowConversationModel extends SnowIMModel {
     _notifyConversationChange();
   }
 
-  insertOrUpdateConversation(UpDownMessage upDownMessage) async {
+
+  insertOrUpdateConversationBySend(String conversationId,ConversationType conversationType, CustomMessage customMessage){
+    MessageContent messageContent = MessageContent();
+    messageContent.content = customMessage.content;
+    messageContent.uid = customMessage.uid;
+    messageContent.type = customMessage.type;
+    messageContent.time = Int64(customMessage.time);
+    messageContent.id = Int64(customMessage.id);
+    UpDownMessage upDownMessage = UpDownMessage();
+    upDownMessage.id = Int64(customMessage.id);
+    upDownMessage.content= messageContent;
+    upDownMessage.conversationId = conversationId;
+    upDownMessage.targetUid = customMessage.targetId;
+    upDownMessage.conversationType = conversationType;
+    upDownMessage.fromUid = customMessage.uid;
+    upDownMessage.cid = Int64(customMessage.cid);
+    insertOrUpdateConversationByUpDown(upDownMessage);
+  }
+
+
+  insertOrUpdateConversationByUpDown(UpDownMessage upDownMessage) async {
     SnowIMConversationDao dao = SnowIMDaoManager.getInstance().getDao<SnowIMConversationDao>();
     ConversationInfo conversationInfo = ConversationInfo();
     conversationInfo.conversationId = upDownMessage.conversationId;
