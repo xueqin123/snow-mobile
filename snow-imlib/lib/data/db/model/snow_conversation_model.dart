@@ -3,7 +3,9 @@ import 'dart:collection';
 
 import 'package:imlib/data/db/dao/snow_im_conversation_dao.dart';
 import 'package:imlib/data/db/dao/snow_im_dao_manager.dart';
+import 'package:imlib/data/db/dao/snow_im_message_dao.dart';
 import 'package:imlib/data/db/model/snow_im_model.dart';
+import 'package:imlib/data/db/model/snow_message_model.dart';
 import 'package:imlib/proto/message.pb.dart';
 import 'package:imlib/utils/snow_im_utils.dart';
 import 'package:fixnum/fixnum.dart';
@@ -13,7 +15,8 @@ import '../../../imlib.dart';
 class SnowConversationModel extends SnowIMModel {
   // ignore: close_sinks
   StreamController<List<Conversation>> _conversationListController;
-  SnowConversationModel(){
+
+  SnowConversationModel() {
     _conversationListController = StreamController();
   }
 
@@ -50,8 +53,16 @@ class SnowConversationModel extends SnowIMModel {
 
   _notifyConversationChange() async {
     SnowIMConversationDao dao = SnowIMDaoManager.getInstance().getDao<SnowIMConversationDao>();
+    SnowIMMessageDao messageDao = SnowIMDaoManager.getInstance().getDao<SnowIMMessageDao>();
     List<Conversation> result = await dao.getConversationAllList();
     SLog.i("_notifyConversationChange :${result.length}");
+    for (Conversation conversation in result) {
+      conversation.unReadCount = await messageDao.getUnReadMessageCount(conversation.conversationId);
+    }
     _conversationListController.sink.add(result);
+  }
+
+  onUnReadCountChanged() async {
+    _notifyConversationChange();
   }
 }

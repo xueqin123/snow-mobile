@@ -33,9 +33,6 @@ class MessageAckHandler extends InboundHandler {
       customMessage.cid = messageAck.cid.toInt();
       context.onSendStatusChanged(SendStatus.FAILED, customMessage);
     }
-
-
-
     context.onMessageAck(messageAck.cid, messageAck.code);
   }
 

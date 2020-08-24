@@ -8,5 +8,6 @@ class ChatItemEntity {
   String portrait;
   String lastName;
   String lastContent;
+  int unReadCount;
   int lastTime;
 }

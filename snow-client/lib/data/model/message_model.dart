@@ -61,6 +61,7 @@ class MessageNotifier extends Notifier<List<CustomMessage>> {
 
   onReceive(CustomMessage customMessage) {
     SLog.i("MessageNotifier onReceive() $customMessage");
+    SnowIMLib.updateMessageReadStatus(<int>[customMessage.id]);
     data.add(customMessage);
     post();
   }
@@ -68,6 +69,8 @@ class MessageNotifier extends Notifier<List<CustomMessage>> {
   onHistory(List<CustomMessage> historyList) {
     SLog.i("MessageNotifier onHistory() ${historyList.length}");
     data.addAll(historyList);
+    List<int> messageId = historyList.map((e) => e.id).toList();
+    SnowIMLib.updateMessageReadStatus(messageId);
     post();
   }
 

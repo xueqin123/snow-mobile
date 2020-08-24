@@ -12,6 +12,7 @@ class Conversation {
   String lastContent;
   int lastTime;
   int time;
+  int unReadCount;
 
   String getUidListString() {
     String uids = "";

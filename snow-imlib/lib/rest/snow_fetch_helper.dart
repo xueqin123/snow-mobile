@@ -9,19 +9,19 @@ import 'package:fixnum/fixnum.dart';
 import 'package:imlib/utils/s_log.dart';
 import 'package:imlib/utils/snow_im_utils.dart';
 
-class SnowAckHelper {
-  static SnowAckHelper _instance;
+class SnowDataAckHelper {
+  static SnowDataAckHelper _instance;
   Map<Int64, Completer<List<MessageContent>>> waitAckHisMsgMap = Map();
   Map<Int64, Completer<List<ConversationInfo>>> waitAckHisConvMap = Map();
 
   SnowIMContext context;
   SnowMessageModel snowMessageModel;
   SnowConversationModel conversationModel;
-  SnowAckHelper._();
+  SnowDataAckHelper._();
 
-  static SnowAckHelper getInstance() {
+  static SnowDataAckHelper getInstance() {
     if (_instance == null) {
-      _instance = SnowAckHelper._();
+      _instance = SnowDataAckHelper._();
     }
     return _instance;
   }

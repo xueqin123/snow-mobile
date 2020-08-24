@@ -17,7 +17,7 @@ typedef SendBlock = Function(SendStatus status, CustomMessage customMessage);
 typedef MessageProvider = CustomMessage Function();
 
 class SnowIMLib {
-  static init(String uid) async{
+  static init(String uid) async {
     await SnowIMContext.getInstance().init(uid);
   }
 
@@ -39,6 +39,10 @@ class SnowIMLib {
 
   static Future<List<CustomMessage>> getHistoryMessage(String targetId, ConversationType conversationType, int beginId, int count) {
     return SnowIMModelManager.getInstance().getModel<SnowMessageModel>().getSnowMessageList(targetId, conversationType, beginId, count);
+  }
+
+  static updateMessageReadStatus(List<int> messageIds) {
+    return SnowIMModelManager.getInstance().getModel<SnowMessageModel>().updateMessageReadStatus(messageIds);
   }
 
   static Stream<List<Conversation>> getConversationStream() {
@@ -68,3 +72,4 @@ class SnowIMLib {
 }
 
 enum SendStatus { SENDING, PERSIST, SUCCESS, FAILED }
+enum ReadStatus { UNREAD, READ }

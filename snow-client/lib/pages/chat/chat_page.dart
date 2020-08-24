@@ -4,6 +4,7 @@ import 'package:imlib/imlib.dart';
 import 'package:provider/provider.dart';
 import 'package:snowclient/pages/message/message_page.dart';
 import 'package:snowclient/uitls/CommonUtils.dart';
+import 'package:snowclient/uitls/widge/badge_widget.dart';
 import 'chat_item_entity.dart';
 import 'chat_view_model.dart';
 
@@ -55,7 +56,11 @@ class ChatState extends State<ChatStatefulPage> {
           children: [
             Padding(
               padding: EdgeInsets.all(16),
-              child: Icon(Icons.chat),
+              child:
+              BadgeWidget(
+                data[index].unReadCount,
+                anchor:  Icon(Icons.chat),
+              ),
             ),
             Expanded(
               child: Stack(children: [

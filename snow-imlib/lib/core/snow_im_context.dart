@@ -158,7 +158,7 @@ class SnowIMContext {
   }
 
   onSendStatusChanged(SendStatus status, CustomMessage customMessage) {
-    _waitAckMap[Int64(customMessage.cid)](status,customMessage);
+    _waitAckMap[Int64(customMessage.cid)](status, customMessage);
   }
 
   addInBoundHandler(InboundHandler inboundHandler) {
@@ -197,9 +197,13 @@ class SnowIMContext {
     sendSnowMessage(message);
   }
 
-  onLoginSuccess() {
-    SnowAckHelper.getInstance().init(this);
-    SnowAckHelper.getInstance().fetchConversationList();
+  onLoginSuccess() async {
+    SnowDataAckHelper.getInstance().init(this);
+    List<ConversationInfo> conversationInfoList = await SnowDataAckHelper.getInstance().fetchConversationList();
+    for (ConversationInfo conversationInfo in conversationInfoList) {
+      List<MessageContent> messageContentList = await SnowDataAckHelper.getInstance().fetchHistoryMessageList(conversationInfo.conversationId, 0);
+      SnowIMModelManager.getInstance().getModel<SnowMessageModel>().saveSnowMessageList(conversationInfo.conversationId, messageContentList);
+    }
   }
 
   onLoginFailed(Code code, String msg) {}

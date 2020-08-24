@@ -19,6 +19,9 @@ class LoginModel extends BaseModel {
   //账号密码登录
   Future<LoginUserInfo> loginByPassWord(String userName, String password) async {
     RspLoginEntity rspLoginEntity = await HttpManager.getInstance().getService<LoginService>().login(userName, password);
+    if(rspLoginEntity == null){
+      return null;
+    }
     String currentUid = rspLoginEntity.uid;
     String token = rspLoginEntity.token;
     SharedPreferences preferences = await SharedPreferences.getInstance();

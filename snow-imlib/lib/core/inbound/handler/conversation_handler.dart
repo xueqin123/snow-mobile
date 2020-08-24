@@ -11,7 +11,7 @@ class ConversationHandler extends InboundHandler {
       ConversationAck conversationAck = snowMessage.conversationAck;
       List<ConversationInfo> conversationInfoList = snowMessage.conversationAck.conversationList;
       SLog.i("ConversationHandler conversationInfoList.length :${conversationInfoList.length}");
-      SnowAckHelper.getInstance().onConversationListAck(conversationAck.id, conversationInfoList);
+      SnowDataAckHelper.getInstance().onConversationListAck(conversationAck.id, conversationInfoList);
       return true;
     } else {
       return false;

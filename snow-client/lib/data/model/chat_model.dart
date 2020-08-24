@@ -34,15 +34,16 @@ class ChatModel extends BaseModel {
 
   Future<List<ChatItemEntity>> _convertChatItemEntity(List<Conversation> list) async {
     List<ChatItemEntity> result = List();
-    for(Conversation chatEntity in list){
+    for(Conversation conversation in list){
       ChatItemEntity chatItemEntity = ChatItemEntity();
-      chatItemEntity.conversationId = chatEntity.conversationId;
-      chatItemEntity.chatType = chatEntity.type;
-      chatItemEntity.lastContent = MessageWidgetManager.getInstance().getConversationContentProvider(chatEntity.lastType)(chatEntity.lastContent);
-      chatItemEntity.lastTime = chatEntity.lastTime;
+      chatItemEntity.conversationId = conversation.conversationId;
+      chatItemEntity.chatType = conversation.type;
+      chatItemEntity.lastContent = MessageWidgetManager.getInstance().getConversationContentProvider(conversation.lastType)(conversation.lastContent);
+      chatItemEntity.lastTime = conversation.lastTime;
+      chatItemEntity.unReadCount = conversation.unReadCount;
       print("chatItemEntity.lastTime:${chatItemEntity.lastTime}");
-      if (chatEntity.type == ConversationType.SINGLE) {
-        String uid = chatEntity.uidList.firstWhere((element) => element != userDao.currentUser.uid);
+      if (conversation.type == ConversationType.SINGLE) {
+        String uid = conversation.uidList.firstWhere((element) => element != userDao.currentUser.uid);
         print("_convertChatItemEntity uid = $uid");
         print("_convertChatItemEntity currentUid = ${userDao.currentUser.uid}");
         chatItemEntity.targetId = uid;
@@ -50,9 +51,9 @@ class ChatModel extends BaseModel {
         print("_convertChatItemEntity userEntity = $userEntity");
         chatItemEntity.portrait = userEntity.portrait;
         chatItemEntity.chatName = userEntity.name;
-        UserEntity temp = userDao.currentUser.uid == chatEntity.lastUid ? userDao.currentUser : userEntity;
+        UserEntity temp = userDao.currentUser.uid == conversation.lastUid ? userDao.currentUser : userEntity;
         chatItemEntity.lastName = temp.name;
-      } else if (chatEntity.type == ConversationType.GROUP) {
+      } else if (conversation.type == ConversationType.GROUP) {
 
       }
       result.add(chatItemEntity);
