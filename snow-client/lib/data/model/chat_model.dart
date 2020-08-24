@@ -40,6 +40,7 @@ class ChatModel extends BaseModel {
       chatItemEntity.chatType = chatEntity.type;
       chatItemEntity.lastContent = MessageWidgetManager.getInstance().getConversationContentProvider(chatEntity.lastType)(chatEntity.lastContent);
       chatItemEntity.lastTime = chatEntity.lastTime;
+      print("chatItemEntity.lastTime:${chatItemEntity.lastTime}");
       if (chatEntity.type == ConversationType.SINGLE) {
         String uid = chatEntity.uidList.firstWhere((element) => element != userDao.currentUser.uid);
         print("_convertChatItemEntity uid = $uid");
