@@ -39,17 +39,6 @@ class SnowIMConversationModel extends SnowIMModel {
     return conversationDao.getConversationByConversationId(conversationId);
   }
 
-  Future<Conversation> getConversationByMessage(UpDownMessage upDownMessage) async{
-    if (conversation.type == ConversationType.SINGLE) {
-      if(conversation!=null){
-        customMessage.targetId = conversation.uidList.where((element) => element != SnowIMContext.getInstance().selfUid).first;
-        customMessage.conversationId = conversation.conversationId;
-      }else{
-
-      }
-    }
-  }
-
   Future<Conversation> getSingleConversationTarget(String targetId) async {
     return conversationDao.getSingleConversationTarget(targetId);
   }
