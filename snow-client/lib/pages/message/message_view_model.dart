@@ -30,8 +30,7 @@ class MessageViewModel with ChangeNotifier {
   }
 
   StreamController<List<CustomMessage>> getMessageController(String targetId, ConversationType conversationType) {
-    StreamController controller = messageModel.getMessageController(targetId, conversationType);
-    return controller;
+    return messageModel.getMessageController(targetId, conversationType);
   }
 
   sendTextMessage() {

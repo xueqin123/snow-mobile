@@ -80,7 +80,7 @@ class SnowDataAckHelper {
     SLog.i("SnowDataAckHelper messageContentList:${messageContentList.length} ");
     waitAckHisMsgMap[cid].complete(messageContentList);
     waitAckHisMsgMap.remove(cid);
-    snowMessageModel.saveSnowMessageList(conversationId, messageContentList);
+    snowMessageModel.saveSnowMessageList(conversationId, messageContentList,unReadCount);
     SLog.i("SnowSocketDataHelper onHistoryMessageAck() reset length: ${waitAckHisMsgMap.length}");
   }
 }

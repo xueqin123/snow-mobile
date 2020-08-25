@@ -9,29 +9,31 @@ import 'base_model.dart';
 import 'notifier.dart';
 
 class MessageModel extends BaseModel {
-  Map<String, MessageNotifier> map = Map();
+  MessageNotifier messageNotifier;
+  List<CustomMessage> missedMessage = List<CustomMessage>();
 
   MessageModel() {
     SnowIMLib.getCustomMessageStream().listen((event) {
-      MessageNotifier messageNotifier = map[event.targetId];
-      if (messageNotifier != null) {
+      if (messageNotifier != null && event.targetId == messageNotifier.targetId) {
         messageNotifier.onReceive(event);
       }
     });
   }
 
   StreamController<List<CustomMessage>> getMessageController(String targetId, ConversationType conversationType) {
-    map.clear();
-    MessageNotifier messageNotifier = MessageNotifier(targetId);
-    map[targetId] = messageNotifier;
-    SnowIMLib.getHistoryMessage(targetId, conversationType, 0, 20).then((value) => messageNotifier.onHistory(value));
+    messageNotifier = MessageNotifier(targetId);
+    SnowIMLib.getHistoryMessage(targetId, conversationType, 0, 20).then((value) => {messageNotifier.onHistory(value)});
     return messageNotifier.streamController;
+  }
+
+  _onCancel() {
+    SLog.i("MessageModel _onCancel()");
   }
 
   sendTextMessage(String targetId, String text) {
     TextMessage textMessage = TextMessage(text: text);
     SnowIMLib.sendSingleMessage(targetId, textMessage, block: (status, customMessage) {
-      map[targetId].onSend(status, customMessage);
+      messageNotifier.onSend(status, customMessage);
     });
   }
 }
@@ -61,7 +63,6 @@ class MessageNotifier extends Notifier<List<CustomMessage>> {
 
   onReceive(CustomMessage customMessage) {
     SLog.i("MessageNotifier onReceive() $customMessage");
-    SnowIMLib.updateMessageReadStatus(<int>[customMessage.id]);
     data.add(customMessage);
     post();
   }
@@ -69,8 +70,6 @@ class MessageNotifier extends Notifier<List<CustomMessage>> {
   onHistory(List<CustomMessage> historyList) {
     SLog.i("MessageNotifier onHistory() ${historyList.length}");
     data.addAll(historyList);
-    List<int> messageId = historyList.map((e) => e.id).toList();
-    SnowIMLib.updateMessageReadStatus(messageId);
     post();
   }
 
@@ -79,12 +78,15 @@ class MessageNotifier extends Notifier<List<CustomMessage>> {
   @override
   Future post() async {
     SLog.i("MessageNotifier post() data.length: ${data.length}");
+    if (streamController.isClosed) {
+      SLog.i("MessageNotifier post() streamController.isClosed: ${streamController.isClosed}");
+      return;
+    }
     List<CustomMessage> d = List();
     d.addAll(data);
     d.sort((a, b) => b.time - a.time);
-    d.forEach((element) {
-      SLog.i("element.time:${element.time}");
-    });
+    List<int> messageIds = d.map((e) => e.id).toList();
+    SnowIMLib.updateMessageReadStatus(messageIds);
     streamController.sink.add(d);
   }
 }

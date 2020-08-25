@@ -77,4 +77,4 @@ class SnowIMLib {
 }
 
 enum SendStatus { SENDING, PERSIST, SUCCESS, FAILED }
-enum ReadStatus { UNREAD, READ }
+enum ReadStatus { READ, UNREAD }

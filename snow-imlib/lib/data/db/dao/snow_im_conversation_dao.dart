@@ -42,7 +42,7 @@ class SnowIMConversationDao extends SnowIMDao {
     return mapList.map((e) => _convertMap(e)).toList();
   }
 
-  Future<Conversation> getSingleConversationTarget(String targetId) async {
+  Future<Conversation> getSingleConversationByTarget(String targetId) async {
     List<Map<String, dynamic>> mapList = await database.rawQuery(
         "SELECT * FROM "
         "${SnowIMDBHelper.TABLE_CONVERSATION} "

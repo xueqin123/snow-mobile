@@ -15,11 +15,19 @@ class SnowIMMessageDao extends SnowIMDao {
 
   saveMessage(SnowMessage snowMessage) {}
 
-  saveSnowMessageList(String conversationId, List<MessageContent> snowMessageList, ReadStatus status) async {
+  saveSnowMessageList(String conversationId, List<MessageContent> snowMessageList, int UnReadCount) async {
+    SLog.i("messagelist UnReadCount:$UnReadCount");
     Batch batch = database.batch();
+    snowMessageList.sort((a, b) => (b.id.toInt() - a.id.toInt()));
+    int index = 0;
     snowMessageList.forEach((it) {
+      index++;
+      ReadStatus readStatus = ReadStatus.READ;
+      if (index <= UnReadCount) {
+        readStatus = ReadStatus.UNREAD;
+      }
       batch.rawInsert(
-          "INSERT OR REPLACE INTO ${SnowIMDBHelper.TABLE_MESSAGE}"
+          "INSERT OR IGNORE INTO ${SnowIMDBHelper.TABLE_MESSAGE}"
           " (${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_ID},"
           " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_FROM_UID},"
           " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_CONVERSATION_ID},"
@@ -29,13 +37,24 @@ class SnowIMMessageDao extends SnowIMDao {
           " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_STATUS},"
           " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_READ_STATUS})"
           " VALUES(?,?,?,?,?,?,?,?)",
-          [it.id.toInt(), it.uid, conversationId, it.type, it.content, it.time.toInt(), SendStatus.SUCCESS.index, status.index]);
+          [it.id.toInt(), it.uid, conversationId, it.type, it.content, it.time.toInt(), SendStatus.SUCCESS.index, readStatus.index]);
     });
     await batch.commit();
   }
 
-  saveReceiveSnowMessage(String conversationId, MessageContent messageContent) async {
-    await saveSnowMessageList(conversationId, <MessageContent>[messageContent], ReadStatus.UNREAD);
+  saveReceiveSnowMessage(String conversationId, MessageContent it) async {
+    await database.rawInsert(
+        "INSERT OR REPLACE INTO ${SnowIMDBHelper.TABLE_MESSAGE}"
+        " (${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_ID},"
+        " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_FROM_UID},"
+        " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_CONVERSATION_ID},"
+        " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_TYPE},"
+        " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_CONTENT},"
+        " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_TIME},"
+        " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_STATUS},"
+        " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_READ_STATUS})"
+        " VALUES(?,?,?,?,?,?,?,?)",
+        [it.id.toInt(), it.uid, conversationId, it.type, it.content, it.time.toInt(), SendStatus.SUCCESS.index, ReadStatus.UNREAD.index]);
   }
 
   updateMessageReadStatus(List<int> messageIdList) async {

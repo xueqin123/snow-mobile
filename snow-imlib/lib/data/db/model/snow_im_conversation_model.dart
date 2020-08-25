@@ -46,8 +46,8 @@ class SnowIMConversationModel extends SnowIMModel {
     return conversationDao.getConversationByConversationId(conversationId);
   }
 
-  Future<Conversation> getSingleConversationTarget(String targetId) async {
-    return conversationDao.getSingleConversationTarget(targetId);
+  Future<Conversation> getSingleConversationByTarget(String targetId) async {
+    return conversationDao.getSingleConversationByTarget(targetId);
   }
 
   insertOrUpdateConversationBySend(String conversationId, ConversationType conversationType, CustomMessage customMessage) {

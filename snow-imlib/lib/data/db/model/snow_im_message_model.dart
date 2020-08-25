@@ -32,8 +32,8 @@ class SnowIMMessageModel extends SnowIMModel {
     SnowIMContext.getInstance().getCustomMessageController().sink.add(customMessage);
   }
 
-  saveSnowMessageList(String conversationId, List<MessageContent> messageContentList) async {
-    await messageDao.saveSnowMessageList(conversationId, messageContentList,ReadStatus.READ);
+  saveSnowMessageList(String conversationId, List<MessageContent> messageContentList,int unReadCount) async {
+    await messageDao.saveSnowMessageList(conversationId, messageContentList,unReadCount);
     conversationModel.onUnReadCountChanged();
   }
 
@@ -49,7 +49,7 @@ class SnowIMMessageModel extends SnowIMModel {
       if (temp != null) {
         conversationId = temp;
       } else {
-        Conversation conversation = await conversationModel.getSingleConversationTarget(targetId);
+        Conversation conversation = await conversationModel.getSingleConversationByTarget(targetId);
         if (conversation == null) {
           return List();
         }
