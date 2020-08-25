@@ -1,10 +1,7 @@
 import 'dart:convert';
+
 import 'package:imlib/core/snow_im_context.dart';
-import 'package:imlib/data/db/dao/snow_im_conversation_dao.dart';
 import 'package:imlib/data/db/dao/snow_im_dao.dart';
-import 'package:imlib/data/db/dao/snow_im_dao_manager.dart';
-import 'package:imlib/data/db/model/model_manager.dart';
-import 'package:imlib/data/db/model/snow_conversation_model.dart';
 import 'package:imlib/imlib.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/message/message_manager.dart';
@@ -18,7 +15,7 @@ class SnowIMMessageDao extends SnowIMDao {
 
   saveMessage(SnowMessage snowMessage) {}
 
-  saveSnowMessageList(String conversationId, List<MessageContent> snowMessageList) async {
+  saveSnowMessageList(String conversationId, List<MessageContent> snowMessageList, ReadStatus status) async {
     Batch batch = database.batch();
     snowMessageList.forEach((it) {
       batch.rawInsert(
@@ -32,13 +29,13 @@ class SnowIMMessageDao extends SnowIMDao {
           " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_STATUS},"
           " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_READ_STATUS})"
           " VALUES(?,?,?,?,?,?,?,?)",
-          [it.id.toInt(), it.uid, conversationId, it.type, it.content, it.time.toInt(), SendStatus.SUCCESS.index, ReadStatus.UNREAD.index]);
+          [it.id.toInt(), it.uid, conversationId, it.type, it.content, it.time.toInt(), SendStatus.SUCCESS.index, status.index]);
     });
     await batch.commit();
   }
 
   saveReceiveSnowMessage(String conversationId, MessageContent messageContent) async {
-    await saveSnowMessageList(conversationId, <MessageContent>[messageContent]);
+    await saveSnowMessageList(conversationId, <MessageContent>[messageContent], ReadStatus.UNREAD);
   }
 
   updateMessageReadStatus(List<int> messageIdList) async {
@@ -55,7 +52,6 @@ class SnowIMMessageDao extends SnowIMDao {
         " WHERE "
         " ${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_ID} IN ($placeHolder)",
         [ReadStatus.READ.index]);
-    SnowIMModelManager.getInstance().getModel<SnowConversationModel>().onUnReadCountChanged();
   }
 
   insertSendMessage(String toUserId, CustomMessage it) async {
@@ -94,6 +90,15 @@ class SnowIMMessageDao extends SnowIMDao {
         "AND "
         "${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_READ_STATUS} = ? ",
         [conversationId, ReadStatus.UNREAD.index]);
+    return list == null ? 0 : list.length;
+  }
+
+  Future<int> getTotalUnReadMessageCount() async {
+    List<Map<String, dynamic>> list = await database.rawQuery(
+        "SELECT * FROM ${SnowIMDBHelper.TABLE_MESSAGE} "
+        "WHERE "
+        "${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_READ_STATUS} = ? ",
+        [ReadStatus.UNREAD.index]);
     return list == null ? 0 : list.length;
   }
 

@@ -1,14 +1,10 @@
-import 'dart:ffi';
-
 import 'package:imlib/core/inbound/inbound_handler.dart';
 import 'package:imlib/core/snow_im_context.dart';
 import 'package:imlib/data/db/model/model_manager.dart';
-import 'package:imlib/data/db/model/snow_conversation_model.dart';
-import 'package:imlib/data/db/model/snow_message_model.dart';
+import 'package:imlib/data/db/model/snow_im_message_model.dart';
 import 'package:imlib/imlib.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
-import 'package:fixnum/fixnum.dart';
 
 class MessageAckHandler extends InboundHandler {
   @override
@@ -22,7 +18,7 @@ class MessageAckHandler extends InboundHandler {
   }
 
   _handleSendStatus(SnowIMContext context, MessageAck messageAck) async {
-    SnowMessageModel model = SnowIMModelManager.getInstance().getModel<SnowMessageModel>();
+    SnowIMMessageModel model = SnowIMModelManager.getInstance().getModel<SnowIMMessageModel>();
     if (messageAck.code == Code.SUCCESS) {
       CustomMessage customMessage = await model.updateSendMessage(messageAck.id.toInt(), messageAck.conversationId, SendStatus.SUCCESS, messageAck.cid.toInt());
       customMessage.cid = messageAck.cid.toInt();

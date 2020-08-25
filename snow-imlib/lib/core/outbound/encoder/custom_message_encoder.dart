@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:imlib/core/outbound/outbound_encoder.dart';
 import 'package:imlib/data/db/model/model_manager.dart';
-import 'package:imlib/data/db/model/snow_message_model.dart';
+import 'package:imlib/data/db/model/snow_im_message_model.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
 import 'package:imlib/utils/s_log.dart';
@@ -35,7 +35,7 @@ class CustomMessageEncoder extends OutboundEncoder<CustomMessage> {
     }
     context.onSendStatusChanged(SendStatus.SENDING, customMessage);
     customMessage.status = SendStatus.PERSIST;
-    await SnowIMModelManager.getInstance().getModel<SnowMessageModel>().insertSendMessage(customMessage.targetId, customMessage);
+    await SnowIMModelManager.getInstance().getModel<SnowIMMessageModel>().insertSendMessage(customMessage.targetId, customMessage);
     context.onSendStatusChanged(SendStatus.PERSIST, customMessage);
     upDownMessage.groupId = "";
     upDownMessage.conversationType = customMessage.conversationType;

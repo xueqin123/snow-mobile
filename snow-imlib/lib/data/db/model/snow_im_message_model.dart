@@ -1,33 +1,30 @@
 import 'dart:async';
-import 'dart:collection';
 
-import 'package:flutter/material.dart';
 import 'package:imlib/core/snow_im_context.dart';
-import 'package:imlib/data/db/dao/snow_im_conversation_dao.dart';
 import 'package:imlib/data/db/dao/snow_im_dao_manager.dart';
 import 'package:imlib/data/db/dao/snow_im_message_dao.dart';
 import 'package:imlib/data/db/entity/conversation_entity.dart';
+import 'package:imlib/data/db/model/model_manager.dart';
+import 'package:imlib/data/db/model/snow_im_conversation_model.dart';
 import 'package:imlib/data/db/model/snow_im_model.dart';
 import 'package:imlib/imlib.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
-import 'package:imlib/utils/s_log.dart';
 
-class SnowMessageModel extends SnowIMModel {
+class SnowIMMessageModel extends SnowIMModel {
   SnowIMMessageDao messageDao;
-  SnowIMConversationDao conversationDao;
+  SnowIMConversationModel conversationModel;
   Map<String, String> targetMap = Map();
 
-  SnowMessageModel() {
+  SnowIMMessageModel() {
     messageDao = SnowIMDaoManager.getInstance().getDao<SnowIMMessageDao>();
-    conversationDao = SnowIMDaoManager.getInstance().getDao<SnowIMConversationDao>();
-    SLog.i("conversationDao :$conversationDao");
+    conversationModel = SnowIMModelManager.getInstance().getModel<SnowIMConversationModel>();
   }
 
   saveReceivedMessageContent(String conversationId, MessageContent messageContent) async {
     await messageDao.saveReceiveSnowMessage(conversationId, messageContent);
     CustomMessage customMessage = await messageDao.getCustomMessageByMessageId(messageContent.id.toInt());
-    Conversation conversation = await conversationDao.getConversationByConversationId(customMessage.targetId);
+    Conversation conversation = await conversationModel.getConversationByConversationId(customMessage.conversationId);
     if (conversation.type == ConversationType.SINGLE) {
       customMessage.targetId = conversation.uidList.where((element) => element != SnowIMContext.getInstance().selfUid).first;
       customMessage.conversationId = conversation.conversationId;
@@ -36,11 +33,13 @@ class SnowMessageModel extends SnowIMModel {
   }
 
   saveSnowMessageList(String conversationId, List<MessageContent> messageContentList) async {
-    await messageDao.saveSnowMessageList(conversationId, messageContentList);
+    await messageDao.saveSnowMessageList(conversationId, messageContentList,ReadStatus.READ);
+    conversationModel.onUnReadCountChanged();
   }
 
   updateMessageReadStatus(List<int> messageIdList) async {
     await messageDao.updateMessageReadStatus(messageIdList);
+    conversationModel.onUnReadCountChanged();
   }
 
   Future<List<CustomMessage>> getSnowMessageList(String targetId, ConversationType conversationType, int beginId, int count) async {
@@ -50,7 +49,7 @@ class SnowMessageModel extends SnowIMModel {
       if (temp != null) {
         conversationId = temp;
       } else {
-        Conversation conversation = await conversationDao.getSingleConversationTarget(targetId);
+        Conversation conversation = await conversationModel.getSingleConversationTarget(targetId);
         if (conversation == null) {
           return List();
         }

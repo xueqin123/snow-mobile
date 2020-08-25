@@ -8,7 +8,8 @@ class HistoryMessageHandler extends InboundHandler {
   bool onRead(SnowIMContext context, SnowMessage snowMessage) {
     if (snowMessage.type == SnowMessage_Type.HisMessagesAck) {
       HisMessagesAck hisMessagesAck = snowMessage.hisMessagesAck;
-      SnowDataAckHelper.getInstance().onHistoryMessageAck(hisMessagesAck.id, hisMessagesAck.conversationId, hisMessagesAck.messageList);
+      int unReadCount = hisMessagesAck.unReadCount.toInt();
+      SnowDataAckHelper.getInstance().onHistoryMessageAck(hisMessagesAck.id, hisMessagesAck.conversationId, hisMessagesAck.messageList,unReadCount);
       return true;
     }
     return false;

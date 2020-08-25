@@ -9,10 +9,10 @@ import 'package:imlib/core/inbound/handler/history_message_handler.dart';
 import 'package:imlib/core/inbound/inbound_handler.dart';
 import 'package:imlib/core/outbound/outbound_encoder.dart';
 import 'package:imlib/data/db/dao/snow_im_dao_manager.dart';
-import 'package:imlib/data/db/model/snow_conversation_model.dart';
+import 'package:imlib/data/db/model/snow_im_conversation_model.dart';
 import 'package:imlib/data/db/model/model_manager.dart';
 import 'package:imlib/data/db/model/snow_im_model.dart';
-import 'package:imlib/data/db/model/snow_message_model.dart';
+import 'package:imlib/data/db/model/snow_im_message_model.dart';
 import 'package:imlib/data/db/snow_im_db_helper.dart';
 import 'package:imlib/imlib.dart';
 import 'package:imlib/message/custom_message.dart';
@@ -83,7 +83,7 @@ class SnowIMContext {
   }
 
   StreamController<List<Conversation>> getConversationListController() {
-    return SnowIMModelManager.getInstance().getModel<SnowConversationModel>().getConversationController();
+    return SnowIMModelManager.getInstance().getModel<SnowIMConversationModel>().getConversationController();
   }
 
   connect(String token) async {
@@ -158,7 +158,7 @@ class SnowIMContext {
         String conversationId = sendingMessage.conversationId;
         sendingMessage.targetId = customMessage.targetId;
         ConversationType conversationType = customMessage.conversationType;
-        SnowIMModelManager.getInstance().getModel<SnowConversationModel>().insertOrUpdateConversationBySend(conversationId, conversationType, sendingMessage);
+        SnowIMModelManager.getInstance().getModel<SnowIMConversationModel>().insertOrUpdateConversationBySend(conversationId, conversationType, sendingMessage);
       }
       sendBlock(status, sendingMessage);
     });

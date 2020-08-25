@@ -8,7 +8,7 @@ import 'dart:async';
 import 'package:imlib/core/snow_im_context.dart';
 import 'package:imlib/data/db/entity/conversation_entity.dart';
 import 'package:imlib/data/db/model/model_manager.dart';
-import 'package:imlib/data/db/model/snow_message_model.dart';
+import 'package:imlib/data/db/model/snow_im_message_model.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/message/message_manager.dart';
 import 'package:imlib/proto/message.pb.dart';
@@ -38,11 +38,11 @@ class SnowIMLib {
   }
 
   static Future<List<CustomMessage>> getHistoryMessage(String targetId, ConversationType conversationType, int beginId, int count) {
-    return SnowIMModelManager.getInstance().getModel<SnowMessageModel>().getSnowMessageList(targetId, conversationType, beginId, count);
+    return SnowIMModelManager.getInstance().getModel<SnowIMMessageModel>().getSnowMessageList(targetId, conversationType, beginId, count);
   }
 
   static updateMessageReadStatus(List<int> messageIds) {
-    return SnowIMModelManager.getInstance().getModel<SnowMessageModel>().updateMessageReadStatus(messageIds);
+    return SnowIMModelManager.getInstance().getModel<SnowIMMessageModel>().updateMessageReadStatus(messageIds);
   }
 
   static Stream<List<Conversation>> getConversationStream() {
