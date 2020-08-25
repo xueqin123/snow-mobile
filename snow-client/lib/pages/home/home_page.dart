@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:imlib/imlib.dart';
 import 'package:provider/provider.dart';
+import 'package:snowclient/data/model/homeModel.dart';
 import 'package:snowclient/pages/chat/chat_page.dart';
 import 'package:snowclient/pages/contacts/contact_page.dart';
 import 'package:snowclient/pages/discover/discover_page.dart';
@@ -16,11 +17,15 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SLog.i("HomePage build");
+    HomeViewModel homeViewModel = HomeViewModel();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => HomeViewModel(),
-        )
+          create: (_) => homeViewModel,
+        ),
+        StreamProvider.controller(
+            create: (_) => homeViewModel.getTotalUnReadCountController(),
+        initialData: UnreadCount(),)
       ],
       child: HomeStatefulPage(),
     );
@@ -45,6 +50,7 @@ class _HomeStatefulPageState extends State<HomeStatefulPage> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
+    UnreadCount unreadCount = Provider.of<UnreadCount>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).appName),
@@ -79,7 +85,10 @@ class _HomeStatefulPageState extends State<HomeStatefulPage> with SingleTickerPr
         child: TabBar(
             controller: _tabController,
             indicator: const BoxDecoration(),
-            tabs: [_buildTab(Icons.chat, S.of(context).pageHomeTabMessage), _buildTab(Icons.contacts, S.of(context).pageHomeTabContact), _buildTab(Icons.cloud_circle, S.of(context).pageHomeTabDiscover), _buildTab(Icons.trip_origin, S.of(context).pageHomeTabMine)]),
+            tabs: [_buildTab(Icons.chat, S.of(context).pageHomeTabMessage,unreadCount.MessageUnReadCount),
+              _buildTab(Icons.contacts, S.of(context).pageHomeTabContact,unreadCount.ContactUnReadCount),
+              _buildTab(Icons.cloud_circle, S.of(context).pageHomeTabDiscover,unreadCount.discoveryUnReadCount),
+              _buildTab(Icons.trip_origin, S.of(context).pageHomeTabMine,unreadCount.mineUnReadCount)]),
       ),
       floatingActionButton: IconButton(
         icon: Icon(Icons.star),
@@ -115,7 +124,7 @@ class _HomeStatefulPageState extends State<HomeStatefulPage> with SingleTickerPr
         ));
   }
 
-  Tab _buildTab(IconData iconData, String name) {
+  Tab _buildTab(IconData iconData, String name,int unReadCount) {
     return Tab(
       child: Column(
         children: [
@@ -123,7 +132,7 @@ class _HomeStatefulPageState extends State<HomeStatefulPage> with SingleTickerPr
             padding: const EdgeInsets.symmetric(vertical: 3.0),
           ),
           BadgeWidget(
-            _badgeCount,
+            unReadCount,
             anchor: Icon(iconData),
           ),
           Expanded(

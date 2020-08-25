@@ -8,6 +8,7 @@ import 'dart:async';
 import 'package:imlib/core/snow_im_context.dart';
 import 'package:imlib/data/db/entity/conversation_entity.dart';
 import 'package:imlib/data/db/model/model_manager.dart';
+import 'package:imlib/data/db/model/snow_im_conversation_model.dart';
 import 'package:imlib/data/db/model/snow_im_message_model.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/message/message_manager.dart';
@@ -47,6 +48,10 @@ class SnowIMLib {
 
   static Stream<List<Conversation>> getConversationStream() {
     return SnowIMContext.getInstance().getConversationListController().stream;
+  }
+
+  static Stream<int> getTotalUnReadCountStream() {
+    return SnowIMModelManager.getInstance().getModel<SnowIMConversationModel>().getTotalUnReadController().stream;
   }
 
   static sendSingleMessage(String targetId, CustomMessage customMessage, {SendBlock block}) {

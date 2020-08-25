@@ -1,6 +1,7 @@
 import 'package:imlib/imlib.dart';
 import 'package:snowclient/data/model/chat_model.dart';
 import 'package:snowclient/data/model/contact_model.dart';
+import 'package:snowclient/data/model/homeModel.dart';
 import 'package:snowclient/data/model/login_model.dart';
 import 'package:snowclient/data/model/base_model.dart';
 import 'package:snowclient/data/model/message_model.dart';
@@ -24,9 +25,11 @@ class ModelManager {
     ContactModel contactModel = ContactModel();
     ChatModel chatModel = ChatModel();
     MessageModel messageModel = MessageModel();
+    HomeModel homeModel = HomeModel();
     register(contactModel);
     register(chatModel);
     register(messageModel);
+    register(homeModel);
     SLog.i("ModelManager init success");
   }
 

@@ -32,6 +32,8 @@ class ChatModel extends BaseModel {
     return chatListController;
   }
 
+
+
   Future<List<ChatItemEntity>> _convertChatItemEntity(List<Conversation> list) async {
     List<ChatItemEntity> result = List();
     for(Conversation conversation in list){

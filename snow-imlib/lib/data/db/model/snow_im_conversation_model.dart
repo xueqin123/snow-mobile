@@ -14,15 +14,22 @@ import '../../../imlib.dart';
 class SnowIMConversationModel extends SnowIMModel {
   // ignore: close_sinks
   StreamController<List<Conversation>> _conversationListController;
+  // ignore: close_sinks
+  StreamController<int> _totalUnReadCountController;
   SnowIMConversationDao conversationDao;
 
   SnowIMConversationModel() {
     conversationDao = SnowIMDaoManager.getInstance().getDao<SnowIMConversationDao>();
     _conversationListController = StreamController();
+    _totalUnReadCountController = StreamController();
   }
 
   StreamController<List<Conversation>> getConversationController() {
     return _conversationListController;
+  }
+
+  StreamController<int> getTotalUnReadController(){
+    return _totalUnReadCountController;
   }
 
   saveConversationList(List<ConversationInfo> conversationInfList) async {
@@ -83,7 +90,10 @@ class SnowIMConversationModel extends SnowIMModel {
     for (Conversation conversation in result) {
       conversation.unReadCount = await messageDao.getUnReadMessageCount(conversation.conversationId);
     }
+    int totalUnReadCount = await messageDao.getTotalUnReadMessageCount();
+    SLog.i("_notifyConversationChange totalUnReadCount:$totalUnReadCount");
     _conversationListController.sink.add(result);
+    _totalUnReadCountController.sink.add(totalUnReadCount);
   }
 
   onUnReadCountChanged() async {
