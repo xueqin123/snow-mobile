@@ -26,10 +26,6 @@ class MessageModel extends BaseModel {
     return messageNotifier.streamController;
   }
 
-  _onCancel() {
-    SLog.i("MessageModel _onCancel()");
-  }
-
   sendTextMessage(String targetId, String text) {
     TextMessage textMessage = TextMessage(text: text);
     SnowIMLib.sendSingleMessage(targetId, textMessage, block: (status, customMessage) {

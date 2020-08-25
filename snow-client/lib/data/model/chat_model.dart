@@ -40,6 +40,7 @@ class ChatModel extends BaseModel {
       ChatItemEntity chatItemEntity = ChatItemEntity();
       chatItemEntity.conversationId = conversation.conversationId;
       chatItemEntity.chatType = conversation.type;
+      SLog.i("lastContent:${conversation.lastContent} latType:${conversation.lastType}");
       chatItemEntity.lastContent = MessageWidgetManager.getInstance().getConversationContentProvider(conversation.lastType)(conversation.lastContent);
       chatItemEntity.lastTime = conversation.lastTime;
       chatItemEntity.unReadCount = conversation.unReadCount;

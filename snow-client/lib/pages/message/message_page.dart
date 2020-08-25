@@ -4,6 +4,7 @@ import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
 import 'package:imlib/utils/s_log.dart';
 import 'package:provider/provider.dart';
+import 'package:snowclient/data/entity/user_entity.dart';
 import 'package:snowclient/generated/l10n.dart';
 
 import 'message_view_model.dart';
@@ -24,7 +25,12 @@ class MessagePage extends StatelessWidget {
           create: (_) => viewModel.getMessageController(targetId, conversationType),
           initialData: <CustomMessage>[],
         ),
+        StreamProvider.controller(create: (_) => viewModel.getUserController()),
         ChangeNotifierProvider(create: (_) => viewModel),
+        FutureProvider(
+          create: (_) => viewModel.getChatName(),
+          initialData: "",
+        )
       ],
       child: MessageStatefulWidget(),
     );
@@ -43,18 +49,22 @@ class MessageStatefulWidget extends StatefulWidget {
 class MessageState extends State<MessageStatefulWidget> {
   List<CustomMessage> data;
   MessageViewModel viewModel;
+  String chatName;
+
   @override
   Widget build(BuildContext context) {
     viewModel = Provider.of<MessageViewModel>(context);
     data = Provider.of<List<CustomMessage>>(context);
+    chatName = Provider.of<String>(context);
     SLog.i("MessageState data.length: ${data.length}");
     return Scaffold(
       appBar: AppBar(
-        title: Text("todo name"),
+        title: Text(chatName),
       ),
       body: Column(
         children: [
-          Expanded(child: ListView.builder(
+          Expanded(
+              child: ListView.builder(
             reverse: true,
             scrollDirection: Axis.vertical,
             shrinkWrap: true,

@@ -4,15 +4,17 @@ import 'package:imlib/data/db/dao/snow_im_dao.dart';
 import 'package:imlib/data/db/entity/conversation_entity.dart';
 import 'package:imlib/data/db/snow_im_db_helper.dart';
 import 'package:imlib/proto/message.pb.dart';
+import 'package:imlib/utils/s_log.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 
 class SnowIMConversationDao extends SnowIMDao {
   SnowIMConversationDao(Database database) : super(database);
 
   saveConversationList(List<ConversationInfo> conversationList) async {
-    List<Conversation> list = conversationList.map((e) => _convert(e)).toList();
+    List<Conversation> list = conversationList.map((e) => _convertConversation(e)).toList();
     Batch batch = database.batch();
     list.forEach((it) {
+      SLog.i("SnowIMConversationDao saveConversationList it.lastType:${it.lastType}");
       batch.rawInsert(
           "INSERT OR REPLACE INTO ${SnowIMDBHelper.TABLE_CONVERSATION}"
           " (${SnowIMDBHelper.TABLE_CONVERSATION_COLUMN_CONVERSATION_ID},"
@@ -32,14 +34,10 @@ class SnowIMConversationDao extends SnowIMDao {
     await batch.commit();
   }
 
-  saveConversation(ConversationInfo conversationInfo) async {
-    await saveConversationList(<ConversationInfo>[conversationInfo]);
-  }
-
   Future<List<Conversation>> getConversationAllList() async {
     List<Map<String, dynamic>> mapList = await database.rawQuery("SELECT * FROM ${SnowIMDBHelper.TABLE_CONVERSATION}", null);
     if (mapList == null) return null;
-    return mapList.map((e) => _convertMap(e)).toList();
+    return mapList.map((e) => _convertMap(e)).where((element) => element.readMsgId!=null).toList();
   }
 
   Future<Conversation> getSingleConversationByTarget(String targetId) async {
@@ -66,14 +64,15 @@ class SnowIMConversationDao extends SnowIMDao {
     return _convertMap(item);
   }
 
-  Conversation _convert(ConversationInfo conversationInfo) {
+  Conversation _convertConversation(ConversationInfo conversationInfo) {
+    SLog.i("SnowIMConversationDao _convertConversation ${conversationInfo.lastContent.type}");
     Conversation temp = Conversation();
     temp.conversationId = conversationInfo.conversationId;
     temp.type = conversationInfo.type;
     temp.uidList = conversationInfo.uidList;
     temp.groupId = conversationInfo.groupId;
-    temp.readMsgId = conversationInfo.readMsgId.toString();
-    temp.lastId = conversationInfo.lastContent.id.toString();
+    temp.readMsgId = conversationInfo.readMsgId.toInt();
+    temp.lastId = conversationInfo.lastContent.id.toInt();
     temp.lastUid = conversationInfo.lastContent.uid;
     temp.lastType = conversationInfo.lastContent.type;
     temp.lastContent = conversationInfo.lastContent.content;

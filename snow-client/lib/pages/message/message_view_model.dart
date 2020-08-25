@@ -29,6 +29,15 @@ class MessageViewModel with ChangeNotifier {
     return contactModel.getUserController(targetId);
   }
 
+  Future<String> getChatName() async {
+    if (chatType == ConversationType.SINGLE) {
+      UserEntity userEntity = await contactModel.getUserById(targetId);
+      return userEntity.name;
+    } else {
+      return "";
+    }
+  }
+
   StreamController<List<CustomMessage>> getMessageController(String targetId, ConversationType conversationType) {
     return messageModel.getMessageController(targetId, conversationType);
   }
@@ -37,5 +46,4 @@ class MessageViewModel with ChangeNotifier {
     messageModel.sendTextMessage(targetId, _sendTextController.text);
     _sendTextController.clear();
   }
-
 }

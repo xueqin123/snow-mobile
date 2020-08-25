@@ -5,8 +5,8 @@ class Conversation {
   ConversationType type;
   List<String> uidList;
   String groupId;
-  String readMsgId;
-  String lastId;
+  int readMsgId;
+  int lastId;
   String lastUid;
   String lastType;
   String lastContent;

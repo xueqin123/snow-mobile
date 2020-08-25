@@ -65,7 +65,7 @@ class SnowDataAckHelper {
   onConversationListAck(Int64 cid, List<ConversationInfo> conversationList) async {
     waitAckHisConvMap[cid].complete(conversationList);
     waitAckHisConvMap.remove(cid);
-    conversationModel.saveConversationList(conversationList);
+    await conversationModel.saveConversationList(conversationList);
     await _fetchAllMessage(conversationList);
     SLog.i("SnowSocketDataHelper onConversationListAck() rest length: ${waitAckHisConvMap.length}");
   }

@@ -58,6 +58,11 @@ class ContactModel extends BaseModel {
       element.post();
     });
   }
+
+  Future<UserEntity> getUserById(String uid) async {
+    UserDao userDao = DaoManager.getInstance().getDao<UserDao>();
+    return userDao.getUserById(uid);
+  }
 }
 
 class UserAllNotifier extends Notifier<List<UserEntity>> {
