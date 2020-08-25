@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:imlib/utils/s_log.dart';
 
 class HostHelper {
-  static const String _SOCKET_REQUEST = "http://172.24.80.188:8010/snow/admin/server/socket";
+  static const String _SOCKET_REQUEST = "http://172.24.81.52:8010/snow/admin/server/socket";
 
   Dio dio = Dio();
 

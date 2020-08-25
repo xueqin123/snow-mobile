@@ -22,7 +22,8 @@ class MessageHandler extends InboundHandler {
   _initConversationIfNeedAndSaveMessage(UpDownMessage upDownMessage) async {
     MessageContent messageContent = upDownMessage.content;
     await SnowIMModelManager.getInstance().getModel<SnowIMConversationModel>().insertOrUpdateConversationByUpDown(upDownMessage); //更新会话表
-    SnowIMModelManager.getInstance().getModel<SnowIMMessageModel>().saveReceivedMessageContent(upDownMessage.conversationId, messageContent); //保存消息
+    await SnowIMModelManager.getInstance().getModel<SnowIMMessageModel>().saveReceivedMessageContent(upDownMessage.conversationId, messageContent); //保存消息
+    SnowIMModelManager.getInstance().getModel<SnowIMConversationModel>().onUnReadCountChanged();
   }
 
   SnowMessage _buildMessageAck(UpDownMessage upDownMessage) {
