@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "appName" : MessageLookupByLibrary.simpleMessage("SnowMsg"),
     "contactProfile" : MessageLookupByLibrary.simpleMessage("contact profile"),
     "contactProfileSendMessage" : MessageLookupByLibrary.simpleMessage("send message"),
+    "contactSelect" : MessageLookupByLibrary.simpleMessage("select contact"),
     "loginButton" : MessageLookupByLibrary.simpleMessage("login"),
     "loginError" : MessageLookupByLibrary.simpleMessage("Phone/password input error"),
     "loginHttpError" : MessageLookupByLibrary.simpleMessage("login network failed"),

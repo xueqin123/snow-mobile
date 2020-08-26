@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "appName" : MessageLookupByLibrary.simpleMessage("雪信"),
     "contactProfile" : MessageLookupByLibrary.simpleMessage("联系人详情"),
     "contactProfileSendMessage" : MessageLookupByLibrary.simpleMessage("发消息"),
+    "contactSelect" : MessageLookupByLibrary.simpleMessage("选择联系人"),
     "loginButton" : MessageLookupByLibrary.simpleMessage("登录"),
     "loginError" : MessageLookupByLibrary.simpleMessage("手机号，或者密码填写错误"),
     "loginHttpError" : MessageLookupByLibrary.simpleMessage("网络原因登录失败"),

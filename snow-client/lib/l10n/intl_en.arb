@@ -15,6 +15,6 @@
   "loginSuccess": "login success",
   "contactProfile": "contact profile",
   "contactProfileSendMessage": "send message",
-  "messageSend": "send"
-
+  "messageSend": "send",
+  "contactSelect": "select contact"
 }

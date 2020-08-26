@@ -15,5 +15,6 @@
   "loginSuccess": "登录成功",
   "contactProfile": "联系人详情",
   "contactProfileSendMessage": "发消息",
-  "messageSend": "发送"
+  "messageSend": "发送",
+  "contactSelect": "选择联系人"
 }

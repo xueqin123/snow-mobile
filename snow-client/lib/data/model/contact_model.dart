@@ -26,6 +26,10 @@ class ContactModel extends BaseModel {
     return notifier.streamController;
   }
 
+  Future<List<UserEntity>> getAllUserList(){
+    return _userDao.getAllUserList();
+  }
+
   StreamController<UserEntity> getUserController(String uid) {
     UserNotifier notifier = UserNotifier(uid);
     _notifierList.add(notifier);
