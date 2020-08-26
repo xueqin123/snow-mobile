@@ -9,22 +9,26 @@ class ContactSelectViewModel with ChangeNotifier {
 
   ContactSelectViewModel() {
     contactModel = ModelManager.getInstance().getModel<ContactModel>();
-    getAllCheckableUserList();
+    loadUserList();
   }
 
-  getAllCheckableUserList() async {
+  loadUserList() async {
     List<UserEntity> userList = await contactModel.getAllUserList();
+    print("ContactSelectViewModel userList.length:${userList.length}");
     checkUserList = userList.map((e) => _buildCheckWrapper(e)).toList();
     notifyListeners();
   }
 
-  _buildCheckWrapper(UserEntity userEntity) {
+  CheckUserWrapper _buildCheckWrapper(UserEntity userEntity) {
     return CheckUserWrapper(userEntity);
   }
 
   trigger(int index) {
     checkUserList[index].isCheck = !checkUserList[index].isCheck;
     notifyListeners();
+  }
+  getSelectIds(){
+   checkUserList.where((element) => element.isCheck).length;
   }
 }
 

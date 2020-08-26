@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:snowclient/data/model/homeModel.dart';
 import 'package:snowclient/pages/chat/chat_page.dart';
 import 'package:snowclient/pages/contacts/contact_page.dart';
+import 'package:snowclient/pages/contacts/select/contatc_select_page.dart';
 import 'package:snowclient/pages/discover/discover_page.dart';
 import 'package:snowclient/pages/home/home_view_model.dart';
 import 'package:snowclient/pages/mine/mine_page.dart';
@@ -24,8 +25,9 @@ class HomePage extends StatelessWidget {
           create: (_) => homeViewModel,
         ),
         StreamProvider.controller(
-            create: (_) => homeViewModel.getTotalUnReadCountController(),
-        initialData: UnreadCount(),)
+          create: (_) => homeViewModel.getTotalUnReadCountController(),
+          initialData: UnreadCount(),
+        )
       ],
       child: HomeStatefulPage(),
     );
@@ -82,13 +84,12 @@ class _HomeStatefulPageState extends State<HomeStatefulPage> with SingleTickerPr
       ),
       bottomNavigationBar: Material(
         color: Colors.brown,
-        child: TabBar(
-            controller: _tabController,
-            indicator: const BoxDecoration(),
-            tabs: [_buildTab(Icons.chat, S.of(context).pageHomeTabMessage,unreadCount.MessageUnReadCount),
-              _buildTab(Icons.contacts, S.of(context).pageHomeTabContact,unreadCount.ContactUnReadCount),
-              _buildTab(Icons.cloud_circle, S.of(context).pageHomeTabDiscover,unreadCount.discoveryUnReadCount),
-              _buildTab(Icons.trip_origin, S.of(context).pageHomeTabMine,unreadCount.mineUnReadCount)]),
+        child: TabBar(controller: _tabController, indicator: const BoxDecoration(), tabs: [
+          _buildTab(Icons.chat, S.of(context).pageHomeTabMessage, unreadCount.MessageUnReadCount),
+          _buildTab(Icons.contacts, S.of(context).pageHomeTabContact, unreadCount.ContactUnReadCount),
+          _buildTab(Icons.cloud_circle, S.of(context).pageHomeTabDiscover, unreadCount.discoveryUnReadCount),
+          _buildTab(Icons.trip_origin, S.of(context).pageHomeTabMine, unreadCount.mineUnReadCount)
+        ]),
       ),
       floatingActionButton: IconButton(
         icon: Icon(Icons.star),
@@ -124,7 +125,7 @@ class _HomeStatefulPageState extends State<HomeStatefulPage> with SingleTickerPr
         ));
   }
 
-  Tab _buildTab(IconData iconData, String name,int unReadCount) {
+  Tab _buildTab(IconData iconData, String name, int unReadCount) {
     return Tab(
       child: Column(
         children: [
@@ -154,6 +155,7 @@ class _HomeStatefulPageState extends State<HomeStatefulPage> with SingleTickerPr
     switch (index) {
       case 0:
         SLog.i("发起群聊 click");
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ContactSelectPage()));
         break;
       case 1:
         SLog.i("添加好友 click");

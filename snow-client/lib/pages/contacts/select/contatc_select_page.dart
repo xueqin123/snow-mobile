@@ -9,13 +9,18 @@ class ContactSelectPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(providers: [ChangeNotifierProvider(create: (_) => viewModel)]);
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => viewModel)],
+      child: ContactSelectStatefulPage(),
+    );
   }
 }
 
 class ContactSelectStatefulPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {}
+  State<StatefulWidget> createState() {
+    return ContactSelectState();
+  }
 }
 
 class ContactSelectState extends State<ContactSelectStatefulPage> {
@@ -28,10 +33,15 @@ class ContactSelectState extends State<ContactSelectStatefulPage> {
       appBar: AppBar(
         title: Text(S.of(context).contactSelect),
       ),
-      body: ListView.builder(
-        itemBuilder: _buildItem,
-        itemCount: viewModel.checkUserList.length,
-      ),
+      body: Column(
+        children: [
+          ListView.builder(
+            itemBuilder: _buildItem,
+            itemCount: viewModel.checkUserList.length,
+          ),
+          _buildBottomConfirm();
+        ],
+      )
     );
   }
 
@@ -52,18 +62,26 @@ class ContactSelectState extends State<ContactSelectStatefulPage> {
                 activeColor: Colors.blue,
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(16),
-              child: Icon(Icons.account_box),
-            ),
             Expanded(
               child: Stack(children: [
                 Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(viewModel.checkUserList[index].userEntity.name),
+                  alignment: Alignment.bottomRight,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(right: 16),
+                        child: Icon(Icons.account_box),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(viewModel.checkUserList[index].userEntity.name),
+                      ),
+                    ],
+                  ),
                 ),
                 Align(
-                  alignment: Alignment.bottomRight,
+                  alignment: Alignment.bottomLeft,
                   child: Container(
                     height: 1,
                     color: Colors.grey,
@@ -75,5 +93,37 @@ class ContactSelectState extends State<ContactSelectStatefulPage> {
         ),
       ),
     );
+  }
+  Widget _buildBottomConfirm(){
+    return Stack(
+      children: [
+        Align(
+          alignment: Alignment.centerRight,
+          child: GestureDetector(
+            onTap: () => _onConfirmClick(),
+            child: Container(
+              height: 35,
+              decoration: ShapeDecoration(
+                  color: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  )),
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  S.of(context).messageSend,
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  _onConfirmClick(){
+   String selectIds = viewModel.getSelectIds();
   }
 }
