@@ -34,7 +34,7 @@ class SnowIMDBHelper {
   static const String TABLE_MESSAGE_COLUMN_CONTENT = "content";
   static const String TABLE_MESSAGE_COLUMN_TIME = "time";
   static const String TABLE_MESSAGE_COLUMN_STATUS = "status";
-  static const String TABLE_MESSAGE_COLUMN_READ_STATUS ="read_status";
+  static const String TABLE_MESSAGE_COLUMN_READ_STATUS = "read_status";
 
   static const String TABLE_GROUP = "tb_group";
   static const String TABLE_GROUP_COLUMN_ID = "id";
@@ -53,7 +53,6 @@ class SnowIMDBHelper {
   static const String TABLE_GROUP_MEMBER_COLUMN_MEMBER_ID = "uid";
   static const String TABLE_GROUP_MEMBER_COLUMN_UPDATE_DATA = "update_dt";
   static const String TABLE_GROUP_MEMBER_COLUMN_STATUS = "status";
-
 
   static const String _CREATE_CONVERSATION_TABLE = "CREATE TABLE $TABLE_CONVERSATION("
       "$TABLE_CONVERSATION_COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -110,6 +109,8 @@ class SnowIMDBHelper {
     SLog.i("DBHelper _onCreat() version: $_version");
     await db.execute(_CREATE_CONVERSATION_TABLE);
     await db.execute(_CREATE_MESSAGE_TABLE);
+    await db.execute(_CREATE_GROUP_TABLE);
+    await db.execute(_CREATE_GROUP_MEMBER_TABLE);
     db.close();
     SLog.i("DBHelper _onCreat() success: $_version");
   }

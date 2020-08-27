@@ -25,7 +25,6 @@ class HostHelper {
     }catch(e){
       SLog.i("getHost e:$e");
     }
-
     return null;
   }
 }
