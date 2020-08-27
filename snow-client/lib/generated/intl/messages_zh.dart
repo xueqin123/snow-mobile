@@ -23,9 +23,12 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "_locale" : MessageLookupByLibrary.simpleMessage("zh"),
     "appName" : MessageLookupByLibrary.simpleMessage("雪信"),
+    "confirm" : MessageLookupByLibrary.simpleMessage("确认"),
     "contactProfile" : MessageLookupByLibrary.simpleMessage("联系人详情"),
     "contactProfileSendMessage" : MessageLookupByLibrary.simpleMessage("发消息"),
     "contactSelect" : MessageLookupByLibrary.simpleMessage("选择联系人"),
+    "createGroupFailed" : MessageLookupByLibrary.simpleMessage("群组创建失败"),
+    "createGroupSuccess" : MessageLookupByLibrary.simpleMessage("群组创建成功"),
     "loginButton" : MessageLookupByLibrary.simpleMessage("登录"),
     "loginError" : MessageLookupByLibrary.simpleMessage("手机号，或者密码填写错误"),
     "loginHttpError" : MessageLookupByLibrary.simpleMessage("网络原因登录失败"),

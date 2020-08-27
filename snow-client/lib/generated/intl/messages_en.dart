@@ -23,9 +23,12 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "_locale" : MessageLookupByLibrary.simpleMessage("en"),
     "appName" : MessageLookupByLibrary.simpleMessage("SnowMsg"),
+    "confirm" : MessageLookupByLibrary.simpleMessage("confirm"),
     "contactProfile" : MessageLookupByLibrary.simpleMessage("contact profile"),
     "contactProfileSendMessage" : MessageLookupByLibrary.simpleMessage("send message"),
     "contactSelect" : MessageLookupByLibrary.simpleMessage("select contact"),
+    "createGroupFailed" : MessageLookupByLibrary.simpleMessage("createGroupFailed"),
+    "createGroupSuccess" : MessageLookupByLibrary.simpleMessage("createGroupSuccess"),
     "loginButton" : MessageLookupByLibrary.simpleMessage("login"),
     "loginError" : MessageLookupByLibrary.simpleMessage("Phone/password input error"),
     "loginHttpError" : MessageLookupByLibrary.simpleMessage("login network failed"),

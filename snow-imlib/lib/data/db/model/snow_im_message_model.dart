@@ -28,6 +28,9 @@ class SnowIMMessageModel extends SnowIMModel {
     if (conversation.type == ConversationType.SINGLE) {
       customMessage.targetId = conversation.uidList.where((element) => element != SnowIMContext.getInstance().selfUid).first;
       customMessage.conversationId = conversation.conversationId;
+    }else{
+      customMessage.targetId = conversation.conversationId;
+      customMessage.conversationId = conversation.conversationId;
     }
     SnowIMContext.getInstance().getCustomMessageController().sink.add(customMessage);
   }

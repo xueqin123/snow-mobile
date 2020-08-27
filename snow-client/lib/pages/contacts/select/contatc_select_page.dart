@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:snowclient/generated/l10n.dart';
 import 'package:snowclient/pages/contacts/select/contact_select_view_model.dart';
@@ -30,19 +31,18 @@ class ContactSelectState extends State<ContactSelectStatefulPage> {
   Widget build(BuildContext context) {
     viewModel = Provider.of<ContactSelectViewModel>(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(S.of(context).contactSelect),
-      ),
-      body: Column(
-        children: [
-          ListView.builder(
-            itemBuilder: _buildItem,
-            itemCount: viewModel.checkUserList.length,
-          ),
-          _buildBottomConfirm();
-        ],
-      )
-    );
+        appBar: AppBar(
+          title: Text(S.of(context).contactSelect),
+        ),
+        body: Column(
+          children: [
+            ListView.builder(
+              itemBuilder: _buildItem,
+              itemCount: viewModel.checkUserList.length,
+            ),
+            _buildBottomConfirm()
+          ],
+        ));
   }
 
   Widget _buildItem(BuildContext context, int index) {
@@ -94,7 +94,8 @@ class ContactSelectState extends State<ContactSelectStatefulPage> {
       ),
     );
   }
-  Widget _buildBottomConfirm(){
+
+  Widget _buildBottomConfirm() {
     return Stack(
       children: [
         Align(
@@ -111,7 +112,7 @@ class ContactSelectState extends State<ContactSelectStatefulPage> {
               child: Align(
                 alignment: Alignment.center,
                 child: Text(
-                  S.of(context).messageSend,
+                  S.of(context).confirm,
                   style: TextStyle(color: Colors.white, fontSize: 20),
                   textAlign: TextAlign.center,
                 ),
@@ -123,7 +124,7 @@ class ContactSelectState extends State<ContactSelectStatefulPage> {
     );
   }
 
-  _onConfirmClick(){
-   String selectIds = viewModel.getSelectIds();
+  _onConfirmClick() async {
+    Fluttertoast.showToast(msg: S.of(context).createGroupFailed);
   }
 }

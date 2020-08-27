@@ -50,23 +50,6 @@ class DBHelper {
       "$TABLE_USER_COLUMN_STATE INTEGER,"
       "$TABLE_USER_COLUMN_PORTRAIT TEXT,"
       "$TABLE_USER_COLUMN_TYPE INTEGER)";
-
-  static const String _CREATE_GROUP_TABLE = "CREATE TABLE $TABLE_GROUP("
-      "$TABLE_GROUP_COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-      "$TABLE_GROUP_COLUMN_GROUP_ID TEXT NOT NULL UNIQUE,"
-      "$TABLE_GROUP_COLUMN_NAME TEXT,"
-      "$TABLE_GROUP_COLUMN_PORTRAIT TEXT,"
-      "$TABLE_GROUP_COLUMN_CONVERSATION_ID TEXT,"
-      "$TABLE_GROUP_COLUMN_OWNER_ID TEXT,"
-      "$TABLE_GROUP_COLUMN_UPDATE_DATA TEXT,"
-      "$TABLE_GROUP_COLUMN_STATUS INTEGER)";
-
-  static const String _CREATE_GROUP_MEMBER_TABLE = "CREATE TABLE $TABLE_GROUP_MEMBER("
-      "$TABLE_GROUP_MEMBER_COLUMN_GROUP_ID TEXT NOT NULL,"
-      "$TABLE_GROUP_MEMBER_COLUMN_MEMBER_ID TEXT NOT NULL,"
-      "$TABLE_GROUP_MEMBER_COLUMN_UPDATE_DATA TEXT,"
-      "$TABLE_GROUP_MEMBER_COLUMN_STATUS INTEGER)";
-
   static final _version = 1;
 
   Future<Database> openDB(String uid) async {
@@ -80,8 +63,6 @@ class DBHelper {
   _onCreate(Database db, int version) async {
     SLog.i("DBHelper _onCreat() version: $_version");
     await db.execute(_CREATE_USER_TABLE);
-    await db.execute(_CREATE_GROUP_TABLE);
-    await db.execute(_CREATE_GROUP_MEMBER_TABLE);
     db.close();
     SLog.i("DBHelper _onCreat() success: $_version");
   }

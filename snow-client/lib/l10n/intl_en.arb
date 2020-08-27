@@ -16,5 +16,10 @@
   "contactProfile": "contact profile",
   "contactProfileSendMessage": "send message",
   "messageSend": "send",
-  "contactSelect": "select contact"
+  "contactSelect": "select contact",
+  "confirm":"confirm",
+  "createGroupSuccess":"createGroupSuccess",
+  "createGroupFailed":"createGroupFailed"
+
+
 }

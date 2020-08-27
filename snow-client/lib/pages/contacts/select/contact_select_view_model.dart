@@ -30,6 +30,8 @@ class ContactSelectViewModel with ChangeNotifier {
   getSelectIds(){
    checkUserList.where((element) => element.isCheck).length;
   }
+
+  createGroup() {}
 }
 
 class CheckUserWrapper {

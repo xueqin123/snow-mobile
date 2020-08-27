@@ -16,5 +16,8 @@
   "contactProfile": "联系人详情",
   "contactProfileSendMessage": "发消息",
   "messageSend": "发送",
-  "contactSelect": "选择联系人"
+  "contactSelect": "选择联系人",
+  "confirm":"确认",
+  "createGroupSuccess":"群组创建成功",
+  "createGroupFailed":"群组创建失败"
 }

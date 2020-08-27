@@ -212,6 +212,36 @@ class S {
       args: [],
     );
   }
+
+  /// `confirm`
+  String get confirm {
+    return Intl.message(
+      'confirm',
+      name: 'confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `createGroupSuccess`
+  String get createGroupSuccess {
+    return Intl.message(
+      'createGroupSuccess',
+      name: 'createGroupSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `createGroupFailed`
+  String get createGroupFailed {
+    return Intl.message(
+      'createGroupFailed',
+      name: 'createGroupFailed',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
