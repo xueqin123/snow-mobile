@@ -1,6 +1,6 @@
 import 'package:snowclient/data/entity/user_entity.dart';
 import 'package:snowclient/rest/http_helper.dart';
-import 'package:snowclient/rest/service/service.dart';
+import 'package:snowclient/rest/service/http_service.dart';
 
 class UserService extends HttpService {
   static const String _CONTACT_LIST = "/user/list?type=2&state=0";

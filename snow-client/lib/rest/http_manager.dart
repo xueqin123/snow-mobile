@@ -1,6 +1,6 @@
 import 'package:snowclient/rest/http_helper.dart';
 import 'package:snowclient/rest/service/login_service.dart';
-import 'package:snowclient/rest/service/service.dart';
+import 'package:snowclient/rest/service/http_service.dart';
 import 'package:snowclient/rest/service/user_service.dart';
 
 class HttpManager {

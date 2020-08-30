@@ -1,7 +1,7 @@
 import 'package:snowclient/data/entity/req_login_entity.dart';
 import 'package:snowclient/data/entity/rsp_login_entity.dart';
 import 'package:snowclient/rest/http_helper.dart';
-import 'package:snowclient/rest/service/service.dart';
+import 'package:snowclient/rest/service/http_service.dart';
 
 class LoginService extends HttpService {
   static const String LOGIN = "/auth/login";

@@ -9,13 +9,15 @@ import 'package:imlib/core/inbound/handler/history_message_handler.dart';
 import 'package:imlib/core/inbound/inbound_handler.dart';
 import 'package:imlib/core/outbound/outbound_encoder.dart';
 import 'package:imlib/data/db/dao/snow_im_dao_manager.dart';
+import 'package:imlib/data/db/entity/host_entity.dart';
 import 'package:imlib/data/db/model/snow_im_conversation_model.dart';
 import 'package:imlib/data/db/model/model_manager.dart';
 import 'package:imlib/imlib.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
-import 'package:imlib/rest/rest.dart';
+import 'package:imlib/rest/service/snow_im_host_service.dart';
 import 'package:imlib/rest/snow_fetch_helper.dart';
+import 'package:imlib/rest/snow_im_http_manager.dart';
 import 'package:imlib/utils/s_log.dart';
 import 'package:imlib/utils/snow_im_utils.dart';
 
@@ -84,12 +86,13 @@ class SnowIMContext {
   }
 
   connect(String token) async {
+    SnowIMHttpManager.getInstance().init(token);
     _connectStreamController.sink.add(ConnectStatus.IDLE);
     _connectStreamController.sink.add(ConnectStatus.CONNECTING);
-    HostInfo hostInfo = await HostHelper().getHost(token);
+    HostEntity hostInfo = await SnowIMHttpManager.getInstance().getService<SnowIMHostService>().getHost(token);
     SLog.i("SnowIMContext token:{$token} connect host: {$hostInfo}");
     if (hostInfo != null) {
-      await _connect(hostInfo.host, hostInfo.port);
+      await _connect(hostInfo.ip, hostInfo.port);
       _sendLogin(token, selfUid);
     }
   }
