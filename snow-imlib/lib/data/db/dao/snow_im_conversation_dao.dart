@@ -35,7 +35,8 @@ class SnowIMConversationDao extends SnowIMDao {
   }
 
   Future<List<Conversation>> getConversationAllList() async {
-    List<Map<String, dynamic>> mapList = await database.rawQuery("SELECT * FROM ${SnowIMDBHelper.TABLE_CONVERSATION}", null);
+    List<Map<String, dynamic>> mapList = await database.rawQuery("SELECT * FROM ${SnowIMDBHelper.TABLE_CONVERSATION}"
+        " ORDER BY ${SnowIMDBHelper.TABLE_CONVERSATION_COLUMN_LAST_TIME} DESC", null);
     if (mapList == null) return null;
     return mapList.map((e) => _convertMap(e)).where((element) => element.readMsgId!=null).toList();
   }

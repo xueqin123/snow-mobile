@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:imlib/imlib.dart';
 import 'package:provider/provider.dart';
 import 'package:snowclient/data/model/homeModel.dart';
@@ -152,14 +153,10 @@ class _HomeStatefulPageState extends State<HomeStatefulPage> with SingleTickerPr
         Navigator.push(context, MaterialPageRoute(builder: (context) => ContactSelectPage()));
         break;
       case 1:
-        SLog.i("添加好友 click");
+        Fluttertoast.showToast(msg: "todo",textColor: Colors.red);
         break;
       default:
         break;
     }
-  }
-
-  void _testClick() {
-    _upDateBadge();
   }
 }
