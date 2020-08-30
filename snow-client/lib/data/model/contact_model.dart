@@ -30,6 +30,10 @@ class ContactModel extends BaseModel {
     return _userDao.getAllUserList();
   }
 
+  UserEntity getCurrentUser(){
+    return _userDao.currentUser;
+  }
+
   StreamController<UserEntity> getUserController(String uid) {
     UserNotifier notifier = UserNotifier(uid);
     _notifierList.add(notifier);
@@ -74,7 +78,7 @@ class UserAllNotifier extends Notifier<List<UserEntity>> {
   Future post() async {
     UserDao userDao = DaoManager.getInstance().getDao<UserDao>();
     List<UserEntity> userList = await userDao.getAllUserList();
-    if (userList != null) {
+    if (userList != null && !streamController.isClosed) {
       streamController.sink.add(userList);
     }
   }
@@ -89,7 +93,7 @@ class UserNotifier extends Notifier<UserEntity> {
   Future post() async {
     UserDao userDao = DaoManager.getInstance().getDao<UserDao>();
     UserEntity userEntity = await userDao.getUserById(uid);
-    if (userEntity != null) {
+    if (userEntity != null&&!streamController.isClosed) {
       streamController.sink.add(userEntity);
     }
   }
