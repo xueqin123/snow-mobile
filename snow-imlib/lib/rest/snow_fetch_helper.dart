@@ -66,12 +66,13 @@ class SnowDataFetchHelper {
   }
 
   onConversationListAck(Int64 cid, List<ConversationInfo> conversationList) async {
+    SLog.i("SnowDataFetchHelper onConversationListAck() conversation size: ${conversationList.length}");
     waitAckHisConvMap[cid].complete(conversationList);
     waitAckHisConvMap.remove(cid);
     await conversationModel.saveConversationList(conversationList);
-    await _fetchAllMessage(conversationList);
     await _fetchAllGroup(conversationList);
-    SLog.i("SnowSocketDataHelper onConversationListAck() rest length: ${waitAckHisConvMap.length}");
+    await _fetchAllMessage(conversationList);
+    SLog.i("SnowDataFetchHelper onConversationListAck() rest length: ${waitAckHisConvMap.length}");
   }
 
   _fetchAllMessage(List<ConversationInfo> conversationList) async {
@@ -82,15 +83,17 @@ class SnowDataFetchHelper {
 
   _fetchAllGroup(List<ConversationInfo> conversationList) async {
     for (ConversationInfo conversationInfo in conversationList) {
-      await groupModel.syncGroupByGroupId(conversationInfo.groupId);
+      if (conversationInfo.type == ConversationType.GROUP) {
+        await groupModel.syncGroupByGroupId(conversationInfo.groupId);
+      }
     }
   }
 
   onHistoryMessageAck(Int64 cid, String conversationId, List<MessageContent> messageContentList, int unReadCount) {
-    SLog.i("SnowDataAckHelper messageContentList:${messageContentList.length} ");
+    SLog.i("SnowDataFetchHelper messageContentList:${messageContentList.length} ");
     waitAckHisMsgMap[cid].complete(messageContentList);
     waitAckHisMsgMap.remove(cid);
     snowMessageModel.saveSnowMessageList(conversationId, messageContentList, unReadCount);
-    SLog.i("SnowSocketDataHelper onHistoryMessageAck() reset length: ${waitAckHisMsgMap.length}");
+    SLog.i("SnowDataFetchHelper onHistoryMessageAck() reset length: ${waitAckHisMsgMap.length}");
   }
 }

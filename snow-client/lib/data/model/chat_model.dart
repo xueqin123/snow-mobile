@@ -49,14 +49,10 @@ class ChatModel extends BaseModel {
         chatItemEntity.lastTime = null;
       }
       chatItemEntity.unReadCount = conversation.unReadCount;
-      print("chatItemEntity.lastTime:${chatItemEntity.lastTime}");
       if (conversation.type == ConversationType.SINGLE) {
         String uid = conversation.uidList.firstWhere((element) => element != userDao.currentUser.uid);
-        print("_convertChatItemEntity uid = $uid");
-        print("_convertChatItemEntity currentUid = ${userDao.currentUser.uid}");
         chatItemEntity.targetId = uid;
         UserEntity userEntity = await userDao.getUserById(uid);
-        print("_convertChatItemEntity userEntity = $userEntity");
         chatItemEntity.portrait = userEntity.portrait;
         chatItemEntity.chatName = userEntity.name;
         UserEntity temp = userDao.currentUser.uid == conversation.lastUid ? userDao.currentUser : userEntity;
@@ -66,6 +62,7 @@ class ChatModel extends BaseModel {
         chatItemEntity.portrait = groupEntity.detail.portrait;
         chatItemEntity.chatName = groupEntity.detail.name;
         chatItemEntity.targetId = conversation.conversationId;
+        print("chatItemEntity.lastUid:${conversation.lastUid}");
         UserEntity userEntity = await userDao.getUserById(conversation.lastUid);
         if (userEntity != null) {
           chatItemEntity.lastName = userEntity.name;

@@ -32,6 +32,7 @@ class SnowIMConversationModel extends SnowIMModel {
   }
 
   StreamController<List<Conversation>> getConversationController() {
+    _notifyConversationChange();
     return _conversationListController;
   }
 

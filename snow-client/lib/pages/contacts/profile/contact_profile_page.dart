@@ -8,6 +8,7 @@ import 'package:snowclient/data/entity/user_entity.dart';
 import 'package:snowclient/generated/l10n.dart';
 import 'package:snowclient/pages/contacts/profile/contact_profile_view_model.dart';
 import 'package:snowclient/pages/message/message_page.dart';
+import 'package:snowclient/uitls/const_router.dart';
 
 class ContactProfilePage extends StatelessWidget {
   final String uid;
@@ -150,6 +151,9 @@ class ContactProfileState extends State<ContactProfileStatefulPage> {
   }
 
   void _onStartMessagePageClick(String uid) {
-    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MessagePage(uid, ConversationType.SINGLE)), (route) => route == null);
+    Map map = Map();
+    map[MessagePage.TARGET_ID] = uid;
+    map[MessagePage.CONVERSATION_TYPE] = ConversationType.SINGLE;
+    Navigator.popAndPushNamed(context, ConstRouter.MESSAGE_PAGE, arguments: map);
   }
 }

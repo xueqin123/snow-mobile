@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:snowclient/generated/l10n.dart';
 import 'package:snowclient/pages/contacts/select/contact_select_view_model.dart';
 import 'package:snowclient/pages/message/message_page.dart';
+import 'package:snowclient/uitls/const_router.dart';
 
 class ContactSelectPage extends StatelessWidget {
   ContactSelectViewModel viewModel = ContactSelectViewModel();
@@ -136,7 +137,10 @@ class ContactSelectState extends State<ContactSelectStatefulPage> {
     SLog.i("ContactSelectPage groupEntity: $groupEntity");
     if (groupEntity != null) {
       Fluttertoast.showToast(msg: S.of(context).createGroupSuccess, textColor: Colors.black45);
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MessagePage(groupEntity.conversationId, ConversationType.GROUP)), (route) => route == null);
+      Map<String, Object> params = Map();
+      params[MessagePage.TARGET_ID] = groupEntity.conversationId;
+      params[MessagePage.CONVERSATION_TYPE] = ConversationType.GROUP;
+      Navigator.popAndPushNamed(context, ConstRouter.MESSAGE_PAGE, arguments: params);
     } else {
       Fluttertoast.showToast(msg: S.of(context).createGroupFailed, textColor: Colors.black45);
     }

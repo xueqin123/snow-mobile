@@ -91,12 +91,6 @@ class _HomeStatefulPageState extends State<HomeStatefulPage> with SingleTickerPr
           _buildTab(Icons.trip_origin, S.of(context).pageHomeTabMine, unreadCount.mineUnReadCount)
         ]),
       ),
-      floatingActionButton: IconButton(
-        icon: Icon(Icons.star),
-        onPressed: () {
-          _testClick();
-        },
-      ),
     );
   }
 

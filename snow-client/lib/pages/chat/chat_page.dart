@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:imlib/imlib.dart';
+import 'package:imlib/proto/message.pb.dart';
 import 'package:provider/provider.dart';
 import 'package:snowclient/pages/message/message_page.dart';
 import 'package:snowclient/uitls/CommonUtils.dart';
+import 'package:snowclient/uitls/const_router.dart';
 import 'package:snowclient/uitls/widge/badge_widget.dart';
 import 'chat_item_entity.dart';
 import 'chat_view_model.dart';
@@ -56,10 +58,9 @@ class ChatState extends State<ChatStatefulPage> {
           children: [
             Padding(
               padding: EdgeInsets.all(16),
-              child:
-              BadgeWidget(
+              child: BadgeWidget(
                 data[index].unReadCount,
-                anchor:  Icon(Icons.chat),
+                anchor: Icon(Icons.chat),
               ),
             ),
             Expanded(
@@ -84,7 +85,7 @@ class ChatState extends State<ChatStatefulPage> {
                     Expanded(
                         child: Align(
                       alignment: Alignment.topLeft,
-                      child: Text(data[index].lastContent),
+                      child: _buildContent(data[index]),
                     ))
                   ],
                 ),
@@ -103,9 +104,16 @@ class ChatState extends State<ChatStatefulPage> {
     );
   }
 
+  _buildContent(ChatItemEntity chatItemEntity){
+    return Text("${chatItemEntity.lastName}: ${chatItemEntity.lastContent}");
+  }
+
   void _onItemClick(int index) {
     SLog.i("onClick index = $index");
     ChatItemEntity itemEntity = data[index];
-    Navigator.push(context, MaterialPageRoute(builder: (context) => MessagePage(itemEntity.targetId, itemEntity.chatType)));
+    Map<String, Object> arg = Map();
+    arg[MessagePage.TARGET_ID] = itemEntity.targetId;
+    arg[MessagePage.CONVERSATION_TYPE] = itemEntity.chatType;
+    Navigator.pushNamed(context, ConstRouter.MESSAGE_PAGE, arguments: arg);
   }
 }

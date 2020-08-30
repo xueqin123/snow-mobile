@@ -10,14 +10,21 @@ import 'message_view_model.dart';
 import 'message_widet_manager.dart';
 
 class MessagePage extends StatelessWidget {
+  static const String TARGET_ID = "target_id";
+  static const String CONVERSATION_TYPE = "conversation_type";
+
   String targetId;
   ConversationType conversationType;
   MessageViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
-    SLog.i("MessagePage build");
+    Map args = ModalRoute.of(context).settings.arguments;
+    targetId = args[TARGET_ID];
+    conversationType = args[CONVERSATION_TYPE];
     viewModel = MessageViewModel(targetId, conversationType);
+    SLog.i("MessagePage build targetId:$targetId conversationType:$conversationType");
+
     return MultiProvider(
       providers: [
         StreamProvider.controller(
@@ -33,8 +40,6 @@ class MessagePage extends StatelessWidget {
       child: MessageStatefulWidget(),
     );
   }
-
-  MessagePage(this.targetId, this.conversationType);
 }
 
 class MessageStatefulWidget extends StatefulWidget {

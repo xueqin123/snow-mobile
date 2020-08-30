@@ -3,6 +3,7 @@ import 'package:imlib/data/db/dao/snow_im_group_dao.dart';
 import 'package:imlib/data/db/entity/group_entity.dart';
 import 'package:imlib/data/db/model/snow_im_conversation_model.dart';
 import 'package:imlib/data/db/model/snow_im_model.dart';
+import 'package:imlib/imlib.dart';
 import 'package:imlib/rest/service/snow_im_group_service.dart';
 import 'package:imlib/rest/snow_im_http_manager.dart';
 
@@ -31,6 +32,7 @@ class SnowIMGroupModel extends SnowIMModel {
 
 
   Future syncGroupByGroupId(String groupId) async {
+    SLog.i("syncGroupByGroupId groupId: $groupId");
     GroupEntity groupEntity = await groupService.getGroupDetail(groupId);
     await groupDao.saveGroupEntity(groupEntity);
   }

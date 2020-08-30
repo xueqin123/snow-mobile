@@ -31,6 +31,7 @@ class MessageViewModel with ChangeNotifier {
   }
 
   Future<String> getChatName() async {
+    SLog.i("MessageViewModel getChatName() chatType = $chatType");
     if (chatType == ConversationType.SINGLE) {
       UserEntity userEntity = await contactModel.getUserById(targetId);
       return userEntity.name;

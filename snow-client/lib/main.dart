@@ -1,5 +1,7 @@
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:snowclient/pages/message/message_page.dart';
 import 'package:snowclient/pages/splash/splash_page.dart';
+import 'package:snowclient/uitls/const_router.dart';
 import 'generated/l10n.dart';
 import 'package:flutter/material.dart';
 
@@ -18,9 +20,10 @@ class SnowApp extends StatelessWidget {
       ),
       supportedLocales: S.delegate.supportedLocales,
       debugShowCheckedModeBanner: false,
+      routes: {
+        ConstRouter.MESSAGE_PAGE: (BuildContext buildContext) => new MessagePage(),
+      },
       home: SplashPage(),
     );
   }
 }
-
-
