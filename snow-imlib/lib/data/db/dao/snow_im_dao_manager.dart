@@ -1,5 +1,6 @@
 import 'package:imlib/data/db/dao/snow_im_conversation_dao.dart';
 import 'package:imlib/data/db/dao/snow_im_dao.dart';
+import 'package:imlib/data/db/dao/snow_im_group_dao.dart';
 import 'package:imlib/data/db/dao/snow_im_message_dao.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -22,6 +23,7 @@ class SnowIMDaoManager {
   _initDao(Database database) {
     _putDao(SnowIMConversationDao(database));
     _putDao(SnowIMMessageDao(database));
+    _putDao(SnowIMGroupDao(database));
   }
 
   void _putDao(SnowIMDao dao) {

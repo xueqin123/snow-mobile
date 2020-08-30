@@ -150,6 +150,6 @@ class ContactProfileState extends State<ContactProfileStatefulPage> {
   }
 
   void _onStartMessagePageClick(String uid) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => MessagePage(uid, ConversationType.SINGLE)));
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MessagePage(uid, ConversationType.SINGLE)), (route) => route == null);
   }
 }

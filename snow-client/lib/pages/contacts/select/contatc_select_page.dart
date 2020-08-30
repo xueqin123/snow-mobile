@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:imlib/data/db/entity/group_entity.dart';
+import 'package:imlib/proto/message.pbenum.dart';
+import 'package:imlib/utils/s_log.dart';
 import 'package:provider/provider.dart';
 import 'package:snowclient/generated/l10n.dart';
 import 'package:snowclient/pages/contacts/select/contact_select_view_model.dart';
+import 'package:snowclient/pages/message/message_page.dart';
 
 class ContactSelectPage extends StatelessWidget {
   ContactSelectViewModel viewModel = ContactSelectViewModel();
@@ -36,10 +40,13 @@ class ContactSelectState extends State<ContactSelectStatefulPage> {
         ),
         body: Column(
           children: [
-            ListView.builder(
+            Expanded(
+                child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
               itemBuilder: _buildItem,
-              itemCount: viewModel.checkUserList.length,
-            ),
+              itemCount: viewModel.data.length,
+            )),
             _buildBottomConfirm()
           ],
         ));
@@ -57,7 +64,7 @@ class ContactSelectState extends State<ContactSelectStatefulPage> {
             Padding(
               padding: EdgeInsets.all(16),
               child: Checkbox(
-                value: viewModel.checkUserList[index].isCheck,
+                value: viewModel.data[index].isCheck,
                 onChanged: null,
                 activeColor: Colors.blue,
               ),
@@ -75,7 +82,7 @@ class ContactSelectState extends State<ContactSelectStatefulPage> {
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(viewModel.checkUserList[index].userEntity.name),
+                        child: Text(viewModel.data[index].userEntity.name),
                       ),
                     ],
                   ),
@@ -125,6 +132,13 @@ class ContactSelectState extends State<ContactSelectStatefulPage> {
   }
 
   _onConfirmClick() async {
-    Fluttertoast.showToast(msg: S.of(context).createGroupFailed);
+    GroupEntity groupEntity = await viewModel.createGroup();
+    SLog.i("ContactSelectPage groupEntity: $groupEntity");
+    if (groupEntity != null) {
+      Fluttertoast.showToast(msg: S.of(context).createGroupSuccess, textColor: Colors.black45);
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MessagePage(groupEntity.conversationId, ConversationType.GROUP)), (route) => route == null);
+    } else {
+      Fluttertoast.showToast(msg: S.of(context).createGroupFailed, textColor: Colors.black45);
+    }
   }
 }

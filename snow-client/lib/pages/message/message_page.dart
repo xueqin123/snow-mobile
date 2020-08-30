@@ -4,7 +4,6 @@ import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
 import 'package:imlib/utils/s_log.dart';
 import 'package:provider/provider.dart';
-import 'package:snowclient/data/entity/user_entity.dart';
 import 'package:snowclient/generated/l10n.dart';
 
 import 'message_view_model.dart';
@@ -25,7 +24,6 @@ class MessagePage extends StatelessWidget {
           create: (_) => viewModel.getMessageController(targetId, conversationType),
           initialData: <CustomMessage>[],
         ),
-        StreamProvider.controller(create: (_) => viewModel.getUserController()),
         ChangeNotifierProvider(create: (_) => viewModel),
         FutureProvider(
           create: (_) => viewModel.getChatName(),

@@ -19,6 +19,7 @@ class Conversation {
     uidList.forEach((element) {
       uids += "$element,";
     });
+    if(uids.isEmpty) return "";
     return uids.substring(0, uids.length - 1);
   }
 

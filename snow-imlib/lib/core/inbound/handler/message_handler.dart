@@ -2,6 +2,7 @@ import 'package:imlib/core/inbound/inbound_handler.dart';
 import 'package:imlib/core/snow_im_context.dart';
 import 'package:imlib/data/db/model/model_manager.dart';
 import 'package:imlib/data/db/model/snow_im_conversation_model.dart';
+import 'package:imlib/data/db/model/snow_im_group_model.dart';
 import 'package:imlib/data/db/model/snow_im_message_model.dart';
 import 'package:imlib/proto/message.pb.dart';
 
@@ -21,6 +22,11 @@ class MessageHandler extends InboundHandler {
 
   _initConversationIfNeedAndSaveMessage(UpDownMessage upDownMessage) async {
     MessageContent messageContent = upDownMessage.content;
+    SnowIMGroupModel groupModel = SnowIMModelManager.getInstance().getModel<SnowIMGroupModel>();
+    bool isExistGroup = await groupModel.isGroupExist(upDownMessage.groupId);
+    if (upDownMessage.conversationType == ConversationType.GROUP && !isExistGroup) {
+      await groupModel.syncGroupByGroupId(upDownMessage.groupId);
+    }
     await SnowIMModelManager.getInstance().getModel<SnowIMConversationModel>().insertOrUpdateConversationByUpDown(upDownMessage); //更新会话表
     await SnowIMModelManager.getInstance().getModel<SnowIMMessageModel>().saveReceivedMessageContent(upDownMessage.conversationId, messageContent); //保存消息
     SnowIMModelManager.getInstance().getModel<SnowIMConversationModel>().onUnReadCountChanged();

@@ -42,17 +42,8 @@ class SnowIMDBHelper {
   static const String TABLE_GROUP_COLUMN_NAME = "name";
   static const String TABLE_GROUP_COLUMN_PORTRAIT = "portrait";
   static const String TABLE_GROUP_COLUMN_CONVERSATION_ID = "conversation_id";
-  static const String TABLE_GROUP_COLUMN_OWNER_ID = "owner_uid";
   static const String TABLE_GROUP_COLUMN_STATUS = "status";
   static const String TABLE_GROUP_COLUMN_UPDATE_DATA = "update_dt";
-
-  static const String TABLE_GROUP_MEMBER = "tb_group_member";
-  static const String TABLE_GROUP_MEMBER_COLUMN_ID = "id";
-
-  static const String TABLE_GROUP_MEMBER_COLUMN_GROUP_ID = "group_id";
-  static const String TABLE_GROUP_MEMBER_COLUMN_MEMBER_ID = "uid";
-  static const String TABLE_GROUP_MEMBER_COLUMN_UPDATE_DATA = "update_dt";
-  static const String TABLE_GROUP_MEMBER_COLUMN_STATUS = "status";
 
   static const String _CREATE_CONVERSATION_TABLE = "CREATE TABLE $TABLE_CONVERSATION("
       "$TABLE_CONVERSATION_COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -84,16 +75,9 @@ class SnowIMDBHelper {
       "$TABLE_GROUP_COLUMN_GROUP_ID TEXT NOT NULL UNIQUE,"
       "$TABLE_GROUP_COLUMN_NAME TEXT,"
       "$TABLE_GROUP_COLUMN_PORTRAIT TEXT,"
-      "$TABLE_GROUP_COLUMN_CONVERSATION_ID TEXT,"
-      "$TABLE_GROUP_COLUMN_OWNER_ID TEXT,"
+      "$TABLE_GROUP_COLUMN_CONVERSATION_ID TEXT NOT NULL UNIQUE,"
       "$TABLE_GROUP_COLUMN_UPDATE_DATA TEXT,"
       "$TABLE_GROUP_COLUMN_STATUS INTEGER)";
-
-  static const String _CREATE_GROUP_MEMBER_TABLE = "CREATE TABLE $TABLE_GROUP_MEMBER("
-      "$TABLE_GROUP_MEMBER_COLUMN_GROUP_ID TEXT NOT NULL,"
-      "$TABLE_GROUP_MEMBER_COLUMN_MEMBER_ID TEXT NOT NULL,"
-      "$TABLE_GROUP_MEMBER_COLUMN_UPDATE_DATA TEXT,"
-      "$TABLE_GROUP_MEMBER_COLUMN_STATUS INTEGER)";
 
   static final _version = 1;
 
@@ -110,7 +94,6 @@ class SnowIMDBHelper {
     await db.execute(_CREATE_CONVERSATION_TABLE);
     await db.execute(_CREATE_MESSAGE_TABLE);
     await db.execute(_CREATE_GROUP_TABLE);
-    await db.execute(_CREATE_GROUP_MEMBER_TABLE);
     db.close();
     SLog.i("DBHelper _onCreat() success: $_version");
   }

@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:imlib/data/db/dao/snow_im_conversation_dao.dart';
 import 'package:imlib/data/db/dao/snow_im_dao_manager.dart';
+import 'package:imlib/data/db/dao/snow_im_group_dao.dart';
 import 'package:imlib/data/db/dao/snow_im_message_dao.dart';
+import 'package:imlib/data/db/entity/group_entity.dart';
 import 'package:imlib/data/db/model/snow_im_model.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
@@ -14,12 +16,17 @@ import '../../../imlib.dart';
 class SnowIMConversationModel extends SnowIMModel {
   // ignore: close_sinks
   StreamController<List<Conversation>> _conversationListController;
+
   // ignore: close_sinks
   StreamController<int> _totalUnReadCountController;
   SnowIMConversationDao conversationDao;
+  SnowIMMessageDao snowIMMessageDao;
+  SnowIMGroupDao snowIMGroupDao;
 
   SnowIMConversationModel() {
     conversationDao = SnowIMDaoManager.getInstance().getDao<SnowIMConversationDao>();
+    snowIMMessageDao = SnowIMDaoManager.getInstance().getDao<SnowIMMessageDao>();
+    snowIMGroupDao = SnowIMDaoManager.getInstance().getDao<SnowIMGroupDao>();
     _conversationListController = StreamController();
     _totalUnReadCountController = StreamController();
   }
@@ -28,7 +35,7 @@ class SnowIMConversationModel extends SnowIMModel {
     return _conversationListController;
   }
 
-  StreamController<int> getTotalUnReadController(){
+  StreamController<int> getTotalUnReadController() {
     return _totalUnReadCountController;
   }
 
@@ -50,6 +57,16 @@ class SnowIMConversationModel extends SnowIMModel {
     return conversationDao.getSingleConversationByTarget(targetId);
   }
 
+  insertConversationByCreateGroup(GroupEntity groupEntity) async{
+    ConversationInfo conversationInfo = ConversationInfo();
+    conversationInfo.type = ConversationType.GROUP;
+    conversationInfo.groupId = groupEntity.groupId;
+    conversationInfo.conversationId = groupEntity.conversationId;
+    conversationInfo.time = Int64(SnowIMUtils.currentTime());
+    await conversationDao.saveConversationList(<ConversationInfo>[conversationInfo]);
+    _notifyConversationChange();
+  }
+
   insertOrUpdateConversationBySend(String conversationId, ConversationType conversationType, CustomMessage customMessage) {
     MessageContent messageContent = MessageContent();
     messageContent.content = customMessage.content;
@@ -69,7 +86,6 @@ class SnowIMConversationModel extends SnowIMModel {
   }
 
   insertOrUpdateConversationByUpDown(UpDownMessage upDownMessage) async {
-    SnowIMConversationDao dao = SnowIMDaoManager.getInstance().getDao<SnowIMConversationDao>();
     ConversationInfo conversationInfo = ConversationInfo();
     conversationInfo.conversationId = upDownMessage.conversationId;
     conversationInfo.lastContent = upDownMessage.content;
@@ -79,18 +95,17 @@ class SnowIMConversationModel extends SnowIMModel {
     conversationInfo.uidList.add(upDownMessage.fromUid);
     conversationInfo.uidList.add(upDownMessage.targetUid);
     conversationInfo.readMsgId = Int64(0);
-    await dao.saveConversationList(<ConversationInfo>[conversationInfo]);
+    await conversationDao.saveConversationList(<ConversationInfo>[conversationInfo]);
     _notifyConversationChange();
   }
 
   _notifyConversationChange() async {
-    SnowIMMessageDao messageDao = SnowIMDaoManager.getInstance().getDao<SnowIMMessageDao>();
     List<Conversation> result = await conversationDao.getConversationAllList();
     SLog.i("_notifyConversationChange :${result.length}");
     for (Conversation conversation in result) {
-      conversation.unReadCount = await messageDao.getUnReadMessageCount(conversation.conversationId);
+      conversation.unReadCount = await snowIMMessageDao.getUnReadMessageCount(conversation.conversationId);
     }
-    int totalUnReadCount = await messageDao.getTotalUnReadMessageCount();
+    int totalUnReadCount = await snowIMMessageDao.getTotalUnReadMessageCount();
     SLog.i("_notifyConversationChange totalUnReadCount:$totalUnReadCount");
     _conversationListController.sink.add(result);
     _totalUnReadCountController.sink.add(totalUnReadCount);

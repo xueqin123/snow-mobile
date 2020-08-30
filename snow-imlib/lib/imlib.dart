@@ -9,21 +9,24 @@ import 'package:imlib/core/snow_im_context.dart';
 import 'package:imlib/data/db/entity/conversation_entity.dart';
 import 'package:imlib/data/db/model/model_manager.dart';
 import 'package:imlib/data/db/model/snow_im_conversation_model.dart';
+import 'package:imlib/data/db/model/snow_im_group_model.dart';
 import 'package:imlib/data/db/model/snow_im_message_model.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/message/message_manager.dart';
 import 'package:imlib/proto/message.pb.dart';
 
+import 'data/db/entity/group_entity.dart';
+
 typedef SendBlock = Function(SendStatus status, CustomMessage customMessage);
 typedef MessageProvider = CustomMessage Function();
 
 class SnowIMLib {
-  static init(String uid) async {
-    await SnowIMContext.getInstance().init(uid);
+  static init(String uid,String token) async {
+    await SnowIMContext.getInstance().init(uid,token);
   }
 
-  static connect(String token) async {
-    return SnowIMContext.getInstance().connect(token);
+  static connect() async {
+    return SnowIMContext.getInstance().connect();
   }
 
   static disConnect() {
@@ -38,7 +41,7 @@ class SnowIMLib {
     return SnowIMContext.getInstance().getCustomMessageController().stream;
   }
 
-  static Future<List<CustomMessage>> getHistoryMessage(String targetId, ConversationType conversationType, int beginId, int count) {
+  static Future<List<CustomMessage>> getHistoryMessage(String targetId, ConversationType conversationType, int beginId, int count) async{
     return SnowIMModelManager.getInstance().getModel<SnowIMMessageModel>().getSnowMessageList(targetId, conversationType, beginId, count);
   }
 
@@ -61,10 +64,12 @@ class SnowIMLib {
     return SnowIMContext.getInstance().sendCustomMessage(customMessage, block);
   }
 
-  static sendGroupMessage(String conversationId, CustomMessage customMessage, {SendBlock block}) {
+  static sendGroupMessage(String targetId,CustomMessage customMessage, {SendBlock block}){
     customMessage.conversationType = ConversationType.GROUP;
     customMessage.type = customMessage.runtimeType.toString();
-    customMessage.targetId = conversationId;
+    customMessage.targetId = targetId;
+    customMessage.conversationId = targetId;
+    return SnowIMContext.getInstance().sendCustomMessage(customMessage, block);
   }
 
   static registerMessage(Type messageType, MessageProvider emptyProvider) {
@@ -73,6 +78,14 @@ class SnowIMLib {
 
   static String getCurrentUid() {
     return SnowIMContext.getInstance().selfUid;
+  }
+
+  static Future<GroupEntity> createGroup(String name, String portraitUrl, List<String> memberUidList) async{
+    return SnowIMModelManager.getInstance().getModel<SnowIMGroupModel>().createGroup(name, portraitUrl, memberUidList);
+  }
+
+  static Future<GroupEntity> getGroupDetailByConversationId(String conversationId) async{
+    return SnowIMModelManager.getInstance().getModel<SnowIMGroupModel>().getGroupDetailByConversationId(conversationId);
   }
 }
 

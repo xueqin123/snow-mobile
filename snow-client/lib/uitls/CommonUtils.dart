@@ -12,6 +12,7 @@ class CommonUtils {
   }
 
   static String dateFormat(int time){
+    if(time == null) return "";
     var date = new DateTime.fromMillisecondsSinceEpoch(time);
     final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
     final String formatted = formatter.format(date);

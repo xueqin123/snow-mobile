@@ -15,7 +15,11 @@ class HomeModel extends BaseModel {
       if (_unReadCountController != null) {
         UnreadCount unreadCount = UnreadCount();
         unreadCount.MessageUnReadCount = event;
-        _unReadCountController.sink.add(unreadCount);
+        if(_unReadCountController == null || _unReadCountController.isClosed){
+          _unReadCountController = null;
+        }else{
+          _unReadCountController.sink.add(unreadCount);
+        }
       }
     });
   }

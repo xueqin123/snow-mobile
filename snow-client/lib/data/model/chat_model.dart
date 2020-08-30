@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:imlib/data/db/entity/group_entity.dart';
 import 'package:imlib/imlib.dart';
 import 'package:imlib/proto/message.pbenum.dart';
 import 'package:snowclient/data/db/dao/dao_manager.dart';
@@ -12,12 +13,13 @@ import 'package:snowclient/pages/message/message_widet_manager.dart';
 class ChatModel extends BaseModel {
   UserDao userDao;
   List<ChatItemEntity> data = List<ChatItemEntity>();
+
   ChatModel() {
     userDao = DaoManager.getInstance().getDao<UserDao>();
     SnowIMLib.getConversationStream().listen((event) async {
       List<ChatItemEntity> itemList = await _convertChatItemEntity(event);
       data = itemList;
-      if(chatListController != null){
+      if (chatListController != null && !chatListController.isClosed) {
         chatListController.sink.add(data);
       }
     });
@@ -32,17 +34,20 @@ class ChatModel extends BaseModel {
     return chatListController;
   }
 
-
-
   Future<List<ChatItemEntity>> _convertChatItemEntity(List<Conversation> list) async {
     List<ChatItemEntity> result = List();
-    for(Conversation conversation in list){
+    for (Conversation conversation in list) {
       ChatItemEntity chatItemEntity = ChatItemEntity();
       chatItemEntity.conversationId = conversation.conversationId;
       chatItemEntity.chatType = conversation.type;
       SLog.i("lastContent:${conversation.lastContent} latType:${conversation.lastType}");
-      chatItemEntity.lastContent = MessageWidgetManager.getInstance().getConversationContentProvider(conversation.lastType)(conversation.lastContent);
-      chatItemEntity.lastTime = conversation.lastTime;
+      if (conversation.lastType != null && conversation.lastType.isNotEmpty) {
+        chatItemEntity.lastContent = MessageWidgetManager.getInstance().getConversationContentProvider(conversation.lastType)(conversation.lastContent);
+        chatItemEntity.lastTime = conversation.lastTime;
+      }else{
+        chatItemEntity.lastContent = "";
+        chatItemEntity.lastTime = null;
+      }
       chatItemEntity.unReadCount = conversation.unReadCount;
       print("chatItemEntity.lastTime:${chatItemEntity.lastTime}");
       if (conversation.type == ConversationType.SINGLE) {
@@ -57,7 +62,14 @@ class ChatModel extends BaseModel {
         UserEntity temp = userDao.currentUser.uid == conversation.lastUid ? userDao.currentUser : userEntity;
         chatItemEntity.lastName = temp.name;
       } else if (conversation.type == ConversationType.GROUP) {
-
+        GroupEntity groupEntity = await SnowIMLib.getGroupDetailByConversationId(conversation.conversationId);
+        chatItemEntity.portrait = groupEntity.detail.portrait;
+        chatItemEntity.chatName = groupEntity.detail.name;
+        chatItemEntity.targetId = conversation.conversationId;
+        UserEntity userEntity = await userDao.getUserById(conversation.lastUid);
+        if (userEntity != null) {
+          chatItemEntity.lastName = userEntity.name;
+        }
       }
       result.add(chatItemEntity);
     }

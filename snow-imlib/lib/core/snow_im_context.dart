@@ -35,6 +35,7 @@ import 'outbound/encoder/snow_message_encoder.dart';
 class SnowIMContext {
   static SnowIMContext _instance;
   String selfUid;
+  String token;
 
   SnowIMContext._();
 
@@ -85,8 +86,7 @@ class SnowIMContext {
     return SnowIMModelManager.getInstance().getModel<SnowIMConversationModel>().getConversationController();
   }
 
-  connect(String token) async {
-    SnowIMHttpManager.getInstance().init(token);
+  connect() async {
     _connectStreamController.sink.add(ConnectStatus.IDLE);
     _connectStreamController.sink.add(ConnectStatus.CONNECTING);
     HostEntity hostInfo = await SnowIMHttpManager.getInstance().getService<SnowIMHostService>().getHost(token);
@@ -98,13 +98,12 @@ class SnowIMContext {
   }
 
   //connect 之前先init
-  init(String uid) async {
-    await _initDB(uid);
-  }
-
-  _initDB(String uid) async {
-    selfUid = uid;
+  init(String uid, String token) async {
+    this.selfUid = uid;
+    this.token = token;
+    SnowIMHttpManager.getInstance().init(token);
     await SnowIMDaoManager.getInstance().init(selfUid);
+    SnowIMModelManager.getInstance().init();
   }
 
   _connect(String host, int port) async {
@@ -206,8 +205,8 @@ class SnowIMContext {
   }
 
   onLoginSuccess() async {
-    SnowDataAckHelper.getInstance().init(this);
-    SnowDataAckHelper.getInstance().fetchConversationList();
+    SnowDataFetchHelper.getInstance().init(this);
+    SnowDataFetchHelper.getInstance().fetchConversationList();
   }
 
   onLoginFailed(Code code, String msg) {}

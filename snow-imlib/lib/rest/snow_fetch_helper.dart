@@ -3,26 +3,28 @@ import 'dart:async';
 import 'package:imlib/core/snow_im_context.dart';
 import 'package:imlib/data/db/model/model_manager.dart';
 import 'package:imlib/data/db/model/snow_im_conversation_model.dart';
+import 'package:imlib/data/db/model/snow_im_group_model.dart';
 import 'package:imlib/data/db/model/snow_im_message_model.dart';
 import 'package:imlib/proto/message.pb.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:imlib/utils/s_log.dart';
 import 'package:imlib/utils/snow_im_utils.dart';
 
-class SnowDataAckHelper {
-  static SnowDataAckHelper _instance;
+class SnowDataFetchHelper {
+  static SnowDataFetchHelper _instance;
   Map<Int64, Completer<List<MessageContent>>> waitAckHisMsgMap = Map();
   Map<Int64, Completer<List<ConversationInfo>>> waitAckHisConvMap = Map();
 
   SnowIMContext context;
   SnowIMMessageModel snowMessageModel;
   SnowIMConversationModel conversationModel;
+  SnowIMGroupModel groupModel;
 
-  SnowDataAckHelper._();
+  SnowDataFetchHelper._();
 
-  static SnowDataAckHelper getInstance() {
+  static SnowDataFetchHelper getInstance() {
     if (_instance == null) {
-      _instance = SnowDataAckHelper._();
+      _instance = SnowDataFetchHelper._();
     }
     return _instance;
   }
@@ -31,6 +33,7 @@ class SnowDataAckHelper {
     this.context = context;
     snowMessageModel = SnowIMModelManager.getInstance().getModel<SnowIMMessageModel>();
     conversationModel = SnowIMModelManager.getInstance().getModel<SnowIMConversationModel>();
+    groupModel = SnowIMModelManager.getInstance().getModel<SnowIMGroupModel>();
   }
 
   Future<List<ConversationInfo>> fetchConversationList() {
@@ -67,6 +70,7 @@ class SnowDataAckHelper {
     waitAckHisConvMap.remove(cid);
     await conversationModel.saveConversationList(conversationList);
     await _fetchAllMessage(conversationList);
+    await _fetchAllGroup(conversationList);
     SLog.i("SnowSocketDataHelper onConversationListAck() rest length: ${waitAckHisConvMap.length}");
   }
 
@@ -76,11 +80,17 @@ class SnowDataAckHelper {
     }
   }
 
-  onHistoryMessageAck(Int64 cid, String conversationId, List<MessageContent> messageContentList,int unReadCount) {
+  _fetchAllGroup(List<ConversationInfo> conversationList) async {
+    for (ConversationInfo conversationInfo in conversationList) {
+      await groupModel.syncGroupByGroupId(conversationInfo.groupId);
+    }
+  }
+
+  onHistoryMessageAck(Int64 cid, String conversationId, List<MessageContent> messageContentList, int unReadCount) {
     SLog.i("SnowDataAckHelper messageContentList:${messageContentList.length} ");
     waitAckHisMsgMap[cid].complete(messageContentList);
     waitAckHisMsgMap.remove(cid);
-    snowMessageModel.saveSnowMessageList(conversationId, messageContentList,unReadCount);
+    snowMessageModel.saveSnowMessageList(conversationId, messageContentList, unReadCount);
     SLog.i("SnowSocketDataHelper onHistoryMessageAck() reset length: ${waitAckHisMsgMap.length}");
   }
 }

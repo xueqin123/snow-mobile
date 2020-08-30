@@ -53,16 +53,16 @@ class LoginModel extends BaseModel {
   }
 
   Future _initApp(String uid, String token) async {
-    await SnowIMLib.init(uid);
-    await _initMessages(uid, token);
+    await SnowIMLib.init(uid,token);
+    await _initMessages();
     await DaoManager.getInstance().init(uid);
     ModelManager.getInstance().init();
     await ModelManager.getInstance().getModel<ContactModel>().syncUserData();
 
-    await SnowIMLib.connect(token);
+    await SnowIMLib.connect();
   }
 
-  _initMessages(String uid, String token) async{
+  _initMessages() async{
     SnowIMLib.registerMessage(TextMessage, buildEmptyTextMessage);
     MessageWidgetManager.getInstance().registerMessageWidgetProvider(TextMessage, buildTextMessageWidget);
     MessageWidgetManager.getInstance().registerConversationContentProvider(TextMessage, buildTextLast);

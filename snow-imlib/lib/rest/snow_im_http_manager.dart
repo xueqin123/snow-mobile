@@ -1,3 +1,4 @@
+import 'package:imlib/rest/service/snow_im_group_service.dart';
 import 'package:imlib/rest/service/snow_im_host_service.dart';
 import 'package:imlib/rest/service/snow_im_http_service.dart';
 import 'package:imlib/rest/snow_im_http_helper.dart';
@@ -20,7 +21,14 @@ class SnowIMHttpManager {
   init(String token){
     _httpHelper = SnowIMHttpHelper(token);
     SnowIMHostService hostService = SnowIMHostService(_httpHelper);
-    serviceMap[hostService.runtimeType.toString()] = hostService;
+    SnowIMGroupService groupService = SnowIMGroupService(_httpHelper);
+    registerService(hostService);
+    registerService(groupService);
+  }
+
+  registerService(SnowIMHttpService service){
+    serviceMap[service.runtimeType.toString()] = service;
+
   }
 
   T getService<T>() {

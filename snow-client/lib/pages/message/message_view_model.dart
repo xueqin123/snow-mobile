@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:imlib/data/db/entity/group_entity.dart';
 import 'package:imlib/imlib.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
@@ -33,8 +34,10 @@ class MessageViewModel with ChangeNotifier {
     if (chatType == ConversationType.SINGLE) {
       UserEntity userEntity = await contactModel.getUserById(targetId);
       return userEntity.name;
-    } else {
-      return "";
+    } else if (chatType == ConversationType.GROUP) {
+      GroupEntity groupEntity = await SnowIMLib.getGroupDetailByConversationId(targetId);
+      SLog.i("getChatName groupEntity:$groupEntity");
+      return groupEntity.detail.name;
     }
   }
 
@@ -43,7 +46,7 @@ class MessageViewModel with ChangeNotifier {
   }
 
   sendTextMessage() {
-    messageModel.sendTextMessage(targetId, _sendTextController.text);
+    messageModel.sendTextMessage(targetId, _sendTextController.text, chatType);
     _sendTextController.clear();
   }
 }

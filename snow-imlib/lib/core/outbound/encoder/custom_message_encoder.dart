@@ -30,8 +30,8 @@ class CustomMessageEncoder extends OutboundEncoder<CustomMessage> {
     upDownMessage.fromUid = context.selfUid;
     if (customMessage.conversationType == ConversationType.SINGLE) {
       upDownMessage.targetUid = customMessage.targetId;
-    } else {
-      upDownMessage.conversationId = customMessage.targetId;
+    } else if(customMessage.conversationType == ConversationType.GROUP){
+      upDownMessage.conversationId = customMessage.conversationId;
     }
     context.onSendStatusChanged(SendStatus.SENDING, customMessage);
     customMessage.status = SendStatus.PERSIST;

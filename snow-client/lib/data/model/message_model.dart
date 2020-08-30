@@ -26,11 +26,19 @@ class MessageModel extends BaseModel {
     return messageNotifier.streamController;
   }
 
-  sendTextMessage(String targetId, String text) {
+  sendTextMessage(String targetId, String text, ConversationType conversationType) {
     TextMessage textMessage = TextMessage(text: text);
-    SnowIMLib.sendSingleMessage(targetId, textMessage, block: (status, customMessage) {
+    if (conversationType == ConversationType.SINGLE) {
+      SnowIMLib.sendSingleMessage(targetId, textMessage, block: _messageSendBlock);
+    } else if (conversationType == ConversationType.GROUP) {
+      SnowIMLib.sendGroupMessage(targetId, textMessage, block: _messageSendBlock);
+    }
+  }
+
+  _messageSendBlock(SendStatus status, CustomMessage customMessage) {
+    if (messageNotifier != null) {
       messageNotifier.onSend(status, customMessage);
-    });
+    }
   }
 }
 
