@@ -21,8 +21,8 @@ typedef SendBlock = Function(SendStatus status, CustomMessage customMessage);
 typedef MessageProvider = CustomMessage Function();
 
 class SnowIMLib {
-  static init(String uid,String token) async {
-    await SnowIMContext.getInstance().init(uid,token);
+  static init(String uid, String token) async {
+    await SnowIMContext.getInstance().init(uid, token);
   }
 
   static connect() async {
@@ -41,7 +41,7 @@ class SnowIMLib {
     return SnowIMContext.getInstance().getCustomMessageController().stream;
   }
 
-  static Future<List<CustomMessage>> getHistoryMessage(String targetId, ConversationType conversationType, int beginId, int count) async{
+  static Future<List<CustomMessage>> getHistoryMessage(String targetId, ConversationType conversationType, int beginId, int count) async {
     return SnowIMModelManager.getInstance().getModel<SnowIMMessageModel>().getSnowMessageList(targetId, conversationType, beginId, count);
   }
 
@@ -64,7 +64,7 @@ class SnowIMLib {
     return SnowIMContext.getInstance().sendCustomMessage(customMessage, block);
   }
 
-  static sendGroupMessage(String targetId,CustomMessage customMessage, {SendBlock block}){
+  static sendGroupMessage(String targetId, CustomMessage customMessage, {SendBlock block}) {
     customMessage.conversationType = ConversationType.GROUP;
     customMessage.type = customMessage.runtimeType.toString();
     customMessage.targetId = targetId;
@@ -80,11 +80,15 @@ class SnowIMLib {
     return SnowIMContext.getInstance().selfUid;
   }
 
-  static Future<GroupEntity> createGroup(String name, String portraitUrl, List<String> memberUidList) async{
+  static Future<GroupEntity> createGroup(String name, String portraitUrl, List<String> memberUidList) async {
     return SnowIMModelManager.getInstance().getModel<SnowIMGroupModel>().createGroup(name, portraitUrl, memberUidList);
   }
 
-  static Future<GroupEntity> getGroupDetailByConversationId(String conversationId) async{
+  static Future<bool> dismissGroup(String groupId) {
+    return SnowIMModelManager.getInstance().getModel<SnowIMGroupModel>().dismissGroup(groupId);
+  }
+
+  static Future<GroupEntity> getGroupDetailByConversationId(String conversationId) async {
     return SnowIMModelManager.getInstance().getModel<SnowIMGroupModel>().getGroupDetailByConversationId(conversationId);
   }
 }

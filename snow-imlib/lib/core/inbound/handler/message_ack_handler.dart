@@ -22,6 +22,7 @@ class MessageAckHandler extends InboundHandler {
     if (messageAck.code == Code.SUCCESS) {
       CustomMessage customMessage = await model.updateSendMessage(messageAck.id.toInt(), messageAck.conversationId, SendStatus.SUCCESS, messageAck.cid.toInt());
       customMessage.cid = messageAck.cid.toInt();
+      customMessage.status = SendStatus.SUCCESS;
       context.onSendStatusChanged(SendStatus.SUCCESS,customMessage);
     } else {
       CustomMessage customMessage = await model.updateSendMessage(messageAck.id.toInt(), messageAck.conversationId, SendStatus.FAILED, messageAck.cid.toInt());

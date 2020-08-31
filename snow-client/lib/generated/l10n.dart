@@ -242,6 +242,36 @@ class S {
       args: [],
     );
   }
+
+  /// `dismissGroup`
+  String get dissmissGroup {
+    return Intl.message(
+      'dismissGroup',
+      name: 'dissmissGroup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `dissmissGroupSuccess`
+  String get dissmissGroupSuccess {
+    return Intl.message(
+      'dissmissGroupSuccess',
+      name: 'dissmissGroupSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `dissmissGroupFailed`
+  String get dissmissGroupFailed {
+    return Intl.message(
+      'dissmissGroupFailed',
+      name: 'dissmissGroupFailed',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

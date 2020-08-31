@@ -12,8 +12,7 @@ class SnowIMGroupModel extends SnowIMModel {
   SnowIMGroupDao groupDao;
   SnowIMConversationModel conversationModel;
 
-
-  SnowIMGroupModel(){
+  SnowIMGroupModel() {
     groupService = SnowIMHttpManager.getInstance().getService<SnowIMGroupService>();
     groupDao = SnowIMDaoManager.getInstance().getDao<SnowIMGroupDao>();
     conversationModel = SnowIMConversationModel();
@@ -26,10 +25,13 @@ class SnowIMGroupModel extends SnowIMModel {
     return groupEntity;
   }
 
-  Future<GroupEntity> getGroupDetailByConversationId(String conversationId) async{
-    return groupDao.getGroupDetailByConversationId(conversationId);
+  Future<bool> dismissGroup(String groupId) async{
+    return groupService.dismissGroup(groupId);
   }
 
+  Future<GroupEntity> getGroupDetailByConversationId(String conversationId) async {
+    return groupDao.getGroupDetailByConversationId(conversationId);
+  }
 
   Future syncGroupByGroupId(String groupId) async {
     SLog.i("syncGroupByGroupId groupId: $groupId");

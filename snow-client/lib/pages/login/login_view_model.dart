@@ -6,7 +6,7 @@ import 'package:snowclient/data/entity/login_user_info.dart';
 import 'package:snowclient/data/model/login_model.dart';
 import 'package:snowclient/data/model/model_manager.dart';
 import 'package:snowclient/generated/l10n.dart';
-import 'package:snowclient/uitls/CommonUtils.dart';
+import 'package:snowclient/uitls/common_utils.dart';
 
 class LoginViewModel with ChangeNotifier {
   LoginStatus _loginStatus = LoginStatus.IDLE;

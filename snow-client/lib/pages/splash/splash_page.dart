@@ -7,8 +7,8 @@ import 'package:snowclient/pages/login/login_page.dart';
 import 'package:snowclient/pages/login/login_view_model.dart';
 import 'package:snowclient/pages/splash/splash_viewModel.dart';
 import 'package:snowclient/rest/http_helper.dart';
-import 'package:snowclient/uitls/CommonUtils.dart';
-import 'package:snowclient/uitls/Constans.dart';
+import 'package:snowclient/uitls/common_utils.dart';
+import 'package:snowclient/uitls/constans.dart';
 
 class SplashPage extends StatefulWidget {
   @override

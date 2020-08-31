@@ -168,6 +168,8 @@ class SnowIMMessageDao extends SnowIMDao {
     readyMessage.decode(jsonDecode(content));
     readyMessage.direction = _getDirection(readyMessage.uid);
     readyMessage.time = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_TIME];
+    int status = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_STATUS];
+    readyMessage.status = SendStatus.values.where((element) => element.index == status).first;
     return readyMessage;
   }
 

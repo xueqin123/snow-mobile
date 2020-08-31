@@ -19,5 +19,10 @@
   "contactSelect": "选择联系人",
   "confirm":"确认",
   "createGroupSuccess":"群组创建成功",
-  "createGroupFailed":"群组创建失败"
+  "createGroupFailed":"群组创建失败",
+  "dissmissGroup":"解散群组",
+  "dissmissGroupSuccess":"群组解散成功",
+  "dissmissGroupFailed":"群组解散失败"
+
+
 }

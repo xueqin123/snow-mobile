@@ -19,7 +19,10 @@
   "contactSelect": "select contact",
   "confirm":"confirm",
   "createGroupSuccess":"createGroupSuccess",
-  "createGroupFailed":"createGroupFailed"
+  "createGroupFailed":"createGroupFailed",
+  "dissmissGroup":"dismissGroup",
+  "dissmissGroupSuccess":"dissmissGroupSuccess",
+  "dissmissGroupFailed":"dissmissGroupFailed"
 
 
 }

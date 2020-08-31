@@ -47,19 +47,20 @@ class MessageNotifier extends Notifier<List<CustomMessage>> {
   List<CustomMessage> data = List();
 
   onSend(SendStatus status, CustomMessage customMessage) {
-    SLog.i("MessageNotifier onSend() $status");
+    SLog.i("MessageNotifier onSend() $status customMessage.cid: ${customMessage.cid}");
     if (status == SendStatus.SENDING) {
       data.add(customMessage);
     } else {
-      SLog.i("MessageNotifier onSend()  :${customMessage.id}");
       for (CustomMessage element in data) {
-        if (customMessage.cid == element.cid) {
+        SLog.i("MessageNotifier targetCid ${element.cid} customCid:${customMessage.cid}}");
+        if (customMessage.cid!=null && customMessage.cid == element.cid) {
           element.id = customMessage.id;
           element.status = customMessage.status;
           element.time = customMessage.time;
           element.targetId = customMessage.targetId;
+          element.conversationId = customMessage.conversationId;
+          break;
         }
-        break;
       }
     }
     post();

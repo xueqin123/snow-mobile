@@ -4,7 +4,7 @@ import 'package:imlib/imlib.dart';
 import 'package:imlib/proto/message.pb.dart';
 import 'package:provider/provider.dart';
 import 'package:snowclient/pages/message/message_page.dart';
-import 'package:snowclient/uitls/CommonUtils.dart';
+import 'package:snowclient/uitls/common_utils.dart';
 import 'package:snowclient/uitls/const_router.dart';
 import 'package:snowclient/uitls/widge/badge_widget.dart';
 import 'chat_item_entity.dart';

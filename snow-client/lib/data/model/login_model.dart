@@ -10,8 +10,8 @@ import 'package:snowclient/messages/text_message.dart';
 import 'package:snowclient/pages/message/message_widet_manager.dart';
 import 'package:snowclient/rest/http_manager.dart';
 import 'package:snowclient/rest/service/login_service.dart';
-import 'package:snowclient/uitls/CommonUtils.dart';
-import 'package:snowclient/uitls/Constans.dart';
+import 'package:snowclient/uitls/common_utils.dart';
+import 'package:snowclient/uitls/constans.dart';
 
 import 'model_manager.dart';
 

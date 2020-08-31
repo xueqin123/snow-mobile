@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:imlib/imlib.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
 import 'package:imlib/utils/s_log.dart';
 import 'package:provider/provider.dart';
 import 'package:snowclient/generated/l10n.dart';
+import 'package:snowclient/uitls/const_router.dart';
 
 import 'message_view_model.dart';
 import 'message_widet_manager.dart';
@@ -19,7 +21,10 @@ class MessagePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map args = ModalRoute.of(context).settings.arguments;
+    Map args = ModalRoute
+        .of(context)
+        .settings
+        .arguments;
     targetId = args[TARGET_ID];
     conversationType = args[CONVERSATION_TYPE];
     viewModel = MessageViewModel(targetId, conversationType);
@@ -37,12 +42,17 @@ class MessagePage extends StatelessWidget {
           initialData: "",
         )
       ],
-      child: MessageStatefulWidget(),
+      child: MessageStatefulWidget(targetId, conversationType),
     );
   }
 }
 
 class MessageStatefulWidget extends StatefulWidget {
+  String targetId;
+  ConversationType conversationType;
+
+  MessageStatefulWidget(this.targetId, this.conversationType);
+
   @override
   State<StatefulWidget> createState() {
     return MessageState();
@@ -63,17 +73,20 @@ class MessageState extends State<MessageStatefulWidget> {
     return Scaffold(
       appBar: AppBar(
         title: Text(chatName),
+        actions: [
+          IconButton(icon: Icon(Icons.portrait), onPressed: () => _gotoChatDetailPage(widget.targetId, widget.conversationType))
+        ],
       ),
       body: Column(
         children: [
           Expanded(
               child: ListView.builder(
-            reverse: true,
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemBuilder: (context, index) => _buildCustomMessageItemWidget(context, index),
-            itemCount: data.length,
-          )),
+                reverse: true,
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemBuilder: (context, index) => _buildCustomMessageItemWidget(context, index),
+                itemCount: data.length,
+              )),
           _buildInputWidget(),
         ],
       ),
@@ -90,8 +103,31 @@ class MessageState extends State<MessageStatefulWidget> {
     }
     return Container(
       padding: const EdgeInsets.all(10.0),
-      child: Row(mainAxisAlignment: alignment, children: [MessageWidgetManager.getInstance().getMessageWidgetProvider(customMessage.type)(customMessage)]),
+      child: Row(mainAxisAlignment: alignment, children: [
+        Visibility(
+            visible: customMessage.status != SendStatus.SUCCESS,
+            child: _buildSendDot(customMessage.status)),
+        MessageWidgetManager.getInstance().getMessageWidgetProvider(customMessage.type)(customMessage)]),
     );
+  }
+
+
+  Widget _buildSendDot(SendStatus status) {
+    switch (status) {
+      case SendStatus.FAILED:
+        return Icon(Icons.warning);
+        break;
+      case SendStatus.SENDING:
+      case SendStatus.PERSIST:
+        return Icon(Icons.adjust);
+        break;
+      case SendStatus.SUCCESS:
+        return Icon(Icons.check);
+        break;
+      default :
+        return Icon(Icons.check);
+        break;
+    }
   }
 
   Widget _buildInputWidget() {
@@ -119,7 +155,9 @@ class MessageState extends State<MessageStatefulWidget> {
               child: Align(
                 alignment: Alignment.center,
                 child: Text(
-                  S.of(context).messageSend,
+                  S
+                      .of(context)
+                      .messageSend,
                   style: TextStyle(color: Colors.white, fontSize: 20),
                   textAlign: TextAlign.center,
                 ),
@@ -129,5 +167,12 @@ class MessageState extends State<MessageStatefulWidget> {
         ),
       ],
     );
+  }
+
+  _gotoChatDetailPage(String targetId, ConversationType conversationType) {
+    Map map = Map();
+    map[MessagePage.TARGET_ID] = targetId;
+    map[MessagePage.CONVERSATION_TYPE] = conversationType;
+    Navigator.pushNamed(context, ConstRouter.CHAT_DETAIL_PAGE, arguments: map);
   }
 }

@@ -69,9 +69,9 @@ class SnowDataFetchHelper {
     SLog.i("SnowDataFetchHelper onConversationListAck() conversation size: ${conversationList.length}");
     waitAckHisConvMap[cid].complete(conversationList);
     waitAckHisConvMap.remove(cid);
-    await conversationModel.saveConversationList(conversationList);
     await _fetchAllGroup(conversationList);
     await _fetchAllMessage(conversationList);
+    await conversationModel.saveConversationList(conversationList);
     SLog.i("SnowDataFetchHelper onConversationListAck() rest length: ${waitAckHisConvMap.length}");
   }
 
