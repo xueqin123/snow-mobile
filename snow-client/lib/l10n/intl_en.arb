@@ -22,7 +22,7 @@
   "createGroupFailed":"createGroupFailed",
   "dissmissGroup":"dismissGroup",
   "dissmissGroupSuccess":"dissmissGroupSuccess",
-  "dissmissGroupFailed":"dissmissGroupFailed"
-
+  "dissmissGroupFailed":"dissmissGroupFailed",
+  "pluginImage": "picture"
 
 }

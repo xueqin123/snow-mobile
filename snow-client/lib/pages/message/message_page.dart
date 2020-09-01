@@ -5,7 +5,7 @@ import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
 import 'package:imlib/utils/s_log.dart';
 import 'package:provider/provider.dart';
-import 'package:snowclient/generated/l10n.dart';
+import 'package:snowclient/pages/message/widget/message_input_widget.dart';
 import 'package:snowclient/uitls/const_router.dart';
 
 import 'message_view_model.dart';
@@ -21,10 +21,7 @@ class MessagePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map args = ModalRoute
-        .of(context)
-        .settings
-        .arguments;
+    Map args = ModalRoute.of(context).settings.arguments;
     targetId = args[TARGET_ID];
     conversationType = args[CONVERSATION_TYPE];
     viewModel = MessageViewModel(targetId, conversationType);
@@ -63,31 +60,45 @@ class MessageState extends State<MessageStatefulWidget> {
   List<CustomMessage> data;
   MessageViewModel viewModel;
   String chatName;
+  MessageInputWidget inputWidget;
+
+  @override
+  void initState() {
+    super.initState();
+    inputWidget = MessageInputWidget();
+  }
 
   @override
   Widget build(BuildContext context) {
     viewModel = Provider.of<MessageViewModel>(context);
+    inputWidget.controller = viewModel.sendTextController;
+    inputWidget.sendClick = viewModel.sendTextMessage;
     data = Provider.of<List<CustomMessage>>(context);
     chatName = Provider.of<String>(context);
     SLog.i("MessageState data.length: ${data.length}");
     return Scaffold(
       appBar: AppBar(
         title: Text(chatName),
-        actions: [
-          IconButton(icon: Icon(Icons.portrait), onPressed: () => _gotoChatDetailPage(widget.targetId, widget.conversationType))
-        ],
+        actions: [IconButton(icon: Icon(Icons.portrait), onPressed: () => _gotoChatDetailPage(widget.targetId, widget.conversationType))],
       ),
       body: Column(
         children: [
           Expanded(
-              child: ListView.builder(
-                reverse: true,
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemBuilder: (context, index) => _buildCustomMessageItemWidget(context, index),
-                itemCount: data.length,
-              )),
-          _buildInputWidget(),
+            child: AbsorbPointer(
+              absorbing: false,
+              child:Listener(
+                onPointerDown: (_)=>inputWidget.unFocusTextInput(),
+                child: ListView.builder(
+                  reverse: true,
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) => _buildCustomMessageItemWidget(context, index),
+                  itemCount: data.length,
+                ),
+              ) ,
+            ),
+          ),
+          inputWidget
         ],
       ),
     );
@@ -103,14 +114,9 @@ class MessageState extends State<MessageStatefulWidget> {
     }
     return Container(
       padding: const EdgeInsets.all(10.0),
-      child: Row(mainAxisAlignment: alignment, children: [
-        Visibility(
-            visible: customMessage.status != SendStatus.SUCCESS,
-            child: _buildSendDot(customMessage.status)),
-        MessageWidgetManager.getInstance().getMessageWidgetProvider(customMessage.type)(customMessage)]),
+      child: Row(mainAxisAlignment: alignment, children: [Visibility(visible: customMessage.status != SendStatus.SUCCESS, child: _buildSendDot(customMessage.status)), MessageWidgetManager.getInstance().getMessageWidgetProvider(customMessage.type)(customMessage)]),
     );
   }
-
 
   Widget _buildSendDot(SendStatus status) {
     switch (status) {
@@ -124,49 +130,10 @@ class MessageState extends State<MessageStatefulWidget> {
       case SendStatus.SUCCESS:
         return Icon(Icons.check);
         break;
-      default :
+      default:
         return Icon(Icons.check);
         break;
     }
-  }
-
-  Widget _buildInputWidget() {
-    return Row(
-      children: [
-        Container(
-          width: 300,
-          height: 35,
-          child: TextField(
-            decoration: InputDecoration(border: OutlineInputBorder()),
-            controller: viewModel.sendTextController,
-            textAlign: TextAlign.left,
-          ),
-        ),
-        Expanded(
-          child: GestureDetector(
-            onTap: () => viewModel.sendTextMessage(),
-            child: Container(
-              height: 35,
-              decoration: ShapeDecoration(
-                  color: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  )),
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  S
-                      .of(context)
-                      .messageSend,
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
   }
 
   _gotoChatDetailPage(String targetId, ConversationType conversationType) {

@@ -44,6 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "pageHomeTabMessage" : MessageLookupByLibrary.simpleMessage("信息"),
     "pageHomeTabMine" : MessageLookupByLibrary.simpleMessage("我"),
     "pageMessagePopAddFriend" : MessageLookupByLibrary.simpleMessage("添加好友"),
-    "pageMessagePopStartChat" : MessageLookupByLibrary.simpleMessage("发起群聊")
+    "pageMessagePopStartChat" : MessageLookupByLibrary.simpleMessage("发起群聊"),
+    "pluginImage" : MessageLookupByLibrary.simpleMessage("图片")
   };
 }

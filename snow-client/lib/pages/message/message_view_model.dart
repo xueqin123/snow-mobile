@@ -47,7 +47,11 @@ class MessageViewModel with ChangeNotifier {
   }
 
   sendTextMessage() {
-    messageModel.sendTextMessage(targetId, _sendTextController.text, chatType);
+    String text = _sendTextController.text;
+    if (text == null || text.isEmpty) {
+      return;
+    }
+    messageModel.sendTextMessage(targetId, text, chatType);
     _sendTextController.clear();
   }
 }

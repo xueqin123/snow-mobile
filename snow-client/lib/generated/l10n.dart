@@ -272,6 +272,16 @@ class S {
       args: [],
     );
   }
+
+  /// `picture`
+  String get pluginImage {
+    return Intl.message(
+      'picture',
+      name: 'pluginImage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
