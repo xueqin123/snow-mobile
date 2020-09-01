@@ -12,6 +12,7 @@ import 'package:snowclient/rest/http_manager.dart';
 import 'package:snowclient/rest/service/login_service.dart';
 import 'package:snowclient/uitls/common_utils.dart';
 import 'package:snowclient/uitls/constans.dart';
+import 'package:snowclient/upload/uploader.dart';
 
 import 'model_manager.dart';
 
@@ -58,8 +59,8 @@ class LoginModel extends BaseModel {
     await DaoManager.getInstance().init(uid);
     ModelManager.getInstance().init();
     await ModelManager.getInstance().getModel<ContactModel>().syncUserData();
-
     await SnowIMLib.connect();
+    UpLoader.getInstance().init(uid);
   }
 
   _initMessages() async{

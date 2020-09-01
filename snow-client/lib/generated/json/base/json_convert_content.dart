@@ -9,6 +9,8 @@ import 'package:snowclient/data/entity/req_login_entity.dart';
 import 'package:snowclient/generated/json/req_login_entity_helper.dart';
 import 'package:snowclient/data/entity/user_entity.dart';
 import 'package:snowclient/generated/json/user_entity_helper.dart';
+import 'package:snowclient/data/entity/rsp_credential_entity.dart';
+import 'package:snowclient/generated/json/rsp_credential_entity_helper.dart';
 
 class JsonConvert<T> {
 	T fromJson(Map<String, dynamic> json) {
@@ -23,7 +25,8 @@ class JsonConvert<T> {
     switch (type) {			case RspLoginEntity:
 			return rspLoginEntityFromJson(data as RspLoginEntity, json) as T;			case ReqLoginEntity:
 			return reqLoginEntityFromJson(data as ReqLoginEntity, json) as T;			case UserEntity:
-			return userEntityFromJson(data as UserEntity, json) as T;    }
+			return userEntityFromJson(data as UserEntity, json) as T;			case RspCredentialEntity:
+			return rspCredentialEntityFromJson(data as RspCredentialEntity, json) as T;    }
     return data as T;
   }
 
@@ -31,7 +34,8 @@ class JsonConvert<T> {
 		switch (type) {			case RspLoginEntity:
 			return rspLoginEntityToJson(data as RspLoginEntity);			case ReqLoginEntity:
 			return reqLoginEntityToJson(data as ReqLoginEntity);			case UserEntity:
-			return userEntityToJson(data as UserEntity);    }
+			return userEntityToJson(data as UserEntity);			case RspCredentialEntity:
+			return rspCredentialEntityToJson(data as RspCredentialEntity);    }
     return data as T;
   }
   //Go back to a single instance by type
@@ -39,7 +43,8 @@ class JsonConvert<T> {
     switch (type) {			case 'RspLoginEntity':
 			return RspLoginEntity().fromJson(json);			case 'ReqLoginEntity':
 			return ReqLoginEntity().fromJson(json);			case 'UserEntity':
-			return UserEntity().fromJson(json);    }
+			return UserEntity().fromJson(json);			case 'RspCredentialEntity':
+			return RspCredentialEntity().fromJson(json);    }
     return null;
   }
 
@@ -48,7 +53,8 @@ class JsonConvert<T> {
     switch (type) {			case 'RspLoginEntity':
 			return List<RspLoginEntity>();			case 'ReqLoginEntity':
 			return List<ReqLoginEntity>();			case 'UserEntity':
-			return List<UserEntity>();    }
+			return List<UserEntity>();			case 'RspCredentialEntity':
+			return List<RspCredentialEntity>();    }
     return null;
   }
 
