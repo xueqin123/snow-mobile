@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:imlib/proto/message.pb.dart';
 import 'package:snowclient/generated/l10n.dart';
 import 'package:snowclient/pages/message/widget/plugin/plugin.dart';
 import 'package:snowclient/pages/message/widget/plugin/plugin_manager.dart';
@@ -11,6 +12,8 @@ class MessageInputWidget extends StatefulWidget {
   TextEditingController controller;
   SendClick sendClick;
   FocusNode inputFocusNode = FocusNode();
+  String conversationId;
+  ConversationType conversationType;
 
   unFocusTextInput() {
     inputFocusNode.unfocus();
@@ -56,19 +59,22 @@ class InputState extends State<MessageInputWidget> {
   }
 
   Widget _buildItem(Plugin plugin) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 3.0),
-        ),
-        plugin.getIcon(),
-        Expanded(
-          child: Text(
-            plugin.getName(),
-            style: TextStyle(fontSize: 10),
+    return GestureDetector(
+      onTap: ()=>plugin.onClick(widget.conversationId,widget.conversationType),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 3.0),
           ),
-        )
-      ],
+          plugin.getIcon(),
+          Expanded(
+            child: Text(
+              plugin.getName(),
+              style: TextStyle(fontSize: 10),
+            ),
+          )
+        ],
+      ),
     );
   }
 

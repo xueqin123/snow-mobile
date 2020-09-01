@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:imlib/proto/message.pb.dart';
 import 'package:imlib/utils/s_log.dart';
 import 'package:snowclient/generated/l10n.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,8 +19,8 @@ class ImagePickerPlugin extends Plugin {
   }
 
   @override
-  onClick(String conversationId) async {
-    PickedFile pickedFile = await imagePicker.getImage(source: ImageSource.camera);
+  onClick(String conversationId,ConversationType type) async {
+    PickedFile pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
     SLog.i("pickfile: ${pickedFile.path}");
   }
 

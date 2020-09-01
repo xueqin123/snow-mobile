@@ -73,6 +73,8 @@ class MessageState extends State<MessageStatefulWidget> {
     viewModel = Provider.of<MessageViewModel>(context);
     inputWidget.controller = viewModel.sendTextController;
     inputWidget.sendClick = viewModel.sendTextMessage;
+    inputWidget.conversationId = viewModel.targetId;
+    inputWidget.conversationType = viewModel.chatType;
     data = Provider.of<List<CustomMessage>>(context);
     chatName = Provider.of<String>(context);
     SLog.i("MessageState data.length: ${data.length}");

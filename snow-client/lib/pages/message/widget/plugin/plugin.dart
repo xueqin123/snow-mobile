@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:imlib/proto/message.pb.dart';
 
 abstract class Plugin {
   int getOrder();
@@ -7,5 +8,5 @@ abstract class Plugin {
 
   Widget getIcon();
 
-  onClick(String conversationId);
+  onClick(String conversationId, ConversationType conversationType);
 }
