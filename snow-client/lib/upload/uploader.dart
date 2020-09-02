@@ -25,7 +25,7 @@ class UpLoader {
     Cos cos = Cos(secretId, secretKey, _FILE_HOST, token);
     String fileName = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.length);
     String upLoadName = _currentUid + fileName;
-    String imgUrl = await cos.upload('image/$upLoadName', File(filePath).readAsBytesSync());
+    String imgUrl = await cos.upload('/image/$upLoadName', File(filePath).readAsBytesSync());
     return imgUrl;
   }
 }

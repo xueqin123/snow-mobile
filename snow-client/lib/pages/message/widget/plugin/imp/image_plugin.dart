@@ -4,9 +4,18 @@ import 'package:imlib/utils/s_log.dart';
 import 'package:snowclient/generated/l10n.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:snowclient/pages/message/widget/plugin/plugin.dart';
+import 'package:snowclient/rest/http_manager.dart';
+import 'package:snowclient/rest/service/upload_service.dart';
 
-class ImagePickerPlugin extends Plugin {
+class ImagePlugin extends Plugin {
+
+  UploadService uploadService;
   ImagePicker imagePicker;
+
+  ImagePlugin() {
+    imagePicker = ImagePicker();
+    uploadService = HttpManager.getInstance().getService<UploadService>();
+  }
 
   @override
   Widget getIcon() {
@@ -21,12 +30,12 @@ class ImagePickerPlugin extends Plugin {
   @override
   onClick(String conversationId,ConversationType type) async {
     PickedFile pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
-    SLog.i("pickfile: ${pickedFile.path}");
+    SLog.i("gallery file: $pickedFile path:${pickedFile.path}");
+    String url = await uploadService.upLoadImage(pickedFile.path);
+    SLog.i("upload success url:$url");
   }
 
-  ImagePickerPlugin() {
-    imagePicker = ImagePicker();
-  }
+
 
   @override
   int getOrder() {

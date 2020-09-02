@@ -45,6 +45,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "pageHomeTabMine" : MessageLookupByLibrary.simpleMessage("Mine"),
     "pageMessagePopAddFriend" : MessageLookupByLibrary.simpleMessage("add friend"),
     "pageMessagePopStartChat" : MessageLookupByLibrary.simpleMessage("start group chat"),
+    "pluginCamera" : MessageLookupByLibrary.simpleMessage("camera"),
     "pluginImage" : MessageLookupByLibrary.simpleMessage("picture")
   };
 }

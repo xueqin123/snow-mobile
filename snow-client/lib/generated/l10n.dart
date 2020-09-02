@@ -282,6 +282,16 @@ class S {
       args: [],
     );
   }
+
+  /// `camera`
+  String get pluginCamera {
+    return Intl.message(
+      'camera',
+      name: 'pluginCamera',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

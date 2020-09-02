@@ -7,7 +7,8 @@ import 'package:snowclient/data/model/contact_model.dart';
 import 'package:snowclient/data/model/base_model.dart';
 import 'package:snowclient/messages/text_message.dart';
 import 'package:snowclient/pages/message/message_widet_manager.dart';
-import 'package:snowclient/pages/message/widget/plugin/imp/image_picker_plugin.dart';
+import 'package:snowclient/pages/message/widget/plugin/imp/camera_plugin.dart';
+import 'package:snowclient/pages/message/widget/plugin/imp/image_plugin.dart';
 import 'package:snowclient/pages/message/widget/plugin/plugin_manager.dart';
 import 'package:snowclient/rest/http_manager.dart';
 import 'package:snowclient/rest/service/login_service.dart';
@@ -55,7 +56,8 @@ class LoginModel extends BaseModel {
   }
 
   Future _initApp(String uid, String token) async {
-    PluginManager.getInstance().addPlugin(ImagePickerPlugin());
+    PluginManager.getInstance().addPlugin(ImagePlugin());
+    PluginManager.getInstance().addPlugin(CameraPlugin());
     await SnowIMLib.init(uid,token);
     await _initMessages();
     await DaoManager.getInstance().init(uid);

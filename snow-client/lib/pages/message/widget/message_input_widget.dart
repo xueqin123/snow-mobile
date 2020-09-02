@@ -55,7 +55,12 @@ class InputState extends State<MessageInputWidget> {
   }
 
   Widget _buildFunctionWidget() {
-    return Container(height: 350, child: GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 5, mainAxisSpacing: 5, childAspectRatio: 1), itemBuilder: (context, index) => _buildItem(widget.plugins[index]), itemCount: widget.plugins.length));
+    return Container(height: 350, child: GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 20,
+        childAspectRatio: 1),
+        itemBuilder: (context, index) => _buildItem(widget.plugins[index]),
+        itemCount: widget.plugins.length));
   }
 
   Widget _buildItem(Plugin plugin) {

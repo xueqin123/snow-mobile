@@ -23,5 +23,6 @@
   "dissmissGroup":"解散群组",
   "dissmissGroupSuccess":"群组解散成功",
   "dissmissGroupFailed":"群组解散失败",
-  "pluginImage": "图片"
+  "pluginImage": "图片",
+  "pluginCamera": "拍照"
 }

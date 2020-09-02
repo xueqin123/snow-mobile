@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:crypto/crypto.dart';
+import 'package:mime/mime.dart';
 
 /// 腾讯云对象存储工具类
 /// 使用腾讯云secret_id,secret_key和存储桶地址来初始化
@@ -51,11 +53,14 @@ class Cos {
   Future<String> upload(String path, List<int> bytes, {Map<String, String> params, Map<String, String> headers, Function(int, int) progress}) async {
     String url = host + path;
     params = params ?? Map<String, String>();
+    String mimeType = lookupMimeType(path);
+    print("upload path:$path mimeType:$mimeType");
     Options options = Options();
     options.headers = headers ?? Map<String, String>();
-    options.headers['content-length'] = bytes.length.toString(); // 设置content-length,否则无法监听文件上传进度
+    options.headers[Headers.contentLengthHeader] = bytes.length.toString(); // 设置content-length,否则无法监听文件上传进度
     //对put上传请求签名
     options.headers['Authorization'] = sign('put', path, headers: options.headers, params: params);
+    options.headers[Headers.contentTypeHeader] = mimeType;
     options.headers['x-cos-security-token'] = token;
     try {
       Response response = await dio.put(url,
@@ -69,7 +74,7 @@ class Cos {
           options: options);
       return response.statusCode == 200 ? url : '';
     } on DioError catch (e) {
-      print('Error:' + e.message);
+      print('Error: $e');
       return '';
     }
   }

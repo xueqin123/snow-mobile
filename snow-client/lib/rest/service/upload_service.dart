@@ -11,6 +11,7 @@ class UploadService extends HttpService {
 
   Future<String> upLoadImage(String filePath) async {
     RspCredentialEntity credential = await httpHelper.get<RspCredentialEntity>(_FILE_CREDENTIAL, null, null);
+    SLog.i("upLoadImage credential: ${credential.toJson()}");
     String url = await UpLoader.getInstance().uploadImage(credential.tmpSecretId, credential.tmpSecretKey, credential.sessionToken, filePath);
     SLog.i("upLoadImage: $url");
     return url;

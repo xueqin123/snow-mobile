@@ -23,6 +23,6 @@
   "dissmissGroup":"dismissGroup",
   "dissmissGroupSuccess":"dissmissGroupSuccess",
   "dissmissGroupFailed":"dissmissGroupFailed",
-  "pluginImage": "picture"
-
+  "pluginImage": "picture",
+  "pluginCamera": "camera"
 }
