@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:imlib/imlib.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pbenum.dart';
+import 'package:snowclient/data/entity/user_entity.dart';
+import 'package:snowclient/data/model/contact_model.dart';
+import 'package:snowclient/data/model/model_manager.dart';
 import 'package:snowclient/messages/text_message.dart';
 
 import 'base_model.dart';
@@ -20,7 +23,7 @@ class MessageModel extends BaseModel {
     });
   }
 
-  StreamController<List<CustomMessage>> getMessageController(String targetId, ConversationType conversationType) {
+  StreamController<List<MessageWrapper>> getMessageController(String targetId, ConversationType conversationType) {
     messageNotifier = MessageNotifier(targetId);
     SnowIMLib.getHistoryMessage(targetId, conversationType, 0, 20).then((value) => {messageNotifier.onHistory(value)});
     return messageNotifier.streamController;
@@ -42,23 +45,25 @@ class MessageModel extends BaseModel {
   }
 }
 
-class MessageNotifier extends Notifier<List<CustomMessage>> {
+class MessageNotifier extends Notifier<List<MessageWrapper>> {
   String targetId;
-  List<CustomMessage> data = List();
+  List<MessageWrapper> data = List();
 
-  onSend(SendStatus status, CustomMessage customMessage) {
+  onSend(SendStatus status, CustomMessage customMessage) async {
     SLog.i("MessageNotifier onSend() $status customMessage.cid: ${customMessage.cid}");
     if (status == SendStatus.SENDING) {
-      data.add(customMessage);
+      MessageWrapper messageWrapper = await MessageWrapper.create(customMessage);
+      data.add(messageWrapper);
     } else {
-      for (CustomMessage element in data) {
-        SLog.i("MessageNotifier targetCid ${element.cid} customCid:${customMessage.cid}}");
-        if (customMessage.cid!=null && customMessage.cid == element.cid) {
-          element.id = customMessage.id;
-          element.status = customMessage.status;
-          element.time = customMessage.time;
-          element.targetId = customMessage.targetId;
-          element.conversationId = customMessage.conversationId;
+      for (MessageWrapper element in data) {
+        SLog.i("MessageNotifier targetCid ${element.customMessage.cid} customCid:${customMessage.cid}}");
+        CustomMessage old = element.customMessage;
+        if (customMessage.cid != null && customMessage.cid == old.cid) {
+          old.id = customMessage.id;
+          old.status = customMessage.status;
+          old.time = customMessage.time;
+          old.targetId = customMessage.targetId;
+          old.conversationId = customMessage.conversationId;
           break;
         }
       }
@@ -66,15 +71,21 @@ class MessageNotifier extends Notifier<List<CustomMessage>> {
     post();
   }
 
-  onReceive(CustomMessage customMessage) {
+  onReceive(CustomMessage customMessage) async {
     SLog.i("MessageNotifier onReceive() $customMessage");
-    data.add(customMessage);
+    MessageWrapper messageWrapper = await MessageWrapper.create(customMessage);
+    data.add(messageWrapper);
     post();
   }
 
-  onHistory(List<CustomMessage> historyList) {
+  onHistory(List<CustomMessage> historyList) async {
     SLog.i("MessageNotifier onHistory() ${historyList.length}");
-    data.addAll(historyList);
+    List<MessageWrapper> wrapperList = List();
+    for (CustomMessage customMessage in historyList) {
+      MessageWrapper messageWrapper = await MessageWrapper.create(customMessage);
+      wrapperList.add(messageWrapper);
+    }
+    data.addAll(wrapperList);
     post();
   }
 
@@ -87,11 +98,24 @@ class MessageNotifier extends Notifier<List<CustomMessage>> {
       SLog.i("MessageNotifier post() streamController.isClosed: ${streamController.isClosed}");
       return;
     }
-    List<CustomMessage> d = List();
+    List<MessageWrapper> d = List();
     d.addAll(data);
-    d.sort((a, b) => b.time - a.time);
-    List<int> messageIds = d.map((e) => e.id).toList();
+    d.sort((a, b) => b.customMessage.time - a.customMessage.time);
+    List<int> messageIds = d.map((e) => e.customMessage.id).toList();
     SnowIMLib.updateMessageReadStatus(messageIds);
     streamController.sink.add(d);
+  }
+}
+
+class MessageWrapper {
+  UserEntity userEntity;
+  CustomMessage customMessage;
+
+  MessageWrapper(this.userEntity, this.customMessage);
+
+  static Future<MessageWrapper> create(customMessage) async {
+    ContactModel contactModel = ModelManager.getInstance().getModel<ContactModel>();
+    UserEntity userEntity = await contactModel.getUserById(customMessage.uid);
+    return MessageWrapper(userEntity, customMessage);
   }
 }

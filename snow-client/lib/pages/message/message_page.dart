@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:imlib/imlib.dart';
@@ -5,6 +6,7 @@ import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
 import 'package:imlib/utils/s_log.dart';
 import 'package:provider/provider.dart';
+import 'package:snowclient/data/model/message_model.dart';
 import 'package:snowclient/pages/message/widget/message_input_widget.dart';
 import 'package:snowclient/uitls/const_router.dart';
 
@@ -31,7 +33,7 @@ class MessagePage extends StatelessWidget {
       providers: [
         StreamProvider.controller(
           create: (_) => viewModel.getMessageController(targetId, conversationType),
-          initialData: <CustomMessage>[],
+          initialData: <MessageWrapper>[],
         ),
         ChangeNotifierProvider(create: (_) => viewModel),
         FutureProvider(
@@ -57,7 +59,7 @@ class MessageStatefulWidget extends StatefulWidget {
 }
 
 class MessageState extends State<MessageStatefulWidget> {
-  List<CustomMessage> data;
+  List<MessageWrapper> data;
   MessageViewModel viewModel;
   String chatName;
   MessageInputWidget inputWidget;
@@ -75,7 +77,7 @@ class MessageState extends State<MessageStatefulWidget> {
     inputWidget.sendClick = viewModel.sendTextMessage;
     inputWidget.conversationId = viewModel.targetId;
     inputWidget.conversationType = viewModel.chatType;
-    data = Provider.of<List<CustomMessage>>(context);
+    data = Provider.of<List<MessageWrapper>>(context);
     chatName = Provider.of<String>(context);
     SLog.i("MessageState data.length: ${data.length}");
     return Scaffold(
@@ -88,8 +90,8 @@ class MessageState extends State<MessageStatefulWidget> {
           Expanded(
             child: AbsorbPointer(
               absorbing: false,
-              child:Listener(
-                onPointerDown: (_)=>inputWidget.unFocusTextInput(),
+              child: Listener(
+                onPointerDown: (_) => inputWidget.unFocusTextInput(),
                 child: ListView.builder(
                   reverse: true,
                   scrollDirection: Axis.vertical,
@@ -97,7 +99,7 @@ class MessageState extends State<MessageStatefulWidget> {
                   itemBuilder: (context, index) => _buildCustomMessageItemWidget(context, index),
                   itemCount: data.length,
                 ),
-              ) ,
+              ),
             ),
           ),
           inputWidget
@@ -108,15 +110,71 @@ class MessageState extends State<MessageStatefulWidget> {
 
   Widget _buildCustomMessageItemWidget(BuildContext context, int index) {
     SLog.i("data size:${data.length}");
-    String type = data[index].type;
-    CustomMessage customMessage = data[index];
-    MainAxisAlignment alignment = MainAxisAlignment.start;
+    MessageWrapper messageWrapper = data[index];
+    CustomMessage customMessage = data[index].customMessage;
+    MainAxisAlignment alignment;
+    EdgeInsets sendPadding = const EdgeInsets.only(
+      left: 60,
+      top: 5,
+      right: 14,
+      bottom: 5,
+    );
+    EdgeInsets receivePadding = const EdgeInsets.only(
+      left: 14,
+      top: 5,
+      right: 60,
+      bottom: 5,
+    );
+    EdgeInsets rootPadding;
     if (customMessage.direction == Direction.SEND) {
       alignment = MainAxisAlignment.end;
+      rootPadding = sendPadding;
+    } else {
+      alignment = MainAxisAlignment.start;
+      rootPadding = receivePadding;
     }
     return Container(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(mainAxisAlignment: alignment, children: [Visibility(visible: customMessage.status != SendStatus.SUCCESS, child: _buildSendDot(customMessage.status)), MessageWidgetManager.getInstance().getMessageWidgetProvider(customMessage.type)(customMessage)]),
+      padding: rootPadding,
+      child: Row(
+        mainAxisAlignment: alignment,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Visibility(
+            visible: customMessage.status != SendStatus.SUCCESS,
+            child: _buildSendDot(customMessage.status),
+          ),
+          Visibility(
+            visible: customMessage.direction == Direction.RECEIVE,
+            child: _buildPortrait(messageWrapper),
+          ),
+          MessageWidgetManager.getInstance().getMessageWidgetProvider(customMessage.type)(customMessage),
+          Visibility(
+            visible: customMessage.direction == Direction.SEND,
+            child: _buildPortrait(messageWrapper),
+          )
+        ],
+      ),
+    );
+  }
+
+  _buildPortrait(MessageWrapper messageWrapper) {
+    return Container(
+      height: 60,
+      padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+      child: Column(
+        children: [
+          Expanded(
+              child: CachedNetworkImage(
+            imageUrl: messageWrapper.userEntity.portrait,
+            placeholder: (context, url) => Image.asset("images/avatar_default.png"),
+            errorWidget: (context, url, error) => Image.asset("images/avatar_default.png"),
+          )),
+          Text(
+            messageWrapper.userEntity.name,
+            style: TextStyle(fontSize: 10),
+          )
+        ],
+      ),
     );
   }
 

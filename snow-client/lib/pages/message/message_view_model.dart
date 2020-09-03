@@ -42,7 +42,7 @@ class MessageViewModel with ChangeNotifier {
     }
   }
 
-  StreamController<List<CustomMessage>> getMessageController(String targetId, ConversationType conversationType) {
+  StreamController<List<MessageWrapper>> getMessageController(String targetId, ConversationType conversationType) {
     return messageModel.getMessageController(targetId, conversationType);
   }
 
@@ -55,3 +55,4 @@ class MessageViewModel with ChangeNotifier {
     _sendTextController.clear();
   }
 }
+
