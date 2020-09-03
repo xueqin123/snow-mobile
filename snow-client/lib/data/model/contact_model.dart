@@ -3,20 +3,24 @@ import 'dart:async';
 import 'package:imlib/imlib.dart';
 import 'package:snowclient/data/db/dao/dao_manager.dart';
 import 'package:snowclient/data/db/dao/user_dao.dart';
+import 'package:snowclient/data/entity/req_user_entity.dart';
 import 'package:snowclient/data/entity/user_entity.dart';
 import 'package:snowclient/data/model/notifier.dart';
 import 'package:snowclient/data/model/base_model.dart';
 import 'package:snowclient/rest/http_manager.dart';
+import 'package:snowclient/rest/service/upload_service.dart';
 import 'package:snowclient/rest/service/user_service.dart';
 
 class ContactModel extends BaseModel {
   UserDao _userDao;
   UserService _userService;
+  UploadService _uploadService;
   List<Notifier> _notifierList = List();
 
   ContactModel() {
     _userDao = DaoManager.getInstance().getDao<UserDao>();
     _userService = HttpManager.getInstance().getService<UserService>();
+    _uploadService = HttpManager.getInstance().getService<UploadService>();
   }
 
   StreamController<List<UserEntity>> getAllUserController() {
@@ -26,11 +30,11 @@ class ContactModel extends BaseModel {
     return notifier.streamController;
   }
 
-  Future<List<UserEntity>> getAllUserList() async{
+  Future<List<UserEntity>> getAllUserList() async {
     return _userDao.getAllUserList();
   }
 
-  UserEntity getCurrentUser(){
+  UserEntity getCurrentUser() {
     return _userDao.currentUser;
   }
 
@@ -57,6 +61,15 @@ class ContactModel extends BaseModel {
     UserEntity userEntity = await _userService.getUserByUid(uid);
     await _userDao.saveUserList(<UserEntity>[userEntity]);
     _postStreamData();
+  }
+
+  Future upDataUserPortrait(String uid, String path) async {
+    String url = await _uploadService.upLoadImage(path);
+    ReqUserEntity reqUserEntity = ReqUserEntity();
+    reqUserEntity.portrait = url;
+    bool isSuccess = await _userService.updateUserByUid(uid, reqUserEntity);
+    _updateAllUsersFromServer();
+    return isSuccess;
   }
 
   _postStreamData() {
@@ -93,7 +106,7 @@ class UserNotifier extends Notifier<UserEntity> {
   Future post() async {
     UserDao userDao = DaoManager.getInstance().getDao<UserDao>();
     UserEntity userEntity = await userDao.getUserById(uid);
-    if (userEntity != null&&!streamController.isClosed) {
+    if (userEntity != null && !streamController.isClosed) {
       streamController.sink.add(userEntity);
     }
   }

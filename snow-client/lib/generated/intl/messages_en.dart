@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dissmissGroup" : MessageLookupByLibrary.simpleMessage("dismissGroup"),
     "dissmissGroupFailed" : MessageLookupByLibrary.simpleMessage("dissmissGroupFailed"),
     "dissmissGroupSuccess" : MessageLookupByLibrary.simpleMessage("dissmissGroupSuccess"),
+    "failed" : MessageLookupByLibrary.simpleMessage("failed"),
     "loginButton" : MessageLookupByLibrary.simpleMessage("login"),
     "loginError" : MessageLookupByLibrary.simpleMessage("Phone/password input error"),
     "loginHttpError" : MessageLookupByLibrary.simpleMessage("login network failed"),
@@ -46,6 +47,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "pageMessagePopAddFriend" : MessageLookupByLibrary.simpleMessage("add friend"),
     "pageMessagePopStartChat" : MessageLookupByLibrary.simpleMessage("start group chat"),
     "pluginCamera" : MessageLookupByLibrary.simpleMessage("camera"),
-    "pluginImage" : MessageLookupByLibrary.simpleMessage("picture")
+    "pluginImage" : MessageLookupByLibrary.simpleMessage("picture"),
+    "success" : MessageLookupByLibrary.simpleMessage("success")
   };
 }

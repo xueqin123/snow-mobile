@@ -16,6 +16,13 @@
             </list>
           </value>
         </entry>
+        <entry key="cached_network_image">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/cached_network_image-2.3.1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="characters">
           <value>
             <list>
@@ -114,6 +121,27 @@
             </list>
           </value>
         </entry>
+        <entry key="flutter_blurhash">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/flutter_blurhash-0.5.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="flutter_cache_manager">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/flutter_cache_manager-1.4.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="flutter_image_compress">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/flutter_image_compress-0.7.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="flutter_localizations">
           <value>
             <list>
@@ -205,6 +233,13 @@
             </list>
           </value>
         </entry>
+        <entry key="octo_image">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/octo_image-0.2.1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="path">
           <value>
             <list>
@@ -279,6 +314,13 @@
           <value>
             <list>
               <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/provider-3.2.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="rxdart">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/rxdart-0.24.1/lib" />
             </list>
           </value>
         </entry>
@@ -394,6 +436,13 @@
             </list>
           </value>
         </entry>
+        <entry key="uuid">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/uuid-2.2.2/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="vector_math">
           <value>
             <list>
@@ -413,6 +462,7 @@
     <CLASSES>
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/async-2.5.0-nullsafety/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/boolean_selector-2.1.0-nullsafety/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/cached_network_image-2.3.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/characters-1.1.0-nullsafety.2/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/charcode-1.2.0-nullsafety/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/clock-1.1.0-nullsafety/lib" />
@@ -426,6 +476,9 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/fake_async-1.1.0-nullsafety/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/file-5.2.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/fixnum-0.10.11/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/flutter_blurhash-0.5.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/flutter_cache_manager-1.4.1/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/flutter_image_compress-0.7.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/flutter_plugin_android_lifecycle-1.0.8/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/fluttertoast-7.0.2/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/http-0.12.2/lib" />
@@ -436,6 +489,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/matcher-0.12.10-nullsafety/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/meta-1.3.0-nullsafety.2/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/mime-0.9.7/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/octo_image-0.2.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/path-1.8.0-nullsafety/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/path_provider-1.6.14/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/path_provider_linux-0.0.1+2/lib" />
@@ -447,6 +501,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/process-3.0.13/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/protobuf-1.0.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/provider-3.2.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/rxdart-0.24.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/shared_preferences-0.5.10/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/shared_preferences_linux-0.0.2+2/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/shared_preferences_macos-0.0.1+10/lib" />
@@ -462,6 +517,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/term_glyph-1.2.0-nullsafety/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/test_api-0.2.19-nullsafety/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/typed_data-1.3.0-nullsafety.2/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/uuid-2.2.2/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/vector_math-2.1.0-nullsafety.2/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/xdg_directories-0.1.2/lib" />
       <root url="file://$USER_HOME$/flutter/bin/cache/pkg/sky_engine/lib" />

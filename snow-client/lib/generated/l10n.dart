@@ -53,6 +53,26 @@ class S {
     );
   }
 
+  /// `success`
+  String get success {
+    return Intl.message(
+      'success',
+      name: 'success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `failed`
+  String get failed {
+    return Intl.message(
+      'failed',
+      name: 'failed',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Message`
   String get pageHomeTabMessage {
     return Intl.message(
