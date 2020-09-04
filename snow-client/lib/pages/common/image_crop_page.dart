@@ -25,7 +25,7 @@ class ImageCropPage extends StatelessWidget {
   _startCrop(BuildContext context) async {
     print("_startCrop()");
     final crop = imgCropKey.currentState;
-    final croppedFile = await crop.cropCompleted(File(originFilePath), pictureQuality: 600);
+    final croppedFile = await crop.cropCompleted(File(originFilePath),pictureQuality: 600);
     Navigator.pop(context, croppedFile.path);
   }
 
