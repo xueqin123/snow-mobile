@@ -26,5 +26,7 @@
   "dissmissGroupSuccess":"群组解散成功",
   "dissmissGroupFailed":"群组解散失败",
   "pluginImage": "图片",
-  "pluginCamera": "拍照"
+  "pluginCamera": "拍照",
+  "cropPortrait": "头像裁剪"
+
 }

@@ -1,5 +1,6 @@
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:snowclient/pages/chat/detail/chat_detail_page.dart';
+import 'package:snowclient/pages/common/image_crop_page.dart';
 import 'package:snowclient/pages/message/message_page.dart';
 import 'package:snowclient/pages/splash/splash_page.dart';
 import 'package:snowclient/uitls/const_router.dart';
@@ -23,7 +24,8 @@ class SnowApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         ConstRouter.MESSAGE_PAGE: (BuildContext buildContext) => MessagePage(),
-        ConstRouter.CHAT_DETAIL_PAGE:(BuildContext buildContext) => ChatDetailPage(),
+        ConstRouter.CHAT_DETAIL_PAGE: (BuildContext buildContext) => ChatDetailPage(),
+        ConstRouter.IMAGE_CROP_PAGE: (BuildContext buildContext) => ImageCropPage(),
       },
       home: SplashPage(),
     );

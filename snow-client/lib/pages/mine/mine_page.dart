@@ -7,13 +7,14 @@ import 'package:imlib/utils/s_log.dart';
 import 'package:provider/provider.dart';
 import 'package:snowclient/data/entity/user_entity.dart';
 import 'package:snowclient/generated/l10n.dart';
+import 'package:snowclient/pages/common/image_crop_page.dart';
 import 'package:snowclient/pages/mine/mine_view_model.dart';
+import 'package:snowclient/uitls/const_router.dart';
 
 class MinePage extends StatelessWidget {
-  MineViewModel viewModel = MineViewModel();
-
   @override
   Widget build(BuildContext context) {
+    MineViewModel viewModel = MineViewModel();
     return MultiProvider(
       providers: [
         StreamProvider.controller(create: (_) => viewModel.getMineEntityStream()),
@@ -73,15 +74,18 @@ class MineState extends State<MineStatefulPage> {
             child: Container(
               width: 60,
               height: 60,
-              child: Align(
-                alignment: Alignment.center,
-                child: CachedNetworkImage(
-                  fit: BoxFit.fill,
-                  imageUrl: portraitUrl,
-                  placeholder: (context, url) => Image.asset("images/avatar_default.png"),
-                  errorWidget: (context, url, error) => Image.asset("images/avatar_default.png"),
-                ),
-              ),
+              child: portraitUrl.isNotEmpty
+                  ? Align(
+                      alignment: Alignment.center,
+                      child: CachedNetworkImage(
+                        fit: BoxFit.fill,
+                        fadeInDuration: Duration(),
+                        fadeOutDuration: Duration(),
+                        imageUrl: portraitUrl,
+                        errorWidget: (context, url, error) => Image.asset("images/avatar_default.png"),
+                      ),
+                    )
+                  : null,
             ),
           ),
           Expanded(
@@ -105,13 +109,23 @@ class MineState extends State<MineStatefulPage> {
 
   _updatePortrait() async {
     PickedFile pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
-    SLog.i("gallery file: $pickedFile path:${pickedFile.path}");
-    bool isSuccess = await viewModel.updatePortrait(pickedFile.path);
-    if (isSuccess) {
+    String originPath = pickedFile.path;
+    SLog.i("_updatePortrait originPath:$originPath");
+    String croppedPath = await _getCropImage(originPath);
+    SLog.i("_updatePortrait croppedPath:$croppedPath");
+    String remoteUrl = await viewModel.updatePortrait(croppedPath);
+    if (remoteUrl != null) {
       Fluttertoast.showToast(msg: S.of(context).success, textColor: Colors.black45);
     } else {
       Fluttertoast.showToast(msg: S.of(context).failed, textColor: Colors.black45);
     }
+  }
+
+  Future<String> _getCropImage(String originPath) async {
+    Map arg = Map();
+    arg[ImageCropPage.ORIGIN_FILE_PATH] = originPath;
+    var result = await Navigator.pushNamed(context, ConstRouter.IMAGE_CROP_PAGE, arguments: arg);
+    return result;
   }
 
   Widget _buildItem(String phone) {

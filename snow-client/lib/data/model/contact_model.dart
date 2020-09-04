@@ -57,19 +57,22 @@ class ContactModel extends BaseModel {
   }
 
   Future _updateUserFromServer(String uid) async {
-    _postStreamData();
+    print("_updateUserFromServer uid:$uid");
     UserEntity userEntity = await _userService.getUserByUid(uid);
-    await _userDao.saveUserList(<UserEntity>[userEntity]);
+    await _userDao.saveUser(userEntity);
     _postStreamData();
   }
 
-  Future upDataUserPortrait(String uid, String path) async {
+  Future<String> upDataUserPortrait(String uid, String path) async {
     String url = await _uploadService.upLoadImage(path);
     ReqUserEntity reqUserEntity = ReqUserEntity();
     reqUserEntity.portrait = url;
     bool isSuccess = await _userService.updateUserByUid(uid, reqUserEntity);
-    _updateAllUsersFromServer();
-    return isSuccess;
+    if (isSuccess) {
+      _updateUserFromServer(uid);
+      return url;
+    }
+    return null;
   }
 
   _postStreamData() {

@@ -29,6 +29,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "contactSelect" : MessageLookupByLibrary.simpleMessage("选择联系人"),
     "createGroupFailed" : MessageLookupByLibrary.simpleMessage("群组创建失败"),
     "createGroupSuccess" : MessageLookupByLibrary.simpleMessage("群组创建成功"),
+    "cropPortrait" : MessageLookupByLibrary.simpleMessage("头像裁剪"),
     "dissmissGroup" : MessageLookupByLibrary.simpleMessage("解散群组"),
     "dissmissGroupFailed" : MessageLookupByLibrary.simpleMessage("群组解散失败"),
     "dissmissGroupSuccess" : MessageLookupByLibrary.simpleMessage("群组解散成功"),

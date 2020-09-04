@@ -53,4 +53,8 @@ class UserDao extends Dao {
     });
     await batch.commit();
   }
+
+  Future saveUser(UserEntity userEntity){
+    return saveUserList(<UserEntity>[userEntity]);
+  }
 }

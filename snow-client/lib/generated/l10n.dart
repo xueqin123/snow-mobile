@@ -312,6 +312,16 @@ class S {
       args: [],
     );
   }
+
+  /// `portrait crop`
+  String get cropPortrait {
+    return Intl.message(
+      'portrait crop',
+      name: 'cropPortrait',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

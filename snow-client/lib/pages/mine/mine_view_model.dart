@@ -17,7 +17,7 @@ class MineViewModel with ChangeNotifier {
     return contactModel.getUserController(userEntity.uid);
   }
 
-  Future<bool> updatePortrait(String path) async{
+  Future<String> updatePortrait(String path) async {
     UserEntity userEntity = contactModel.getCurrentUser();
     return contactModel.upDataUserPortrait(userEntity.uid, path);
   }

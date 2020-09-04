@@ -26,5 +26,7 @@
   "dissmissGroupSuccess":"dissmissGroupSuccess",
   "dissmissGroupFailed":"dissmissGroupFailed",
   "pluginImage": "picture",
-  "pluginCamera": "camera"
+  "pluginCamera": "camera",
+  "cropPortrait": "portrait crop"
+
 }
