@@ -166,6 +166,8 @@ class MessageState extends State<MessageStatefulWidget> {
           Expanded(
               child: CachedNetworkImage(
             imageUrl: messageWrapper.userEntity.portrait,
+            fadeOutDuration: Duration(),
+            fadeInDuration: Duration(),
             placeholder: (context, url) => Image.asset("images/avatar_default.png"),
             errorWidget: (context, url, error) => Image.asset("images/avatar_default.png"),
           )),
