@@ -3,27 +3,41 @@ import 'dart:typed_data';
 import 'package:imlib/utils/s_log.dart';
 
 class ProtobufVarint32FrameDecoder {
+  Uint8List restData = Uint8List(0);
+
   List<Uint8List> decode(Uint8List data) {
     SLog.v("ProtobufVarint32FrameDecoder start !");
     SLog.v("ProtobufVarint32FrameDecoder decode data length:${data.length}");
+    if (restData.length == 0) {
+      restData = data;
+    } else {
+      Uint8List list = Uint8List(restData.length + data.length);
+      for(int i =0;i<list.length;i++){
+        if(i<restData.length){
+          list[i] = restData[i];
+        }else{
+          list[i] = data[i - restData.length];
+        }
+      }
+      restData = list;
+    }
     List<Uint8List> packages = List<Uint8List>();
-    Uint8List restData = data;
     while (restData != null) {
-      //拆包
       MessageDataInfo messageInfo = _getMessageLength(restData);
       SLog.v("ProtobufVarint32FrameDecoder decode MessageDataInfo: $messageInfo");
       int subStart = messageInfo.headLength;
       int subEnd = messageInfo.messageLength + messageInfo.headLength;
       if (subEnd == restData.length) {
-        Uint8List pack = data.sublist(subStart, subEnd);
+        Uint8List pack = restData.sublist(subStart, subEnd);
         packages.add(pack);
-        restData = null;
+        restData = Uint8List(0);
+        break;
       } else if (subEnd < restData.length) {
-        Uint8List pack = data.sublist(subStart, subEnd);
+        Uint8List pack = restData.sublist(subStart, subEnd);
         restData = restData.sublist(subEnd);
         packages.add(pack);
       } else {
-        restData = null;
+        break;
       }
     }
     SLog.v("ProtobufVarint32FrameDecoder decode packages length: ${packages.length}");
@@ -33,6 +47,7 @@ class ProtobufVarint32FrameDecoder {
 
   //获取 head 占位数，和 message 占位数
   MessageDataInfo _getMessageLength(Uint8List data) {
+    SLog.i("_getMessageLength data: ${data.length}");
     ByteData byteData = data.buffer.asByteData();
     int index = 0;
     int tmp = byteData.getInt8(index);

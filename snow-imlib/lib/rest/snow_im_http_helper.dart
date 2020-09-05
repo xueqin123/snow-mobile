@@ -5,7 +5,7 @@ import 'package:imlib/imlib.dart';
 import 'base_result.dart';
 
 class SnowIMHttpHelper {
-  static const String _BASE_URL = "http://172.24.80.197:8010/snow";
+  static const String _BASE_URL = "http://192.168.0.120:8010/snow";
 
   final Dio dio = Dio();
 

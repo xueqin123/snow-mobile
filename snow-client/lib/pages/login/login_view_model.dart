@@ -45,6 +45,7 @@ class LoginViewModel with ChangeNotifier {
     }
     LoginModel loginModel = ModelManager.getInstance().getModel<LoginModel>();
     LoginUserInfo loginUserInfo = await loginModel.loginByPassWord(phoneNumber, password);
+    SLog.i("loginByPassWord() loginUserInfo:$loginUserInfo");
     if (loginUserInfo == null) {
       _updateLoginStatus(LoginStatus.LOGIN_FAILED);
       _toastController.sink.add(S.current.loginHttpError);

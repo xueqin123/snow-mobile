@@ -8,7 +8,7 @@ import 'package:snowclient/generated/json/base/json_convert_content.dart';
 import 'package:snowclient/rest/base_result.dart';
 
 class HttpHelper {
-  static const String _BASE_URL = "http://172.24.80.197:8080/api";
+  static const String _BASE_URL = "http://192.168.0.120:8080/api";
 
   final Dio dio = Dio();
 

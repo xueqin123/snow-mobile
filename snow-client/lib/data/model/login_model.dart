@@ -22,6 +22,7 @@ class LoginModel extends BaseModel {
   //账号密码登录
   Future<LoginUserInfo> loginByPassWord(String userName, String password) async {
     RspLoginEntity rspLoginEntity = await HttpManager.getInstance().getService<LoginService>().login(userName, password);
+    SLog.i("loginByPassWord  rspLoginEntity:$rspLoginEntity");
     if(rspLoginEntity == null){
       return null;
     }
@@ -56,6 +57,7 @@ class LoginModel extends BaseModel {
   }
 
   Future _initApp(String uid, String token) async {
+    SLog.i("_initApp start uid:$uid token:$token");
     PluginManager.getInstance().addPlugin(ImagePlugin());
     PluginManager.getInstance().addPlugin(CameraPlugin());
     await SnowIMLib.init(uid,token);
@@ -65,6 +67,7 @@ class LoginModel extends BaseModel {
     await ModelManager.getInstance().getModel<ContactModel>().syncUserData();
     await SnowIMLib.connect();
     UpLoader.getInstance().init(uid);
+    SLog.i("_initApp end");
   }
 
   _initMessages() async{

@@ -112,9 +112,11 @@ class SnowIMContext {
     _socket.listen((event) {
       SLog.v("socket listen event:${event.length}");
       List<Uint8List> packages = protobufVarint32FrameDecoder.decode(event);
-      packages.forEach((element) {
-        _onReceiveData(_snowMessageDecoder.decode(element));
-      });
+      if (packages != null) {
+        packages.forEach((element) {
+          _onReceiveData(_snowMessageDecoder.decode(element));
+        });
+      }
     }, onDone: _onConnectDone, onError: _onConnectError);
   }
 
