@@ -88,11 +88,12 @@ class InputState extends State<MessageInputWidget> {
       children: [
         Expanded(
           child: Container(
-            height: 35,
+            height: 60,
             child: TextField(
               decoration: InputDecoration(border: OutlineInputBorder()),
               controller: widget.controller,
               focusNode: widget.inputFocusNode,
+              maxLines: 100,
               textAlign: TextAlign.left,
             ),
           ),

@@ -85,7 +85,7 @@ class MineState extends State<MineStatefulPage> {
                         errorWidget: (context, url, error) => Image.asset("images/avatar_default.png"),
                       ),
                     )
-                  : null,
+                  : Image.asset("images/avatar_default.png"),
             ),
           ),
           Expanded(
