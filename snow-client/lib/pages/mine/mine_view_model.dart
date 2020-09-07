@@ -12,7 +12,7 @@ class MineViewModel with ChangeNotifier {
     contactModel = ModelManager.getInstance().getModel<ContactModel>();
   }
 
-  StreamController<UserEntity> getMineEntityStream() {
+  StreamController<UserEntity> getMineEntityController() {
     UserEntity userEntity = contactModel.getCurrentUser();
     return contactModel.getUserController(userEntity.uid);
   }

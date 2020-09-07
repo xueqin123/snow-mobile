@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:imlib/imlib.dart';
@@ -60,7 +61,14 @@ class ChatState extends State<ChatStatefulPage> {
               padding: EdgeInsets.all(16),
               child: BadgeWidget(
                 data[index].unReadCount,
-                anchor: Icon(Icons.chat),
+                anchor: CachedNetworkImage(
+                  fit: BoxFit.fill,
+                  fadeInDuration: Duration(),
+                  fadeOutDuration: Duration(),
+                  imageUrl: data[index].portrait == null ? "" : data[index].portrait,
+                  placeholder: (context, url) => Image.asset("images/avatar_default.png"),
+                  errorWidget: (context, url, error) => Image.asset("images/avatar_default.png"),
+                ),
               ),
             ),
             Expanded(

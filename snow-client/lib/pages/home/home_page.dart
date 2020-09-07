@@ -89,6 +89,7 @@ class _HomeStatefulPageState extends State<HomeStatefulPage> with SingleTickerPr
       ),
       body: TabBarView(
         controller: _tabController,
+        physics: NeverScrollableScrollPhysics(),
         children: [ChatPage(), ContactPage(), DisCoverPage(), MinePage()],
       ),
       bottomNavigationBar: Material(

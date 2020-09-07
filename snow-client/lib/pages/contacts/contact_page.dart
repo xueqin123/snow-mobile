@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:imlib/imlib.dart';
@@ -58,7 +59,14 @@ class ContactState extends State<ContactStatefulPage> {
           children: [
             Padding(
               padding: EdgeInsets.all(16),
-              child: Icon(Icons.account_box),
+              child: CachedNetworkImage(
+                fit: BoxFit.fill,
+                fadeInDuration: Duration(),
+                fadeOutDuration: Duration(),
+                imageUrl: userList[index].portrait == null ? "" : userList[index].portrait,
+                placeholder: (context, url) => Image.asset("images/avatar_default.png"),
+                errorWidget: (context, url, error) => Image.asset("images/avatar_default.png"),
+              ),
             ),
             Expanded(
               child: Stack(children: [

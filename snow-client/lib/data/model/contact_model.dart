@@ -41,13 +41,11 @@ class ContactModel extends BaseModel {
   StreamController<UserEntity> getUserController(String uid) {
     UserNotifier notifier = UserNotifier(uid);
     _notifierList.add(notifier);
-    _updateUserFromServer(uid);
+    _postStreamData();
     return notifier.streamController;
   }
 
   Future _updateAllUsersFromServer() async {
-    _postStreamData();
-    await syncUserData();
     _postStreamData();
   }
 

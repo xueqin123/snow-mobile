@@ -17,7 +17,7 @@ class MinePage extends StatelessWidget {
     MineViewModel viewModel = MineViewModel();
     return MultiProvider(
       providers: [
-        StreamProvider.controller(create: (_) => viewModel.getMineEntityStream()),
+        StreamProvider.controller(create: (_) => viewModel.getMineEntityController()),
         ChangeNotifierProvider(create: (_) => viewModel),
       ],
       child: MineStatefulPage(),
@@ -74,18 +74,10 @@ class MineState extends State<MineStatefulPage> {
             child: Container(
               width: 60,
               height: 60,
-              child: portraitUrl != null && portraitUrl.isNotEmpty
-                  ? Align(
-                      alignment: Alignment.center,
-                      child: CachedNetworkImage(
-                        fit: BoxFit.fill,
-                        fadeInDuration: Duration(),
-                        fadeOutDuration: Duration(),
-                        imageUrl: portraitUrl,
-                        errorWidget: (context, url, error) => Image.asset("images/avatar_default.png"),
-                      ),
-                    )
-                  : Image.asset("images/avatar_default.png"),
+              child: Align(
+                alignment: Alignment.center,
+                child: _buildImage(portraitUrl),
+              ),
             ),
           ),
           Expanded(
@@ -107,17 +99,37 @@ class MineState extends State<MineStatefulPage> {
     );
   }
 
+  _buildImage(String portraitUrl) {
+    if (portraitUrl == null || portraitUrl.isEmpty) {
+      return Image.asset("images/avatar_default.png");
+    } else {
+      return CachedNetworkImage(
+        fit: BoxFit.fill,
+        fadeInDuration: Duration(),
+        fadeOutDuration: Duration(),
+        imageUrl: portraitUrl == null ? "" : portraitUrl,
+        placeholder: (context, url) => Image.asset("images/avatar_default.png"),
+        errorWidget: (context, url, error) => Image.asset("images/avatar_default.png"),
+      );
+    }
+  }
+
   _updatePortrait() async {
     PickedFile pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+    if (pickedFile == null) return;
     String originPath = pickedFile.path;
     SLog.i("_updatePortrait originPath:$originPath");
     String croppedPath = await _getCropImage(originPath);
     SLog.i("_updatePortrait croppedPath:$croppedPath");
     String remoteUrl = await viewModel.updatePortrait(croppedPath);
     if (remoteUrl != null) {
-      Fluttertoast.showToast(msg: S.of(context).success, textColor: Colors.black45);
+      Fluttertoast.showToast(msg: S
+          .of(context)
+          .success, textColor: Colors.black45);
     } else {
-      Fluttertoast.showToast(msg: S.of(context).failed, textColor: Colors.black45);
+      Fluttertoast.showToast(msg: S
+          .of(context)
+          .failed, textColor: Colors.black45);
     }
   }
 
