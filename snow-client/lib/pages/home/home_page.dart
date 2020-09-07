@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:imlib/core/snow_im_context.dart';
 import 'package:imlib/imlib.dart';
 import 'package:provider/provider.dart';
 import 'package:snowclient/data/model/homeModel.dart';
@@ -28,6 +30,10 @@ class HomePage extends StatelessWidget {
         StreamProvider.controller(
           create: (_) => homeViewModel.getTotalUnReadCountController(),
           initialData: UnreadCount(),
+        ),
+        StreamProvider.controller(
+          create: (_) => homeViewModel.getConnectStatusController(),
+          initialData: ConnectStatus.IDLE,
         )
       ],
       child: HomeStatefulPage(),
@@ -42,7 +48,6 @@ class HomeStatefulPage extends StatefulWidget {
 
 class _HomeStatefulPageState extends State<HomeStatefulPage> with SingleTickerProviderStateMixin {
   TabController _tabController;
-  int _badgeCount = 0;
 
   @override
   void initState() {
@@ -54,9 +59,12 @@ class _HomeStatefulPageState extends State<HomeStatefulPage> with SingleTickerPr
   @override
   Widget build(BuildContext context) {
     UnreadCount unreadCount = Provider.of<UnreadCount>(context);
+    ConnectStatus connectStatus = Provider.of<ConnectStatus>(context);
+    String connectStr = getConnectString(context,connectStatus);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).appName),
+        title: Text("${S.of(context).appName} [$connectStr]"),
         actions: [
           IconButton(
             icon: Icon(Icons.search),
@@ -93,12 +101,6 @@ class _HomeStatefulPageState extends State<HomeStatefulPage> with SingleTickerPr
         ]),
       ),
     );
-  }
-
-  void _upDateBadge() {
-    setState(() {
-      _badgeCount++;
-    });
   }
 
   PopupMenuItem<int> _buildPopMenuItem(IconData iconData, String title, int index) {
@@ -158,5 +160,30 @@ class _HomeStatefulPageState extends State<HomeStatefulPage> with SingleTickerPr
       default:
         break;
     }
+  }
+
+  String getConnectString(BuildContext context,ConnectStatus connectStatus){
+    String statusStr = S.of(context).connectIdle;
+    switch(connectStatus){
+      case ConnectStatus.IDLE:
+        statusStr = S.of(context).connectIdle;
+        break;
+      case ConnectStatus.CONNECTING:
+        statusStr = S.of(context).connecting;
+        break;
+      case ConnectStatus.CONNECTED:
+        statusStr = S.of(context).connected;
+        break;
+      case ConnectStatus.DISCONNECTING:
+        statusStr = S.of(context).disconnecting;
+        break;
+      case ConnectStatus.DISCONNECTED:
+        statusStr = S.of(context).disconnected;
+        break;
+      default :
+        statusStr = S.of(context).connectIdle;
+        break;
+    }
+    return statusStr;
   }
 }

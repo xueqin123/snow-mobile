@@ -5,6 +5,7 @@ export 'package:imlib/utils/s_log.dart';
 export 'package:imlib/data/db/entity/conversation_entity.dart';
 import 'dart:async';
 
+import 'package:imlib/core/snow_im_connect_manager.dart';
 import 'package:imlib/core/snow_im_context.dart';
 import 'package:imlib/data/db/entity/conversation_entity.dart';
 import 'package:imlib/data/db/model/model_manager.dart';
@@ -26,15 +27,15 @@ class SnowIMLib {
   }
 
   static connect() async {
-    return SnowIMContext.getInstance().connect();
+    return SnowIMConnectManager.getInstance().connect();
   }
 
   static disConnect() {
-    SnowIMContext.getInstance().disConnect();
+    SnowIMConnectManager.getInstance().disConnect();
   }
 
-  static getConnectStatusStream() {
-    return SnowIMContext.getInstance().getConnectStatusController().stream;
+  static Stream<ConnectStatus> getConnectStatusStream() {
+    return SnowIMConnectManager.getInstance().getConnectStatusController().stream;
   }
 
   static Stream<CustomMessage> getCustomMessageStream() {
@@ -95,3 +96,4 @@ class SnowIMLib {
 
 enum SendStatus { SENDING, PERSIST, SUCCESS, FAILED }
 enum ReadStatus { READ, UNREAD }
+enum ConnectStatus { IDLE, CONNECTING, CONNECTED, DISCONNECTING, DISCONNECTED }

@@ -27,6 +27,11 @@
   "dissmissGroupFailed":"dissmissGroupFailed",
   "pluginImage": "picture",
   "pluginCamera": "camera",
-  "cropPortrait": "portrait crop"
+  "cropPortrait": "portrait crop",
+  "connectIdle": "IDLE",
+  "connecting": "connecting",
+  "connected": "connected",
+  "disconnecting": "disconnecting",
+  "disconnected": "disconnected"
 
 }

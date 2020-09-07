@@ -322,6 +322,56 @@ class S {
       args: [],
     );
   }
+
+  /// `IDLE`
+  String get connectIdle {
+    return Intl.message(
+      'IDLE',
+      name: 'connectIdle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `connecting`
+  String get connecting {
+    return Intl.message(
+      'connecting',
+      name: 'connecting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `connected`
+  String get connected {
+    return Intl.message(
+      'connected',
+      name: 'connected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `disconnecting`
+  String get disconnecting {
+    return Intl.message(
+      'disconnecting',
+      name: 'disconnecting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `disconnected`
+  String get disconnected {
+    return Intl.message(
+      'disconnected',
+      name: 'disconnected',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

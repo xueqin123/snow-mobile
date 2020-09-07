@@ -27,6 +27,11 @@
   "dissmissGroupFailed":"群组解散失败",
   "pluginImage": "图片",
   "pluginCamera": "拍照",
-  "cropPortrait": "头像裁剪"
+  "cropPortrait": "头像裁剪",
+  "connectIdle": "IDLE",
+  "connecting": "连接中...",
+  "connected": "已连接",
+  "disconnecting": "断开连接中...",
+  "disconnected": "已断开连接"
 
 }

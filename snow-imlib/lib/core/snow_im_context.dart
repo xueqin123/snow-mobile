@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:fixnum/fixnum.dart';
+import 'package:imlib/core/snow_im_connect_manager.dart';
 import 'package:imlib/core/inbound/handler/conversation_handler.dart';
 import 'package:imlib/core/inbound/handler/history_message_handler.dart';
 import 'package:imlib/core/inbound/inbound_handler.dart';
@@ -48,9 +49,6 @@ class SnowIMContext {
   OutboundEncoder _outSnowHead;
 
   // ignore: close_sinks
-  StreamController<ConnectStatus> _connectStreamController = StreamController();
-
-  // ignore: close_sinks
   StreamController<CustomMessage> _customMessageStreamController = StreamController();
 
   ProtobufVarint32FrameDecoder protobufVarint32FrameDecoder = ProtobufVarint32FrameDecoder();
@@ -74,10 +72,6 @@ class SnowIMContext {
     return _instance;
   }
 
-  StreamController<ConnectStatus> getConnectStatusController() {
-    return _connectStreamController;
-  }
-
   StreamController<CustomMessage> getCustomMessageController() {
     return _customMessageStreamController;
   }
@@ -86,9 +80,7 @@ class SnowIMContext {
     return SnowIMModelManager.getInstance().getModel<SnowIMConversationModel>().getConversationController();
   }
 
-  connect() async {
-    _connectStreamController.sink.add(ConnectStatus.IDLE);
-    _connectStreamController.sink.add(ConnectStatus.CONNECTING);
+  connect(String token) async {
     HostEntity hostInfo = await SnowIMHttpManager.getInstance().getService<SnowIMHostService>().getHost(token);
     SLog.i("SnowIMContext token:{$token} connect host: {$hostInfo}");
     if (hostInfo != null) {
@@ -100,45 +92,37 @@ class SnowIMContext {
   //connect 之前先init
   init(String uid, String token) async {
     this.selfUid = uid;
-    this.token = token;
     SnowIMHttpManager.getInstance().init(token);
     await SnowIMDaoManager.getInstance().init(selfUid);
     SnowIMModelManager.getInstance().init();
+    SnowIMConnectManager.getInstance().init(this, token);
   }
 
   _connect(String host, int port) async {
     _socket = await Socket.connect(host, port);
-    _connectStreamController.sink.add(ConnectStatus.CONNECTED);
-    _socket.listen((event) {
-      SLog.v("socket listen event:${event.length}");
-      List<Uint8List> packages = protobufVarint32FrameDecoder.decode(event);
-      if (packages != null) {
-        packages.forEach((element) {
-          _onReceiveData(_snowMessageDecoder.decode(element));
-        });
-      }
-    }, onDone: _onConnectDone, onError: _onConnectError);
+    _socket.listen(
+      (event) {
+        SLog.v("socket listen event:${event.length}");
+        List<Uint8List> packages = protobufVarint32FrameDecoder.decode(event);
+        if (packages != null) {
+          packages.forEach((element) {
+            _onReceiveData(_snowMessageDecoder.decode(element));
+          });
+        }
+      },
+      onDone: () => SnowIMConnectManager.getInstance().onSocketDone(),
+      onError: (e) => SnowIMConnectManager.getInstance().onSocketError(e),
+    );
   }
 
-  disConnect() {
-    _socket.close();
+  disConnect() async {
+    await _socket.close();
     _socket = null;
-    _connectStreamController.sink.add(ConnectStatus.IDLE);
   }
 
   _onReceiveData(SnowMessage snowMessage) {
     SLog.i("_onReceiveData snowMessage:${snowMessage.type.name}");
     _inHead.handle(this, snowMessage);
-  }
-
-  _onConnectDone() {
-    SLog.i("onDone()");
-    _connectStreamController.sink.add(ConnectStatus.DISCONNECTED);
-  }
-
-  _onConnectError(e) {
-    SLog.i("onError e:$e");
-    _connectStreamController.sink.add(ConnectStatus.DISCONNECTED);
   }
 
   write(Uint8List data) {
@@ -221,5 +205,3 @@ class SnowIMContext {
     _waitAckMap.remove(cid);
   }
 }
-
-enum ConnectStatus { IDLE, CONNECTING, CONNECTED, DISCONNECTING, DISCONNECTED }
