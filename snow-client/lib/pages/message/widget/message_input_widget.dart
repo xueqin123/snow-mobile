@@ -50,6 +50,7 @@ class InputState extends State<MessageInputWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [_buildInputBarWidget(), Visibility(visible: inputType == InputType.FUNCTION, child: _buildFunctionWidget())],
     );
   }
@@ -85,21 +86,23 @@ class InputState extends State<MessageInputWidget> {
 
   Widget _buildInputBarWidget() {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Expanded(
           child: Container(
-            height: 60,
             child: TextField(
-              decoration: InputDecoration(border: OutlineInputBorder()),
+              decoration: InputDecoration(border: OutlineInputBorder(),
+              contentPadding: EdgeInsets.symmetric(vertical: 10)),
               controller: widget.controller,
               focusNode: widget.inputFocusNode,
-              maxLines: 100,
+              maxLines: null,
               textAlign: TextAlign.left,
             ),
           ),
         ),
         Container(
           width: 60,
+          height: 50,
           child: Stack(
             children: [
               Visibility(
@@ -125,7 +128,6 @@ class InputState extends State<MessageInputWidget> {
                       widget.sendClick();
                     },
                     child: Container(
-                      height: 35,
                       decoration: ShapeDecoration(
                           color: Colors.blue,
                           shape: RoundedRectangleBorder(
