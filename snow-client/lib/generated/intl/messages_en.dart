@@ -24,6 +24,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "_locale" : MessageLookupByLibrary.simpleMessage("en"),
     "appName" : MessageLookupByLibrary.simpleMessage("SnowMsg"),
     "confirm" : MessageLookupByLibrary.simpleMessage("confirm"),
+    "confirmPassword" : MessageLookupByLibrary.simpleMessage("confirm password"),
     "connectIdle" : MessageLookupByLibrary.simpleMessage("IDLE"),
     "connected" : MessageLookupByLibrary.simpleMessage("connected"),
     "connecting" : MessageLookupByLibrary.simpleMessage("connecting"),
@@ -46,14 +47,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginPhoneNumber" : MessageLookupByLibrary.simpleMessage("phone number"),
     "loginSuccess" : MessageLookupByLibrary.simpleMessage("login success"),
     "messageSend" : MessageLookupByLibrary.simpleMessage("send"),
+    "nickName" : MessageLookupByLibrary.simpleMessage("nickName"),
+    "nickNameIllegal" : MessageLookupByLibrary.simpleMessage("nickName is Empty"),
     "pageHomeTabContact" : MessageLookupByLibrary.simpleMessage("Contacts"),
     "pageHomeTabDiscover" : MessageLookupByLibrary.simpleMessage("Discover"),
     "pageHomeTabMessage" : MessageLookupByLibrary.simpleMessage("Message"),
     "pageHomeTabMine" : MessageLookupByLibrary.simpleMessage("Mine"),
     "pageMessagePopAddFriend" : MessageLookupByLibrary.simpleMessage("add friend"),
     "pageMessagePopStartChat" : MessageLookupByLibrary.simpleMessage("start group chat"),
+    "passwordIllegal" : MessageLookupByLibrary.simpleMessage("password Illegal"),
     "pluginCamera" : MessageLookupByLibrary.simpleMessage("camera"),
     "pluginImage" : MessageLookupByLibrary.simpleMessage("picture"),
+    "registerAccount" : MessageLookupByLibrary.simpleMessage("register account"),
     "success" : MessageLookupByLibrary.simpleMessage("success")
   };
 }

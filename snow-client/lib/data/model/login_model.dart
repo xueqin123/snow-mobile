@@ -75,4 +75,6 @@ class LoginModel extends BaseModel {
     MessageWidgetManager.getInstance().registerMessageWidgetProvider(TextMessage, buildTextMessageWidget);
     MessageWidgetManager.getInstance().registerConversationContentProvider(TextMessage, buildTextLast);
   }
+
+
 }

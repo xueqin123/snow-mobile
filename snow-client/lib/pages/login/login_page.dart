@@ -6,6 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:snowclient/generated/l10n.dart';
 import 'package:snowclient/pages/home/home_page.dart';
 import 'package:snowclient/pages/login/login_view_model.dart';
+import 'package:snowclient/pages/login/register/register_page.dart';
+import 'package:snowclient/pages/login/register/register_view_model.dart';
+import 'package:snowclient/uitls/const_router.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -114,7 +117,17 @@ class LoginState extends State<LoginStatefulPage> with WidgetsBindingObserver {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                 ),
-                buildLoginButton()
+                buildLoginButton(),
+                GestureDetector(
+                  onTap: _toRegisterPage,
+                  child: Text(
+                    S.of(context).registerAccount,
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.blue,
+                    ),
+                  ),
+                )
               ],
             ),
           ),
@@ -161,5 +174,13 @@ class LoginState extends State<LoginStatefulPage> with WidgetsBindingObserver {
         )
       ],
     );
+  }
+
+  _toRegisterPage() async {
+    AccountInfo result = await Navigator.push(context, MaterialPageRoute<AccountInfo>(builder: (context) => new RegisterPage()));
+    if (result != null) {
+      _loginViewModel.setLoginData(result.phoneNumber, result.password);
+      _loginViewModel.loginByPassWord();
+    }
   }
 }

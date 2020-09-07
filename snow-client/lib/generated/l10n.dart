@@ -153,11 +153,61 @@ class S {
     );
   }
 
+  /// `confirm password`
+  String get confirmPassword {
+    return Intl.message(
+      'confirm password',
+      name: 'confirmPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `nickName`
+  String get nickName {
+    return Intl.message(
+      'nickName',
+      name: 'nickName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `nickName is Empty`
+  String get nickNameIllegal {
+    return Intl.message(
+      'nickName is Empty',
+      name: 'nickNameIllegal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `password Illegal`
+  String get passwordIllegal {
+    return Intl.message(
+      'password Illegal',
+      name: 'passwordIllegal',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `login`
   String get loginButton {
     return Intl.message(
       'login',
       name: 'loginButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `register account`
+  String get registerAccount {
+    return Intl.message(
+      'register account',
+      name: 'registerAccount',
       desc: '',
       args: [],
     );

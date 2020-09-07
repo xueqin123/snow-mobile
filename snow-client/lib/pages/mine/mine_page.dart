@@ -74,7 +74,7 @@ class MineState extends State<MineStatefulPage> {
             child: Container(
               width: 60,
               height: 60,
-              child: portraitUrl.isNotEmpty
+              child: portraitUrl != null && portraitUrl.isNotEmpty
                   ? Align(
                       alignment: Alignment.center,
                       child: CachedNetworkImage(

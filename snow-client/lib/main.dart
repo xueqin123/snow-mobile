@@ -1,6 +1,7 @@
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:snowclient/pages/chat/detail/chat_detail_page.dart';
 import 'package:snowclient/pages/common/image_crop_page.dart';
+import 'package:snowclient/pages/login/register/register_page.dart';
 import 'package:snowclient/pages/message/message_page.dart';
 import 'package:snowclient/pages/splash/splash_page.dart';
 import 'package:snowclient/uitls/const_router.dart';

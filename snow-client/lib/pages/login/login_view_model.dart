@@ -71,6 +71,11 @@ class LoginViewModel with ChangeNotifier {
       _loginController.close();
       _toastController.close();
   }
+
+  setLoginData(String phoneNumber,String password){
+    _phoneController.text = phoneNumber;
+    _passwordController.text = password;
+  }
 }
 
 enum LoginStatus {

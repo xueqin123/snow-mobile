@@ -24,6 +24,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "_locale" : MessageLookupByLibrary.simpleMessage("zh"),
     "appName" : MessageLookupByLibrary.simpleMessage("雪信"),
     "confirm" : MessageLookupByLibrary.simpleMessage("确认"),
+    "confirmPassword" : MessageLookupByLibrary.simpleMessage("确认密码"),
     "connectIdle" : MessageLookupByLibrary.simpleMessage("IDLE"),
     "connected" : MessageLookupByLibrary.simpleMessage("已连接"),
     "connecting" : MessageLookupByLibrary.simpleMessage("连接中..."),
@@ -46,14 +47,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginPhoneNumber" : MessageLookupByLibrary.simpleMessage("手机号"),
     "loginSuccess" : MessageLookupByLibrary.simpleMessage("登录成功"),
     "messageSend" : MessageLookupByLibrary.simpleMessage("发送"),
+    "nickName" : MessageLookupByLibrary.simpleMessage("昵称"),
+    "nickNameIllegal" : MessageLookupByLibrary.simpleMessage("昵称为空"),
     "pageHomeTabContact" : MessageLookupByLibrary.simpleMessage("联系人"),
     "pageHomeTabDiscover" : MessageLookupByLibrary.simpleMessage("发现"),
     "pageHomeTabMessage" : MessageLookupByLibrary.simpleMessage("信息"),
     "pageHomeTabMine" : MessageLookupByLibrary.simpleMessage("我"),
     "pageMessagePopAddFriend" : MessageLookupByLibrary.simpleMessage("添加好友"),
     "pageMessagePopStartChat" : MessageLookupByLibrary.simpleMessage("发起群聊"),
+    "passwordIllegal" : MessageLookupByLibrary.simpleMessage("密码错误"),
     "pluginCamera" : MessageLookupByLibrary.simpleMessage("拍照"),
     "pluginImage" : MessageLookupByLibrary.simpleMessage("图片"),
+    "registerAccount" : MessageLookupByLibrary.simpleMessage("注册账号"),
     "success" : MessageLookupByLibrary.simpleMessage("成功")
   };
 }
