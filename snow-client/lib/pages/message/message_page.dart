@@ -164,13 +164,7 @@ class MessageState extends State<MessageStatefulWidget> {
       child: Column(
         children: [
           Expanded(
-              child: CachedNetworkImage(
-            imageUrl: messageWrapper.userEntity.portrait,
-            fadeOutDuration: Duration(),
-            fadeInDuration: Duration(),
-            placeholder: (context, url) => Image.asset("images/avatar_default.png"),
-            errorWidget: (context, url, error) => Image.asset("images/avatar_default.png"),
-          )),
+              child: _buildImage(messageWrapper.userEntity.portrait)),
           Text(
             messageWrapper.userEntity.name,
             style: TextStyle(fontSize: 10),
@@ -178,6 +172,22 @@ class MessageState extends State<MessageStatefulWidget> {
         ],
       ),
     );
+  }
+
+
+  _buildImage(String portraitUrl) {
+    if (portraitUrl == null || portraitUrl.isEmpty) {
+      return Image.asset("images/avatar_default.png");
+    } else {
+      return CachedNetworkImage(
+        fit: BoxFit.fill,
+        fadeInDuration: Duration(),
+        fadeOutDuration: Duration(),
+        imageUrl: portraitUrl == null ? "" : portraitUrl,
+        placeholder: (context, url) => Image.asset("images/avatar_default.png"),
+        errorWidget: (context, url, error) => Image.asset("images/avatar_default.png"),
+      );
+    }
   }
 
   Widget _buildSendDot(SendStatus status) {
