@@ -5,7 +5,7 @@ import 'package:imlib/imlib.dart';
 import 'base_result.dart';
 
 class SnowIMHttpHelper {
-  static const String _BASE_URL = "http://www.xueqingxue.com/snow";
+  static const String _BASE_URL = "https://www.xueqingxue.com/snow";
 
   final Dio dio = Dio();
 
