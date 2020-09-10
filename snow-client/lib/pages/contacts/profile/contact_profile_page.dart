@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:imlib/imlib.dart';
-import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
 import 'package:provider/provider.dart';
 import 'package:snowclient/data/entity/user_entity.dart';
@@ -9,6 +8,7 @@ import 'package:snowclient/generated/l10n.dart';
 import 'package:snowclient/pages/contacts/profile/contact_profile_view_model.dart';
 import 'package:snowclient/pages/message/message_page.dart';
 import 'package:snowclient/uitls/const_router.dart';
+import 'package:snowclient/uitls/widge/widget_utils.dart';
 
 class ContactProfilePage extends StatelessWidget {
   final String uid;
@@ -42,13 +42,14 @@ class ContactProfileState extends State<ContactProfileStatefulPage> {
     String name = userEntity == null ? "" : userEntity.name;
     String phone = userEntity == null ? "" : userEntity.username;
     String uid = userEntity == null ? "" : userEntity.uid;
+    String portraitUrl = userEntity == null ? "" : userEntity.portrait;
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).contactProfile),
       ),
       body: Column(
         children: [
-          _buildHeader(name),
+          _buildHeader(name, portraitUrl),
           Divider(
             thickness: 10,
             height: 10,
@@ -68,15 +69,19 @@ class ContactProfileState extends State<ContactProfileStatefulPage> {
     );
   }
 
-  Widget _buildHeader(String name) {
+  Widget _buildHeader(String name, String portraitUrl) {
     return Container(
       color: Colors.white,
       height: 100,
       child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(30),
-            child: Icon(Icons.account_box),
+          Container(
+            width: 60,
+            height: 60,
+            child: Align(
+              alignment: Alignment.center,
+              child: WidgetUtils.buildNetImage(portraitUrl),
+            ),
           ),
           Expanded(
             child: Container(
