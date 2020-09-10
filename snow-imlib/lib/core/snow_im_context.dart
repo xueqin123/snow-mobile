@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:fixnum/fixnum.dart';
+import 'package:imlib/core/inbound/handler/notify_handler.dart';
 import 'package:imlib/core/snow_im_connect_manager.dart';
 import 'package:imlib/core/inbound/handler/conversation_handler.dart';
 import 'package:imlib/core/inbound/handler/history_message_handler.dart';
@@ -65,6 +66,7 @@ class SnowIMContext {
     _instance.addInBoundHandler(HistoryMessageHandler());
     _instance.addInBoundHandler(MessageAckHandler());
     _instance.addInBoundHandler(MessageHandler());
+    _instance.addInBoundHandler(NotifyHandler());
 
     _instance.addOutBoundEncoder(CustomMessageEncoder());
     _instance.addOutBoundEncoder(SnowMessageEncoder());
