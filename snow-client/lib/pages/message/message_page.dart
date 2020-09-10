@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:snowclient/data/model/message_model.dart';
 import 'package:snowclient/pages/message/widget/message_input_widget.dart';
 import 'package:snowclient/uitls/const_router.dart';
+import 'package:snowclient/uitls/widge/widget_utils.dart';
 
 import 'message_view_model.dart';
 import 'message_widet_manager.dart';
@@ -163,8 +164,7 @@ class MessageState extends State<MessageStatefulWidget> {
       padding: const EdgeInsets.only(left: 5.0, right: 5.0),
       child: Column(
         children: [
-          Expanded(
-              child: _buildImage(messageWrapper.userEntity.portrait)),
+          Expanded(child: WidgetUtils.buildNetImage(messageWrapper.userEntity.portrait)),
           Text(
             messageWrapper.userEntity.name,
             style: TextStyle(fontSize: 10),
@@ -172,22 +172,6 @@ class MessageState extends State<MessageStatefulWidget> {
         ],
       ),
     );
-  }
-
-
-  _buildImage(String portraitUrl) {
-    if (portraitUrl == null || portraitUrl.isEmpty) {
-      return Image.asset("images/avatar_default.png");
-    } else {
-      return CachedNetworkImage(
-        fit: BoxFit.fill,
-        fadeInDuration: Duration(),
-        fadeOutDuration: Duration(),
-        imageUrl: portraitUrl == null ? "" : portraitUrl,
-        placeholder: (context, url) => Image.asset("images/avatar_default.png"),
-        errorWidget: (context, url, error) => Image.asset("images/avatar_default.png"),
-      );
-    }
   }
 
   Widget _buildSendDot(SendStatus status) {

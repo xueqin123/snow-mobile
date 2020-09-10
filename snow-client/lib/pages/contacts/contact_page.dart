@@ -5,6 +5,7 @@ import 'package:imlib/imlib.dart';
 import 'package:provider/provider.dart';
 import 'package:snowclient/data/entity/user_entity.dart';
 import 'package:snowclient/pages/contacts/profile/contact_profile_page.dart';
+import 'package:snowclient/uitls/widge/widget_utils.dart';
 
 import 'contact_view_model.dart';
 
@@ -59,14 +60,7 @@ class ContactState extends State<ContactStatefulPage> {
           children: [
             Padding(
               padding: EdgeInsets.all(16),
-              child: CachedNetworkImage(
-                fit: BoxFit.fill,
-                fadeInDuration: Duration(),
-                fadeOutDuration: Duration(),
-                imageUrl: userList[index].portrait == null ? "" : userList[index].portrait,
-                placeholder: (context, url) => Image.asset("images/avatar_default.png"),
-                errorWidget: (context, url, error) => Image.asset("images/avatar_default.png"),
-              ),
+              child: WidgetUtils.buildNetImage(userList[index].portrait),
             ),
             Expanded(
               child: Stack(children: [

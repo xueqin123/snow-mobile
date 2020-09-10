@@ -10,6 +10,7 @@ import 'package:snowclient/generated/l10n.dart';
 import 'package:snowclient/pages/common/image_crop_page.dart';
 import 'package:snowclient/pages/mine/mine_view_model.dart';
 import 'package:snowclient/uitls/const_router.dart';
+import 'package:snowclient/uitls/widge/widget_utils.dart';
 
 class MinePage extends StatelessWidget {
   @override
@@ -76,7 +77,7 @@ class MineState extends State<MineStatefulPage> {
               height: 60,
               child: Align(
                 alignment: Alignment.center,
-                child: _buildImage(portraitUrl),
+                child: WidgetUtils.buildNetImage(portraitUrl),
               ),
             ),
           ),
@@ -99,21 +100,6 @@ class MineState extends State<MineStatefulPage> {
     );
   }
 
-  _buildImage(String portraitUrl) {
-    if (portraitUrl == null || portraitUrl.isEmpty) {
-      return Image.asset("images/avatar_default.png");
-    } else {
-      return CachedNetworkImage(
-        fit: BoxFit.fill,
-        fadeInDuration: Duration(),
-        fadeOutDuration: Duration(),
-        imageUrl: portraitUrl == null ? "" : portraitUrl,
-        placeholder: (context, url) => Image.asset("images/avatar_default.png"),
-        errorWidget: (context, url, error) => Image.asset("images/avatar_default.png"),
-      );
-    }
-  }
-
   _updatePortrait() async {
     PickedFile pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
     if (pickedFile == null) return;
@@ -123,13 +109,9 @@ class MineState extends State<MineStatefulPage> {
     SLog.i("_updatePortrait croppedPath:$croppedPath");
     String remoteUrl = await viewModel.updatePortrait(croppedPath);
     if (remoteUrl != null) {
-      Fluttertoast.showToast(msg: S
-          .of(context)
-          .success, textColor: Colors.black45);
+      Fluttertoast.showToast(msg: S.of(context).success, textColor: Colors.black45);
     } else {
-      Fluttertoast.showToast(msg: S
-          .of(context)
-          .failed, textColor: Colors.black45);
+      Fluttertoast.showToast(msg: S.of(context).failed, textColor: Colors.black45);
     }
   }
 

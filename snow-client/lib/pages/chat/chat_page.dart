@@ -8,6 +8,7 @@ import 'package:snowclient/pages/message/message_page.dart';
 import 'package:snowclient/uitls/common_utils.dart';
 import 'package:snowclient/uitls/const_router.dart';
 import 'package:snowclient/uitls/widge/badge_widget.dart';
+import 'package:snowclient/uitls/widge/widget_utils.dart';
 import 'chat_item_entity.dart';
 import 'chat_view_model.dart';
 
@@ -59,17 +60,7 @@ class ChatState extends State<ChatStatefulPage> {
           children: [
             Padding(
               padding: EdgeInsets.all(16),
-              child: BadgeWidget(
-                data[index].unReadCount,
-                anchor: CachedNetworkImage(
-                  fit: BoxFit.fill,
-                  fadeInDuration: Duration(),
-                  fadeOutDuration: Duration(),
-                  imageUrl: data[index].portrait == null ? "" : data[index].portrait,
-                  placeholder: (context, url) => Image.asset("images/avatar_default.png"),
-                  errorWidget: (context, url, error) => Image.asset("images/avatar_default.png"),
-                ),
-              ),
+              child: BadgeWidget(data[index].unReadCount, anchor: WidgetUtils.buildNetImage(data[index].portrait)),
             ),
             Expanded(
               child: Stack(children: [
@@ -112,7 +103,7 @@ class ChatState extends State<ChatStatefulPage> {
     );
   }
 
-  _buildContent(ChatItemEntity chatItemEntity){
+  _buildContent(ChatItemEntity chatItemEntity) {
     return Text("${chatItemEntity.lastName}: ${chatItemEntity.lastContent}");
   }
 
