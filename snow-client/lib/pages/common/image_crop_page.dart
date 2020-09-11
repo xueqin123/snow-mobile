@@ -35,7 +35,7 @@ class ImageCropPage extends StatelessWidget {
       child: ImgCrop(
         key: imgCropKey,
         chipRadius: 150, // crop area radius
-        chipShape: 'rect', // crop type "circle" or "rect"
+        chipShape: 'circle', // crop type "circle" or "rect"
         image: FileImage(File(originFilePath)), // you selected image file
       ),
     );
