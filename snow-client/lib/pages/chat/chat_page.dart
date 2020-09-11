@@ -8,7 +8,7 @@ import 'package:snowclient/pages/message/message_page.dart';
 import 'package:snowclient/uitls/common_utils.dart';
 import 'package:snowclient/uitls/const_router.dart';
 import 'package:snowclient/uitls/widge/badge_widget.dart';
-import 'package:snowclient/uitls/widge/widget_utils.dart';
+import 'package:snowclient/uitls/widge/portrait_widget.dart';
 import 'chat_item_entity.dart';
 import 'chat_view_model.dart';
 
@@ -58,9 +58,12 @@ class ChatState extends State<ChatStatefulPage> {
         height: 60,
         child: Row(
           children: [
-            Padding(
-              padding: EdgeInsets.all(16),
-              child: BadgeWidget(data[index].unReadCount, anchor: WidgetUtils.buildNetImage(data[index].portrait)),
+            Container(
+              width: 60,
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: BadgeWidget(data[index].unReadCount, anchor: PortraitWidget(data[index].portrait,40)),
+              ),
             ),
             Expanded(
               child: Stack(children: [

@@ -8,7 +8,7 @@ import 'package:snowclient/generated/l10n.dart';
 import 'package:snowclient/pages/contacts/profile/contact_profile_view_model.dart';
 import 'package:snowclient/pages/message/message_page.dart';
 import 'package:snowclient/uitls/const_router.dart';
-import 'package:snowclient/uitls/widge/widget_utils.dart';
+import 'package:snowclient/uitls/widge/portrait_widget.dart';
 
 class ContactProfilePage extends StatelessWidget {
   final String uid;
@@ -90,7 +90,7 @@ class ContactProfileState extends State<ContactProfileStatefulPage> {
             height: 60,
             child: Align(
               alignment: Alignment.center,
-              child: WidgetUtils.buildNetImage(portraitUrl),
+              child: PortraitWidget(portraitUrl,60),
             ),
           ),
           Expanded(

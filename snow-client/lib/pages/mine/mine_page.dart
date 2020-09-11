@@ -10,7 +10,7 @@ import 'package:snowclient/generated/l10n.dart';
 import 'package:snowclient/pages/common/image_crop_page.dart';
 import 'package:snowclient/pages/mine/mine_view_model.dart';
 import 'package:snowclient/uitls/const_router.dart';
-import 'package:snowclient/uitls/widge/widget_utils.dart';
+import 'package:snowclient/uitls/widge/portrait_widget.dart';
 
 class MinePage extends StatelessWidget {
   @override
@@ -77,7 +77,7 @@ class MineState extends State<MineStatefulPage> {
               height: 60,
               child: Align(
                 alignment: Alignment.center,
-                child: WidgetUtils.buildNetImage(portraitUrl),
+                child: PortraitWidget(portraitUrl,60),
               ),
             ),
           ),

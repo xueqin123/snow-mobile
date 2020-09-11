@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:snowclient/data/model/message_model.dart';
 import 'package:snowclient/pages/message/widget/message_input_widget.dart';
 import 'package:snowclient/uitls/const_router.dart';
-import 'package:snowclient/uitls/widge/widget_utils.dart';
+import 'package:snowclient/uitls/widge/portrait_widget.dart';
 
 import 'message_view_model.dart';
 import 'message_widet_manager.dart';
@@ -161,13 +161,14 @@ class MessageState extends State<MessageStatefulWidget> {
   _buildPortrait(MessageWrapper messageWrapper) {
     return Container(
       height: 60,
+      width: 60,
       padding: const EdgeInsets.only(left: 5.0, right: 5.0),
       child: Column(
         children: [
-          Expanded(child: WidgetUtils.buildNetImage(messageWrapper.userEntity.portrait)),
+          PortraitWidget(messageWrapper.userEntity.portrait,40),
           Text(
             messageWrapper.userEntity.name,
-            style: TextStyle(fontSize: 10),
+            style: TextStyle(fontSize: 8),
           )
         ],
       ),
