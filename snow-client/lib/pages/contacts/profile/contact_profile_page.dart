@@ -15,11 +15,19 @@ class ContactProfilePage extends StatelessWidget {
 
   ContactProfilePage(this.uid);
 
+  ContactProfileViewModel viewModel;
+
   @override
   Widget build(BuildContext context) {
+    viewModel = ContactProfileViewModel();
     SLog.i("uid = $uid");
-    return StreamProvider.controller(
-      create: (_) => ContactProfileViewModel().getUserEntityStream(uid),
+    return MultiProvider(
+      providers: [
+        StreamProvider.controller(
+          create: (_) => viewModel.getUserEntityStream(uid),
+        ),
+        ChangeNotifierProvider(create: (_) => viewModel),
+      ],
       child: ContactProfileStatefulPage(),
     );
   }
@@ -34,9 +42,11 @@ class ContactProfileStatefulPage extends StatefulWidget {
 
 class ContactProfileState extends State<ContactProfileStatefulPage> {
   UserEntity userEntity;
+  ContactProfileViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
+    viewModel = Provider.of<ContactProfileViewModel>(context);
     userEntity = Provider.of<UserEntity>(context);
     SLog.i("ContactProfileStatefulPage build userEntity = $userEntity");
     String name = userEntity == null ? "" : userEntity.name;
@@ -130,22 +140,25 @@ class ContactProfileState extends State<ContactProfileStatefulPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () => _onStartMessagePageClick(uid),
-            child: Container(
-              width: 300,
-              height: 50,
-              decoration: ShapeDecoration(
-                  color: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  )),
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  S.of(context).contactProfileSendMessage,
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                  textAlign: TextAlign.center,
+          Visibility(
+            visible: uid != viewModel.selfUid,
+            child: GestureDetector(
+              onTap: () => _onStartMessagePageClick(uid),
+              child: Container(
+                width: 300,
+                height: 50,
+                decoration: ShapeDecoration(
+                    color: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    )),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    S.of(context).contactProfileSendMessage,
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
             ),
