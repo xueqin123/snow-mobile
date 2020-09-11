@@ -74,7 +74,7 @@ class SnowIMMessageDao extends SnowIMDao {
   }
 
   insertSendMessage(String toUserId, CustomMessage it) async {
-    it.content = jsonEncode(it.encode());
+    it.content = it.encode();
     await database.rawInsert(
         "INSERT INTO ${SnowIMDBHelper.TABLE_MESSAGE}"
         " (${SnowIMDBHelper.TABLE_MESSAGE_COLUMN_MESSAGE_ID},"
@@ -165,7 +165,7 @@ class SnowIMMessageDao extends SnowIMDao {
     readyMessage.conversationId = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_CONVERSATION_ID];
     String content = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_CONTENT];
     readyMessage.content = content;
-    readyMessage.decode(jsonDecode(content));
+    readyMessage.decode(content);
     readyMessage.direction = _getDirection(readyMessage.uid);
     readyMessage.time = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_TIME];
     int status = map[SnowIMDBHelper.TABLE_MESSAGE_COLUMN_STATUS];

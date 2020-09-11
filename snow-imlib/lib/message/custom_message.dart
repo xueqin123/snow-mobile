@@ -14,9 +14,9 @@ abstract class CustomMessage {
   SendStatus status = SendStatus.SENDING;
   String content;
 
-  Map<String, dynamic> encode();
+  String encode();
 
-  decode(Map<String, dynamic> json);
+  decode(String json);
 }
 
 enum Direction { SEND, RECEIVE }

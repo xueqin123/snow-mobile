@@ -10,15 +10,16 @@ class TextMessage extends CustomMessage {
   TextMessage({this.text});
 
   @override
-  decode(Map<String, dynamic> json) {
-    text = json["text"];
+  decode(String json) {
+   Map<String,dynamic> map = jsonDecode(json);
+   text = map["text"];
   }
 
   @override
-  Map<String, dynamic> encode() {
-    Map<String, dynamic> json = Map();
-    json["text"] = text;
-    return json;
+  String encode() {
+    Map<String,dynamic>map = Map();
+    map["text"] = text;
+    return jsonEncode(map);
   }
 }
 

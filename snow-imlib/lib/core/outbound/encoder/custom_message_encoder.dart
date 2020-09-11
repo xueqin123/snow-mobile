@@ -22,7 +22,7 @@ class CustomMessageEncoder extends OutboundEncoder<CustomMessage> {
     SLog.v("CustomMessageEncoder encode()");
     MessageContent messageContent = MessageContent();
     messageContent.uid = context.selfUid;
-    messageContent.content = jsonEncode(customMessage.encode());
+    messageContent.content = customMessage.encode();
     messageContent.time = Int64(SnowIMUtils.currentTime());
     messageContent.type = customMessage.type;
     UpDownMessage upDownMessage = UpDownMessage();
