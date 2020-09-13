@@ -20,6 +20,12 @@
       <excludeFolder url="file://$MODULE_DIR$/snow-client/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/snow-client/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/snow-client/build" />
+      <excludeFolder url="file://$MODULE_DIR$/snow-client/ios/.symlinks/plugins/connectivity/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/snow-client/ios/.symlinks/plugins/connectivity/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/snow-client/ios/.symlinks/plugins/connectivity/build" />
+      <excludeFolder url="file://$MODULE_DIR$/snow-client/ios/.symlinks/plugins/connectivity/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/snow-client/ios/.symlinks/plugins/connectivity/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/snow-client/ios/.symlinks/plugins/connectivity/example/build" />
       <excludeFolder url="file://$MODULE_DIR$/snow-client/ios/.symlinks/plugins/flutter_image_compress/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/snow-client/ios/.symlinks/plugins/flutter_image_compress/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/snow-client/ios/.symlinks/plugins/flutter_image_compress/build" />

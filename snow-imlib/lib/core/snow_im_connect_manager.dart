@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:flutter/material.dart';
 import 'package:imlib/core/snow_im_context.dart';
 import 'package:imlib/imlib.dart';
 
-class SnowIMConnectManager {
+class SnowIMConnectManager with WidgetsBindingObserver {
   String token;
   SnowIMContext context;
 
@@ -28,6 +29,7 @@ class SnowIMConnectManager {
     this.token = token;
     this.context = context;
     initNetListener();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   connect() async {
@@ -81,6 +83,14 @@ class SnowIMConnectManager {
         SLog.i("_tryReconnect reason: $log");
         connect();
       }
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    SLog.i("SnowIMConnectManager didChangeAppLifecycleState state $state");
+    if (state == AppLifecycleState.resumed) {
+      _tryReconnect("didChangeAppLifecycleState state: $state");
     }
   }
 }
