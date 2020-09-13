@@ -14,6 +14,7 @@ import 'package:imlib/data/db/dao/snow_im_dao_manager.dart';
 import 'package:imlib/data/db/entity/host_entity.dart';
 import 'package:imlib/data/db/model/snow_im_conversation_model.dart';
 import 'package:imlib/data/db/model/model_manager.dart';
+import 'package:imlib/data/db/model/snow_im_message_model.dart';
 import 'package:imlib/imlib.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:imlib/proto/message.pb.dart';
@@ -30,7 +31,6 @@ import 'inbound/handler/message_handler.dart';
 import 'inbound/inbound_chain.dart';
 import 'inbound/protobuf_varint_32_frame_decoder.dart';
 import 'inbound/snow_message_decoder.dart';
-import 'outbound/encoder/custom_message_encoder.dart';
 import 'outbound/encoder/protobuf_varint_32_length_field_prepender.dart';
 import 'outbound/encoder/snow_message_encoder.dart';
 
@@ -47,7 +47,6 @@ class SnowIMContext {
   InboundChain _inTail;
   OutboundEncoder _outHead;
   OutboundEncoder _outTail;
-  OutboundEncoder _outSnowHead;
 
   // ignore: close_sinks
   StreamController<CustomMessage> _customMessageStreamController = StreamController();
@@ -68,7 +67,6 @@ class SnowIMContext {
     _instance.addInBoundHandler(MessageHandler());
     _instance.addInBoundHandler(NotifyHandler());
 
-    _instance.addOutBoundEncoder(CustomMessageEncoder());
     _instance.addOutBoundEncoder(SnowMessageEncoder());
     _instance.addOutBoundEncoder(ProtobufVarint32LengthFieldPrepender());
     return _instance;
@@ -133,10 +131,10 @@ class SnowIMContext {
 
   sendSnowMessage(SnowMessage snowMessage) {
     SLog.i("sendSnowMessage: ${snowMessage.type.name}");
-    _outSnowHead.encodeSend(this, snowMessage);
+    _outHead.encodeSend(this, snowMessage);
   }
 
-  sendCustomMessage(CustomMessage customMessage, SendBlock sendBlock) {
+  sendCustomMessage(CustomMessage customMessage, SendBlock sendBlock, Prepare prepare) async {
     SLog.i("sendCustomMessage: ${customMessage.type}");
     Int64 cid = SnowIMUtils.generateCid();
     customMessage.cid = cid.toInt();
@@ -149,7 +147,43 @@ class SnowIMContext {
       }
       sendBlock(status, sendingMessage);
     });
-    _outHead.encodeSend(this, customMessage);
+    SnowMessage snowMessage = await _buildSnowMessage(customMessage, prepare);
+    _outHead.encodeSend(this, snowMessage);
+  }
+
+  Future<SnowMessage> _buildSnowMessage(CustomMessage customMessage, Prepare prepare) async {
+    customMessage.id = customMessage.cid;
+    customMessage.uid = selfUid;
+    customMessage.status = SendStatus.SENDING;
+    customMessage.direction = Direction.SEND;
+    customMessage.time = SnowIMUtils.currentTime();
+    MessageContent messageContent = MessageContent();
+    messageContent.uid = selfUid;
+    messageContent.content = customMessage.encode();
+    messageContent.time = Int64(SnowIMUtils.currentTime());
+    messageContent.type = customMessage.type;
+    UpDownMessage upDownMessage = UpDownMessage();
+    upDownMessage.cid = Int64(customMessage.cid);
+    upDownMessage.fromUid = selfUid;
+    if (customMessage.conversationType == ConversationType.SINGLE) {
+      upDownMessage.targetUid = customMessage.targetId;
+    } else if (customMessage.conversationType == ConversationType.GROUP) {
+      upDownMessage.conversationId = customMessage.conversationId;
+    }
+    onSendStatusChanged(SendStatus.SENDING, customMessage);
+    customMessage.status = SendStatus.PERSIST;
+    await SnowIMModelManager.getInstance().getModel<SnowIMMessageModel>().insertSendMessage(customMessage.targetId, customMessage);
+    onSendStatusChanged(SendStatus.PERSIST, customMessage);
+    if (prepare != null) {
+      customMessage = await prepare(customMessage);
+    }
+    upDownMessage.groupId = "";
+    upDownMessage.conversationType = customMessage.conversationType;
+    upDownMessage.content = messageContent;
+    SnowMessage snowMessage = SnowMessage();
+    snowMessage.type = SnowMessage_Type.UpDownMessage;
+    snowMessage.upDownMessage = upDownMessage;
+    return snowMessage;
   }
 
   onSendStatusChanged(SendStatus status, CustomMessage sendingMessage) {
@@ -168,9 +202,6 @@ class SnowIMContext {
   }
 
   addOutBoundEncoder(OutboundEncoder outboundEncoder) {
-    if (outboundEncoder is SnowMessageEncoder) {
-      _outSnowHead = outboundEncoder;
-    }
     if (_outHead == null) {
       _outHead = outboundEncoder;
       _outTail = outboundEncoder;

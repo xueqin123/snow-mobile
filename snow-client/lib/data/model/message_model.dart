@@ -44,8 +44,11 @@ class MessageModel extends BaseModel {
     }
   }
 
-  _messageProgressBlock(int cur, int total) {
+  _messageProgressBlock(int cur, int total,CustomMessage customMessage) {
     SLog.v("_messageProgressBlock cur:$cur total:$total");
+    if(messageNotifier!= null){
+      double progress = (cur/total)*100;
+    }
   }
 }
 
@@ -90,6 +93,7 @@ class MessageNotifier extends Notifier<List<MessageWrapper>> {
       wrapperList.add(messageWrapper);
     }
     data.addAll(wrapperList);
+
     post();
   }
 

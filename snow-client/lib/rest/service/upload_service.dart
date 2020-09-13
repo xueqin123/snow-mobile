@@ -10,11 +10,11 @@ class UploadService extends HttpService {
   UploadService(HttpHelper httpHelper) : super(httpHelper);
   static const String _FILE_CREDENTIAL = "/file/credential";
 
-  Future<String> upLoadImage(String filePath) async {
+  Future<String> upLoadImage(String filePath,{Function(int, int) progress}) async {
     BaseResult<RspCredentialEntity> result = await httpHelper.get<RspCredentialEntity>(_FILE_CREDENTIAL, null, null);
     RspCredentialEntity credential = result.data;
     SLog.i("upLoadImage credential: ${credential.toJson()}");
-    String url = await UpLoader.getInstance().uploadImage(credential.tmpSecretId, credential.tmpSecretKey, credential.sessionToken, filePath);
+    String url = await UpLoader.getInstance().uploadImage(credential.tmpSecretId, credential.tmpSecretKey, credential.sessionToken, filePath,progress: progress);
     SLog.i("upLoadImage: $url");
     return url;
   }

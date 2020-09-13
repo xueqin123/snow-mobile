@@ -20,6 +20,7 @@ import 'data/db/entity/group_entity.dart';
 
 typedef SendBlock = Function(SendStatus status, CustomMessage customMessage);
 typedef MessageProvider = CustomMessage Function();
+typedef Prepare = Future<CustomMessage> Function(CustomMessage sendingMessage);
 
 class SnowIMLib {
   static init(String uid, String token) async {
@@ -58,27 +59,27 @@ class SnowIMLib {
     return SnowIMModelManager.getInstance().getModel<SnowIMConversationModel>().getTotalUnReadController().stream;
   }
 
-  static sendMessage(String targetId, ConversationType type, CustomMessage customMessage, {SendBlock block}) {
+  static sendMessage(String targetId, ConversationType type, CustomMessage customMessage, {SendBlock block, Prepare prepare}) {
     if (type == ConversationType.SINGLE) {
-      sendSingleMessage(targetId, customMessage, block: block);
+      sendSingleMessage(targetId, customMessage, block: block, prepare: prepare);
     } else if (type == ConversationType.GROUP) {
-      sendGroupMessage(targetId, customMessage, block: block);
+      sendGroupMessage(targetId, customMessage, block: block, prepare: prepare);
     }
   }
 
-  static sendSingleMessage(String targetId, CustomMessage customMessage, {SendBlock block}) {
+  static sendSingleMessage(String targetId, CustomMessage customMessage, {SendBlock block, Prepare prepare}) {
     customMessage.conversationType = ConversationType.SINGLE;
     customMessage.type = customMessage.runtimeType.toString();
     customMessage.targetId = targetId;
-    return SnowIMContext.getInstance().sendCustomMessage(customMessage, block);
+    return SnowIMContext.getInstance().sendCustomMessage(customMessage, block, prepare);
   }
 
-  static sendGroupMessage(String targetId, CustomMessage customMessage, {SendBlock block}) {
+  static sendGroupMessage(String targetId, CustomMessage customMessage, {SendBlock block, Prepare prepare}) {
     customMessage.conversationType = ConversationType.GROUP;
     customMessage.type = customMessage.runtimeType.toString();
     customMessage.targetId = targetId;
     customMessage.conversationId = targetId;
-    return SnowIMContext.getInstance().sendCustomMessage(customMessage, block);
+    return SnowIMContext.getInstance().sendCustomMessage(customMessage, block, prepare);
   }
 
   static registerMessage(Type messageType, MessageProvider emptyProvider) {

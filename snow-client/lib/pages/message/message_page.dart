@@ -164,10 +164,7 @@ class MessageState extends State<MessageStatefulWidget> {
     if (provider != null) {
       return provider(customMessage);
     } else {
-      return Text(
-        S.of(context).unSupportMessage,
-        style: TextStyle(color: Colors.grey, fontSize: 20),
-      );
+      return Text(S.of(context).unSupportMessage,style: TextStyle(color: Colors.grey,fontSize: 10),);
     }
   }
 

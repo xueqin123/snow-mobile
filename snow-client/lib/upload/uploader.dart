@@ -23,11 +23,11 @@ class UpLoader {
     _currentUid = uid;
   }
 
-  Future<String> uploadImage(String secretId, String secretKey, String token, String path) async {
+  Future<String> uploadImage(String secretId, String secretKey, String token, String path,{Function(int, int) progress}) async {
     Cos cos = Cos(secretId, secretKey, _FILE_HOST, token);
     String suffix = path.substring(path.lastIndexOf("."), path.length);
     String upLoadName = "${_currentUid}_${DateTime.now().millisecondsSinceEpoch}$suffix";
-    String imgUrl = await cos.upload('/image/$upLoadName', File(path).readAsBytesSync());
+    String imgUrl = await cos.upload('/image/$upLoadName', File(path).readAsBytesSync(), progress: progress);
     return imgUrl;
   }
 

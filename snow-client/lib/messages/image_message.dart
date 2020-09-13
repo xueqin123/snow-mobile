@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:imlib/imlib.dart';
 import 'package:imlib/message/custom_message.dart';
 import 'package:snowclient/generated/l10n.dart';
 
@@ -9,6 +11,7 @@ class ImageMessage extends CustomMessage {
   String remoteUrl;
   String base64;
   bool isOriginal;
+  Uint8List bytes;
 
   ImageMessage({this.localPath});
 
@@ -18,6 +21,7 @@ class ImageMessage extends CustomMessage {
     remoteUrl = map["remoteUrl"];
     base64 = map["base64"];
     isOriginal = map["isOriginal"];
+    bytes = base64Decode(base64);
   }
 
   @override
@@ -32,11 +36,15 @@ class ImageMessage extends CustomMessage {
 
 Widget buildImageMessageWidget(CustomMessage customMessage) {
   ImageMessage imageMessage = customMessage;
-  return ConstrainedBox(
-    constraints: BoxConstraints(
-        maxWidth: 250,
-    ),
-    child: Image.memory(base64Decode(imageMessage.base64)),
+  return Stack(
+    children: [
+      ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: 250,
+        ),
+        child: Image.memory(imageMessage.bytes),
+      ),
+    ],
   );
 }
 
