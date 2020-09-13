@@ -7,6 +7,7 @@ import 'package:snowclient/data/db/dao/dao_manager.dart';
 import 'package:snowclient/data/db/dao/user_dao.dart';
 import 'package:snowclient/data/entity/user_entity.dart';
 import 'package:snowclient/data/model/base_model.dart';
+import 'package:snowclient/generated/l10n.dart';
 import 'package:snowclient/pages/chat/chat_item_entity.dart';
 import 'package:snowclient/pages/message/message_widet_manager.dart';
 
@@ -42,9 +43,14 @@ class ChatModel extends BaseModel {
       chatItemEntity.chatType = conversation.type;
       SLog.i("lastContent:${conversation.lastContent} latType:${conversation.lastType}");
       if (conversation.lastType != null && conversation.lastType.isNotEmpty) {
-        chatItemEntity.lastContent = MessageWidgetManager.getInstance().getConversationContentProvider(conversation.lastType)(conversation.lastContent);
+        ConversationContentProvider provider = MessageWidgetManager.getInstance().getConversationContentProvider(conversation.lastType);
+        if (provider != null) {
+          chatItemEntity.lastContent = provider(conversation.lastContent);
+        } else {
+          chatItemEntity.lastContent = S.current.unSupportMessage;
+        }
         chatItemEntity.lastTime = conversation.lastTime;
-      }else{
+      } else {
         chatItemEntity.lastContent = "";
         chatItemEntity.lastTime = null;
       }

@@ -37,6 +37,7 @@
   "connecting": "connecting",
   "connected": "connected",
   "disconnecting": "disconnecting",
-  "disconnected": "disconnected"
-
+  "disconnected": "disconnected",
+  "image":"image",
+  "unSupportMessage":"unSupportMessage"
 }

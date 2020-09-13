@@ -11,6 +11,7 @@ import 'package:snowclient/pages/common/image_crop_page.dart';
 import 'package:snowclient/pages/mine/mine_view_model.dart';
 import 'package:snowclient/uitls/const_router.dart';
 import 'package:snowclient/uitls/widge/portrait_widget.dart';
+import 'package:snowclient/upload/media_compress_utils.dart';
 
 class MinePage extends StatelessWidget {
   @override
@@ -77,7 +78,7 @@ class MineState extends State<MineStatefulPage> {
               height: 60,
               child: Align(
                 alignment: Alignment.center,
-                child: PortraitWidget(portraitUrl,60),
+                child: PortraitWidget(portraitUrl, 60),
               ),
             ),
           ),
@@ -107,7 +108,8 @@ class MineState extends State<MineStatefulPage> {
     SLog.i("_updatePortrait originPath:$originPath");
     String croppedPath = await _getCropImage(originPath);
     SLog.i("_updatePortrait croppedPath:$croppedPath");
-    String remoteUrl = await viewModel.updatePortrait(croppedPath);
+    String compressedPath = await MediaCompressUtils.compressImage(croppedPath, 480, 480);
+    String remoteUrl = await viewModel.updatePortrait(compressedPath);
     if (remoteUrl != null) {
       Fluttertoast.showToast(msg: S.of(context).success, textColor: Colors.black45);
     } else {

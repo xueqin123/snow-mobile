@@ -422,6 +422,26 @@ class S {
       args: [],
     );
   }
+
+  /// `image`
+  String get image {
+    return Intl.message(
+      'image',
+      name: 'image',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `unSupportMessage`
+  String get unSupportMessage {
+    return Intl.message(
+      'unSupportMessage',
+      name: 'unSupportMessage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

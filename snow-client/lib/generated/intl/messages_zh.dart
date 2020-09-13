@@ -40,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dissmissGroupFailed" : MessageLookupByLibrary.simpleMessage("群组解散失败"),
     "dissmissGroupSuccess" : MessageLookupByLibrary.simpleMessage("群组解散成功"),
     "failed" : MessageLookupByLibrary.simpleMessage("失败"),
+    "image" : MessageLookupByLibrary.simpleMessage("图片"),
     "loginButton" : MessageLookupByLibrary.simpleMessage("登录"),
     "loginError" : MessageLookupByLibrary.simpleMessage("手机号，或者密码填写错误"),
     "loginHttpError" : MessageLookupByLibrary.simpleMessage("网络原因登录失败"),
@@ -59,6 +60,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "pluginCamera" : MessageLookupByLibrary.simpleMessage("拍照"),
     "pluginImage" : MessageLookupByLibrary.simpleMessage("图片"),
     "registerAccount" : MessageLookupByLibrary.simpleMessage("注册账号"),
-    "success" : MessageLookupByLibrary.simpleMessage("成功")
+    "success" : MessageLookupByLibrary.simpleMessage("成功"),
+    "unSupportMessage" : MessageLookupByLibrary.simpleMessage("消息类型不支持")
   };
 }

@@ -7,6 +7,7 @@ import 'package:snowclient/data/entity/user_entity.dart';
 import 'package:snowclient/data/model/contact_model.dart';
 import 'package:snowclient/data/model/model_manager.dart';
 import 'package:snowclient/messages/text_message.dart';
+import 'package:snowclient/snow_im_client.dart';
 
 import 'base_model.dart';
 import 'notifier.dart';
@@ -30,18 +31,21 @@ class MessageModel extends BaseModel {
   }
 
   sendTextMessage(String targetId, String text, ConversationType conversationType) {
-    TextMessage textMessage = TextMessage(text: text);
-    if (conversationType == ConversationType.SINGLE) {
-      SnowIMLib.sendSingleMessage(targetId, textMessage, block: _messageSendBlock);
-    } else if (conversationType == ConversationType.GROUP) {
-      SnowIMLib.sendGroupMessage(targetId, textMessage, block: _messageSendBlock);
-    }
+    SnowImClient.sendTextMessage(targetId, text, conversationType, _messageSendBlock);
+  }
+
+  sendImageMessage(String targetId, String localPath, ConversationType type) {
+    SnowImClient.sendImageMessage(targetId, type, localPath, false, _messageSendBlock, _messageProgressBlock);
   }
 
   _messageSendBlock(SendStatus status, CustomMessage customMessage) {
     if (messageNotifier != null) {
-      messageNotifier.onSend(status, customMessage);
+       messageNotifier.onSend(status, customMessage);
     }
+  }
+
+  _messageProgressBlock(int cur, int total) {
+    SLog.v("_messageProgressBlock cur:$cur total:$total");
   }
 }
 

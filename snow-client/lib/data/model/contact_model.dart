@@ -10,6 +10,7 @@ import 'package:snowclient/data/model/base_model.dart';
 import 'package:snowclient/rest/http_manager.dart';
 import 'package:snowclient/rest/service/upload_service.dart';
 import 'package:snowclient/rest/service/user_service.dart';
+import 'package:snowclient/upload/media_compress_utils.dart';
 
 class ContactModel extends BaseModel {
   UserDao _userDao;

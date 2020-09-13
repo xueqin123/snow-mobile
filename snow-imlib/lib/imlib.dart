@@ -58,6 +58,14 @@ class SnowIMLib {
     return SnowIMModelManager.getInstance().getModel<SnowIMConversationModel>().getTotalUnReadController().stream;
   }
 
+  static sendMessage(String targetId, ConversationType type, CustomMessage customMessage, {SendBlock block}) {
+    if (type == ConversationType.SINGLE) {
+      sendSingleMessage(targetId, customMessage, block: block);
+    } else if (type == ConversationType.GROUP) {
+      sendGroupMessage(targetId, customMessage, block: block);
+    }
+  }
+
   static sendSingleMessage(String targetId, CustomMessage customMessage, {SendBlock block}) {
     customMessage.conversationType = ConversationType.SINGLE;
     customMessage.type = customMessage.runtimeType.toString();

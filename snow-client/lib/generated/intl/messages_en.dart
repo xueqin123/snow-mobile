@@ -40,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dissmissGroupFailed" : MessageLookupByLibrary.simpleMessage("dissmissGroupFailed"),
     "dissmissGroupSuccess" : MessageLookupByLibrary.simpleMessage("dissmissGroupSuccess"),
     "failed" : MessageLookupByLibrary.simpleMessage("failed"),
+    "image" : MessageLookupByLibrary.simpleMessage("image"),
     "loginButton" : MessageLookupByLibrary.simpleMessage("login"),
     "loginError" : MessageLookupByLibrary.simpleMessage("Phone/password input error"),
     "loginHttpError" : MessageLookupByLibrary.simpleMessage("login network failed"),
@@ -59,6 +60,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "pluginCamera" : MessageLookupByLibrary.simpleMessage("camera"),
     "pluginImage" : MessageLookupByLibrary.simpleMessage("picture"),
     "registerAccount" : MessageLookupByLibrary.simpleMessage("register account"),
-    "success" : MessageLookupByLibrary.simpleMessage("success")
+    "success" : MessageLookupByLibrary.simpleMessage("success"),
+    "unSupportMessage" : MessageLookupByLibrary.simpleMessage("unSupportMessage")
   };
 }

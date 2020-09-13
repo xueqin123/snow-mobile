@@ -18,5 +18,4 @@ class CommonUtils {
     final String formatted = formatter.format(date);
     return formatted;
   }
-
 }

@@ -5,6 +5,7 @@ import 'package:snowclient/data/entity/login_user_info.dart';
 import 'package:snowclient/data/entity/rsp_login_entity.dart';
 import 'package:snowclient/data/model/contact_model.dart';
 import 'package:snowclient/data/model/base_model.dart';
+import 'package:snowclient/messages/image_message.dart';
 import 'package:snowclient/messages/text_message.dart';
 import 'package:snowclient/pages/message/message_widet_manager.dart';
 import 'package:snowclient/pages/message/widget/plugin/imp/camera_plugin.dart';
@@ -23,7 +24,7 @@ class LoginModel extends BaseModel {
   Future<LoginUserInfo> loginByPassWord(String userName, String password) async {
     RspLoginEntity rspLoginEntity = await HttpManager.getInstance().getService<LoginService>().login(userName, password);
     SLog.i("loginByPassWord  rspLoginEntity:$rspLoginEntity");
-    if(rspLoginEntity == null){
+    if (rspLoginEntity == null) {
       return null;
     }
     String currentUid = rspLoginEntity.uid;
@@ -58,23 +59,27 @@ class LoginModel extends BaseModel {
 
   Future _initApp(String uid, String token) async {
     SLog.i("_initApp start uid:$uid token:$token");
-    PluginManager.getInstance().addPlugin(ImagePlugin());
-    PluginManager.getInstance().addPlugin(CameraPlugin());
-    await SnowIMLib.init(uid,token);
+    await SnowIMLib.init(uid, token);
     await _initMessages();
     await DaoManager.getInstance().init(uid);
     ModelManager.getInstance().init();
+    PluginManager.getInstance().addPlugin(ImagePlugin());
+    PluginManager.getInstance().addPlugin(CameraPlugin());
     await ModelManager.getInstance().getModel<ContactModel>().syncUserData();
     await SnowIMLib.connect();
     UpLoader.getInstance().init(uid);
     SLog.i("_initApp end");
   }
 
-  _initMessages() async{
+  _initMessages() async {
+    //textMessage
     SnowIMLib.registerMessage(TextMessage, buildEmptyTextMessage);
     MessageWidgetManager.getInstance().registerMessageWidgetProvider(TextMessage, buildTextMessageWidget);
     MessageWidgetManager.getInstance().registerConversationContentProvider(TextMessage, buildTextLast);
+
+    //imageMessage
+    SnowIMLib.registerMessage(ImageMessage, buildEmptyImageMessage);
+    MessageWidgetManager.getInstance().registerMessageWidgetProvider(ImageMessage, buildImageMessageWidget);
+    MessageWidgetManager.getInstance().registerConversationContentProvider(ImageMessage, buildImageLast);
   }
-
-
 }

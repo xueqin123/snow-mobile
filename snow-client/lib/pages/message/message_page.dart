@@ -7,6 +7,7 @@ import 'package:imlib/proto/message.pb.dart';
 import 'package:imlib/utils/s_log.dart';
 import 'package:provider/provider.dart';
 import 'package:snowclient/data/model/message_model.dart';
+import 'package:snowclient/generated/l10n.dart';
 import 'package:snowclient/pages/message/widget/message_input_widget.dart';
 import 'package:snowclient/uitls/const_router.dart';
 import 'package:snowclient/uitls/widge/portrait_widget.dart';
@@ -148,7 +149,7 @@ class MessageState extends State<MessageStatefulWidget> {
             visible: customMessage.direction == Direction.RECEIVE,
             child: _buildPortrait(messageWrapper),
           ),
-          MessageWidgetManager.getInstance().getMessageWidgetProvider(customMessage.type)(customMessage),
+          _buildMessageContent(customMessage),
           Visibility(
             visible: customMessage.direction == Direction.SEND,
             child: _buildPortrait(messageWrapper),
@@ -158,6 +159,18 @@ class MessageState extends State<MessageStatefulWidget> {
     );
   }
 
+  _buildMessageContent(CustomMessage customMessage) {
+    MessageWidgetProvider provider = MessageWidgetManager.getInstance().getMessageWidgetProvider(customMessage.type);
+    if (provider != null) {
+      return provider(customMessage);
+    } else {
+      return Text(
+        S.of(context).unSupportMessage,
+        style: TextStyle(color: Colors.grey, fontSize: 20),
+      );
+    }
+  }
+
   _buildPortrait(MessageWrapper messageWrapper) {
     return Container(
       height: 60,
@@ -165,7 +178,7 @@ class MessageState extends State<MessageStatefulWidget> {
       padding: const EdgeInsets.only(left: 5.0, right: 5.0),
       child: Column(
         children: [
-          PortraitWidget(messageWrapper.userEntity.portrait,40),
+          PortraitWidget(messageWrapper.userEntity.portrait, 40),
           Text(
             messageWrapper.userEntity.name,
             style: TextStyle(fontSize: 8),
