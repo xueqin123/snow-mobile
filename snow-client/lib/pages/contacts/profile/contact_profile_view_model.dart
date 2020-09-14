@@ -17,6 +17,4 @@ class ContactProfileViewModel with ChangeNotifier{
   StreamController<UserEntity> getUserEntityStream(String uid){
     return contactModel.getUserController(uid);
   }
-
-
 }

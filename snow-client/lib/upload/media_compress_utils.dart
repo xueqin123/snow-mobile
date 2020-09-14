@@ -29,18 +29,29 @@ class MediaCompressUtils {
     return compressedFile.absolute.path;
   }
 
-  static Future<String> compressImageByTargetWidth(String originPath, int targetWidth) async {
+  static Future<ImageCompressedInfo> compressImageByTargetWidth(String originPath, int targetWidth) async {
     File imageFile = File(originPath);
     var decodedImage = await decodeImageFromList(imageFile.readAsBytesSync());
     int originWidth = decodedImage.width;
     int originHeight = decodedImage.height;
     double scale = targetWidth / originWidth;
     if (scale >= 1) {
-      return originPath;
+      return ImageCompressedInfo(originPath, originWidth, originHeight);
     }
     int targetHeight = (originHeight * scale).toInt();
     SLog.i("SnowImClient sendImageMessage originWidth:$originWidth originHeight:$originHeight scale:$scale targetWidth:$targetWidth targetHeight:$targetHeight");
-    return compressImage(originPath, targetWidth, targetHeight);
+    String path = await compressImage(originPath, targetWidth, targetHeight);
+    File targetFile = File(path);
+    var targetImage = await decodeImageFromList(targetFile.readAsBytesSync());
+    SLog.i("SnowImClient sendImageMessage tartgetImage targetImage.width:${targetImage.width} targetImagHeight:${targetImage.height}");
+    return ImageCompressedInfo(path, targetImage.width, targetImage.height);
   }
 }
 
+class ImageCompressedInfo {
+  String path;
+  int width;
+  int height;
+
+  ImageCompressedInfo(this.path, this.width, this.height);
+}

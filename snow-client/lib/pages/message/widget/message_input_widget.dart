@@ -51,22 +51,22 @@ class InputState extends State<MessageInputWidget> {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: [_buildInputBarWidget(), Visibility(visible: inputType == InputType.FUNCTION, child: _buildFunctionWidget())],
+      children: [_buildInputBarWidget(), Visibility(visible: inputType == InputType.FUNCTION, child: _buildFunctionWidget(context))],
     );
   }
 
-  Widget _buildFunctionWidget() {
+  Widget _buildFunctionWidget(BuildContext context) {
     return Container(height: 350, child: GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4,
         crossAxisSpacing: 20,
         mainAxisSpacing: 20,
         childAspectRatio: 1),
-        itemBuilder: (context, index) => _buildItem(widget.plugins[index]),
+        itemBuilder: (context, index) => _buildItem(context,widget.plugins[index]),
         itemCount: widget.plugins.length));
   }
 
-  Widget _buildItem(Plugin plugin) {
+  Widget _buildItem(BuildContext context,Plugin plugin) {
     return GestureDetector(
-      onTap: ()=>plugin.onClick(widget.conversationId,widget.conversationType),
+      onTap: ()=>plugin.onClick(context,widget.conversationId,widget.conversationType),
       child: Column(
         children: [
           Padding(

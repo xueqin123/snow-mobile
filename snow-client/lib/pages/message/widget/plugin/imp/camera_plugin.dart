@@ -24,7 +24,7 @@ class CameraPlugin extends Plugin{
   }
 
   @override
-  onClick(String conversationId, ConversationType conversationType) async{
+  onClick(BuildContext context,String conversationId, ConversationType conversationType) async{
     PickedFile pickedFile = await imagePicker.getImage(source: ImageSource.camera);
     SLog.i("camera file: $pickedFile path:${pickedFile.path}");
   }

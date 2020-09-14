@@ -139,7 +139,7 @@ class MessageState extends State<MessageStatefulWidget> {
       padding: rootPadding,
       child: Row(
         mainAxisAlignment: alignment,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Visibility(
             visible: customMessage.status != SendStatus.SUCCESS,
@@ -149,7 +149,7 @@ class MessageState extends State<MessageStatefulWidget> {
             visible: customMessage.direction == Direction.RECEIVE,
             child: _buildPortrait(messageWrapper),
           ),
-          _buildMessageContent(customMessage),
+          _buildMessageContent(context,customMessage),
           Visibility(
             visible: customMessage.direction == Direction.SEND,
             child: _buildPortrait(messageWrapper),
@@ -159,10 +159,11 @@ class MessageState extends State<MessageStatefulWidget> {
     );
   }
 
-  _buildMessageContent(CustomMessage customMessage) {
+  _buildMessageContent(BuildContext context,CustomMessage customMessage) {
+    SLog.i("_buildMessageContent customMessage.cid =  ${customMessage.cid}");
     MessageWidgetProvider provider = MessageWidgetManager.getInstance().getMessageWidgetProvider(customMessage.type);
     if (provider != null) {
-      return provider(customMessage);
+      return provider(context,customMessage);
     } else {
       return Text(S.of(context).unSupportMessage,style: TextStyle(color: Colors.grey,fontSize: 10),);
     }
@@ -188,11 +189,31 @@ class MessageState extends State<MessageStatefulWidget> {
   Widget _buildSendDot(SendStatus status) {
     switch (status) {
       case SendStatus.FAILED:
-        return Icon(Icons.warning);
+        return Material(
+          type: MaterialType.circle,
+          color: Colors.red,
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Text(
+              "!",
+              style: TextStyle(fontSize: 10),
+            ),
+          ),
+        );
         break;
       case SendStatus.SENDING:
       case SendStatus.PERSIST:
-        return Icon(Icons.adjust);
+        return Material(
+          type: MaterialType.circle,
+          color: Colors.blue,
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Text(
+              ".",
+              style: TextStyle(fontSize: 10),
+            ),
+          ),
+        );
         break;
       case SendStatus.SUCCESS:
         return Icon(Icons.check);
@@ -202,6 +223,8 @@ class MessageState extends State<MessageStatefulWidget> {
         break;
     }
   }
+
+
 
   _gotoChatDetailPage(String targetId, ConversationType conversationType) {
     Map map = Map();

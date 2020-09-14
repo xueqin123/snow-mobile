@@ -26,18 +26,19 @@ class SnowImClient {
     }
     ImageMessage imageMessage = ImageMessage(localPath: localPath);
     imageMessage.isOriginal = isOriginal;
-    String thumbPath = await MediaCompressUtils.compressImageByTargetWidth(localPath, 40);
-    File thumbFile = File(thumbPath);
+    ImageCompressedInfo thumbInfo = await MediaCompressUtils.compressImageByTargetWidth(localPath, 40);
+    File thumbFile = File(thumbInfo.path);
     Uint8List bytes = thumbFile.readAsBytesSync();
     String base64Image = base64Encode(bytes);
     imageMessage.bytes = bytes;
     imageMessage.base64 = base64Image;
-
+    imageMessage.width = thumbInfo.width;
+    imageMessage.height = thumbInfo.height;
     SnowIMLib.sendMessage(targetId, conversationType, imageMessage, block: b, prepare: (sendingMessage) async {
       ImageMessage imageMessage = sendingMessage;
-      String upLoadFile = await MediaCompressUtils.compressImageByTargetWidth(imageMessage.localPath, 480);
+      ImageCompressedInfo upLoadInfo = await MediaCompressUtils.compressImageByTargetWidth(imageMessage.localPath, 480);
       UploadService uploadService = HttpManager.getInstance().getService<UploadService>();
-      String remoteUrl = await uploadService.upLoadImage(upLoadFile, progress: (cur, total) {
+      String remoteUrl = await uploadService.upLoadImage(upLoadInfo.path, progress: (cur, total) {
         processBlock(cur, total, sendingMessage);
       });
       imageMessage.remoteUrl = remoteUrl;

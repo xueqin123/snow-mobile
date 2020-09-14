@@ -8,5 +8,5 @@ abstract class Plugin {
 
   Widget getIcon();
 
-  onClick(String conversationId, ConversationType conversationType);
+  onClick(BuildContext context,String conversationId, ConversationType conversationType);
 }

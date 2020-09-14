@@ -34,20 +34,13 @@ class MessageModel extends BaseModel {
     SnowImClient.sendTextMessage(targetId, text, conversationType, _messageSendBlock);
   }
 
-  sendImageMessage(String targetId, String localPath, ConversationType type) {
-    SnowImClient.sendImageMessage(targetId, type, localPath, false, _messageSendBlock, _messageProgressBlock);
+  sendImageMessage(String targetId, String localPath, ConversationType type, SendProgressBlock processBlock) {
+    SnowImClient.sendImageMessage(targetId, type, localPath, false, _messageSendBlock, processBlock);
   }
 
   _messageSendBlock(SendStatus status, CustomMessage customMessage) {
     if (messageNotifier != null) {
        messageNotifier.onSend(status, customMessage);
-    }
-  }
-
-  _messageProgressBlock(int cur, int total,CustomMessage customMessage) {
-    SLog.v("_messageProgressBlock cur:$cur total:$total");
-    if(messageNotifier!= null){
-      double progress = (cur/total)*100;
     }
   }
 }
@@ -93,7 +86,6 @@ class MessageNotifier extends Notifier<List<MessageWrapper>> {
       wrapperList.add(messageWrapper);
     }
     data.addAll(wrapperList);
-
     post();
   }
 
@@ -121,7 +113,8 @@ class MessageWrapper {
 
   MessageWrapper(this.userEntity, this.customMessage);
 
-  static Future<MessageWrapper> create(customMessage) async {
+  static Future<MessageWrapper> create(CustomMessage customMessage) async {
+    SLog.i("messagewrapper create cid:${customMessage.cid}");
     ContactModel contactModel = ModelManager.getInstance().getModel<ContactModel>();
     UserEntity userEntity = await contactModel.getUserById(customMessage.uid);
     return MessageWrapper(userEntity, customMessage);

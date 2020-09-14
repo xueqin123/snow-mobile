@@ -23,7 +23,7 @@ class TextMessage extends CustomMessage {
   }
 }
 
-Widget buildTextMessageWidget(CustomMessage customMessage) {
+Widget buildTextMessageWidget(BuildContext context,CustomMessage customMessage) {
   TextMessage textMessage = customMessage;
   return Flexible(
     child: DecoratedBox(
