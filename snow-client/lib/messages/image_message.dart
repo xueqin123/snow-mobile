@@ -25,6 +25,8 @@ class ImageMessage extends CustomMessage {
     remoteUrl = map["remoteUrl"];
     base64 = map["base64"];
     isOriginal = map["isOriginal"];
+    width = map["width"];
+    height = map["height"];
     bytes = base64Decode(base64);
   }
 
@@ -34,6 +36,8 @@ class ImageMessage extends CustomMessage {
     map["remoteUrl"] = remoteUrl;
     map["base64"] = base64;
     map["isOriginal"] = isOriginal;
+    map["width"] = width;
+    map["height"] = height;
     return jsonEncode(map);
   }
 }
@@ -43,17 +47,15 @@ Widget buildImageMessageWidget(BuildContext context, CustomMessage customMessage
   ImageMessage imageMessage = customMessage;
   double imageWidth = imageMessage.width == null ? null : imageMessage.width.toDouble();
   double imageHeight = imageMessage.height == null ? null : imageMessage.height.toDouble();
+  SLog.i("ImageMessage imageWidth $imageWidth imageHeight:$imageHeight");
+  double maxwidth = 250.0;
+  double maxHeight = imageHeight*maxwidth/imageWidth;
   return Container(
-    width: imageWidth,
-    height: imageHeight,
+    width: maxwidth,
+    height: maxHeight,
     child: Stack(
       children: [
-        ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: 250,
-          ),
-          child: Image.memory(imageMessage.bytes),
-        ),
+        Image.memory(imageMessage.bytes),
         Align(
           alignment: Alignment.center,
           child: _buildProgress(context, customMessage),

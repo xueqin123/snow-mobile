@@ -149,7 +149,12 @@ class MessageState extends State<MessageStatefulWidget> {
             visible: customMessage.direction == Direction.RECEIVE,
             child: _buildPortrait(messageWrapper),
           ),
-          _buildMessageContent(context,customMessage),
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 250,
+            ),
+            child: _buildMessageContent(context, customMessage),
+          ),
           Visibility(
             visible: customMessage.direction == Direction.SEND,
             child: _buildPortrait(messageWrapper),
@@ -159,13 +164,16 @@ class MessageState extends State<MessageStatefulWidget> {
     );
   }
 
-  _buildMessageContent(BuildContext context,CustomMessage customMessage) {
+  _buildMessageContent(BuildContext context, CustomMessage customMessage) {
     SLog.i("_buildMessageContent customMessage.cid =  ${customMessage.cid}");
     MessageWidgetProvider provider = MessageWidgetManager.getInstance().getMessageWidgetProvider(customMessage.type);
     if (provider != null) {
-      return provider(context,customMessage);
+      return provider(context, customMessage);
     } else {
-      return Text(S.of(context).unSupportMessage,style: TextStyle(color: Colors.grey,fontSize: 10),);
+      return Text(
+        S.of(context).unSupportMessage,
+        style: TextStyle(color: Colors.grey, fontSize: 10),
+      );
     }
   }
 
@@ -223,8 +231,6 @@ class MessageState extends State<MessageStatefulWidget> {
         break;
     }
   }
-
-
 
   _gotoChatDetailPage(String targetId, ConversationType conversationType) {
     Map map = Map();
