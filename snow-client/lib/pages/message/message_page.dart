@@ -139,7 +139,7 @@ class MessageState extends State<MessageStatefulWidget> {
       padding: rootPadding,
       child: Row(
         mainAxisAlignment: alignment,
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Visibility(
             visible: customMessage.status != SendStatus.SUCCESS,

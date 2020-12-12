@@ -30,9 +30,8 @@ Widget buildTextMessageWidget(BuildContext context,CustomMessage customMessage) 
       decoration: const BoxDecoration(color: Colors.blue,
       borderRadius: BorderRadius.all(Radius.circular(5.0),),
       ),
-      child: Baseline(
-        baseline: 32.0,
-        baselineType: TextBaseline.alphabetic,
+      child: Padding(
+        padding: EdgeInsets.all(10),
         child: Text(
           textMessage.text,
           style: TextStyle(
