@@ -2,19 +2,22 @@
 基于 Flutter 开发的 IM项目，支持文字、图片等信息发送，由于工作繁忙，优化较慢。
 
 ##会话列表
-![conversaions](https://bucket1-1257086843.cos.ap-beijing.myqcloud.com/apk/WechatIMG1.jpeg)
+![conversaions](./images/WechatIMG1.jpeg)
 ##会话页面
 1、文字消息
-![message](https://bucket1-1257086843.cos.ap-beijing.myqcloud.com/apk/WechatIMG2.jpeg)
+![message](./images/WechatIMG2.jpeg)
 2、图片消息
-![message](https://bucket1-1257086843.cos.ap-beijing.myqcloud.com/apk/WechatIMG6.jpeg)
+![message](./images/WechatIMG6.jpeg)
 ##联系人页面
-![message](https://bucket1-1257086843.cos.ap-beijing.myqcloud.com/apk/WechatIMG3.jpeg)
+![message](./images/WechatIMG3.jpeg)
 ##登录页面
-![message](https://bucket1-1257086843.cos.ap-beijing.myqcloud.com/apk/WechatIMG4.jpeg)
+![message](./images/WechatIMG4.jpeg)
 ##注册页面
-![message](https://bucket1-1257086843.cos.ap-beijing.myqcloud.com/apk/WechatIMG5.jpeg)
+![message](./images/WechatIMG5.jpeg)
 ##扫码下载
+Android 扫码下载
+
+IOS需自行编译运行
 
 ##下一步规划
 1、语音消息
