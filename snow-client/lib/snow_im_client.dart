@@ -26,7 +26,7 @@ class SnowImClient {
     }
     ImageMessage imageMessage = ImageMessage(localPath: localPath);
     imageMessage.isOriginal = isOriginal;
-    ImageCompressedInfo thumbInfo = await MediaCompressUtils.compressImageByTargetWidth(localPath, 40);
+    ImageCompressedInfo thumbInfo = await MediaCompressUtils.compressImageByTargetWidth(localPath, 120);
     File thumbFile = File(thumbInfo.path);
     Uint8List bytes = thumbFile.readAsBytesSync();
     String base64Image = base64Encode(bytes);

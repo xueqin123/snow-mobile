@@ -48,8 +48,13 @@ Widget buildImageMessageWidget(BuildContext context, CustomMessage customMessage
   double imageWidth = imageMessage.width == null ? null : imageMessage.width.toDouble();
   double imageHeight = imageMessage.height == null ? null : imageMessage.height.toDouble();
   SLog.i("ImageMessage imageWidth $imageWidth imageHeight:$imageHeight");
-  double maxwidth = 250.0;
-  double maxHeight = imageHeight*maxwidth/imageWidth;
+  double maxwidth = imageWidth;
+  double maxHeight = imageHeight;
+  if(imageWidth > 150.0){
+    maxwidth = 150.0;
+    maxHeight = imageHeight*maxwidth/imageWidth;
+  }
+  SLog.i("ImageMessage maxwidth $imageWidth imageWidth:$imageHeight");
   return Container(
     width: maxwidth,
     height: maxHeight,
