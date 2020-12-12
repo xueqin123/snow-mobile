@@ -16,15 +16,17 @@ IOS需自行编译运行
 ![message](./images/WechatIMG6.jpeg)
 ## 联系人页面
 - 未完成好友逻辑
+
 ![message](./images/WechatIMG3.jpeg)
 ## 登录页面
 ![message](./images/WechatIMG4.jpeg)
 ## 注册页面
 - 未添加验证码，直接注册即可行
+
 ![message](./images/WechatIMG5.jpeg)
 
-##下一步规划
-1、语音消息
-2、发现 web 页面
-3、webrct 音视频即时通话
-4、优化局部刷新 
+## 下一步规划
+- 语音消息
+- 发现 web 页面
+- webrct 音视频即时通话
+- 优化局部刷新 
